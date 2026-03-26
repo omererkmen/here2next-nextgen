@@ -2,16 +2,19 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { useLang } from '@/context/LanguageContext';
+import { createClient } from '@/lib/supabase/client';
 
 type UserRole = 'startup' | 'corporate' | 'investor' | '';
 
 export default function RegisterPage() {
   const { t } = useLang();
+  const router = useRouter();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,31 +23,68 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     if (!fullName || !email || !password || !confirmPassword || !role) {
-      setError('Please fill in all fields');
+      setError('Lütfen tüm alanları doldurun');
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError('Şifreler eşleşmiyor');
       return;
     }
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters');
+      setError('Şifre en az 8 karakter olmalıdır');
       return;
     }
 
     setLoading(true);
-    // Mock auth - in real app would call Supabase
-    setTimeout(() => {
+
+    try {
+      const supabase = createClient();
+
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            role,
+          },
+        },
+      });
+
+      if (signUpError) {
+        if (signUpError.message.includes('already registered')) {
+          setError('Bu e-posta adresi zaten kayıtlı');
+        } else {
+          setError(signUpError.message);
+        }
+        setLoading(false);
+        return;
+      }
+
+      if (data.user) {
+        // Update profiles table
+        await supabase.from('profiles').upsert({
+          id: data.user.id,
+          email,
+          full_name: fullName,
+          role,
+        });
+
+        router.push('/');
+        router.refresh();
+      }
+    } catch (err) {
+      setError('Bir hata oluştu. Lütfen tekrar deneyin.');
+    } finally {
       setLoading(false);
-      // TODO: Implement actual registration
-    }, 1000);
+    }
   };
 
   return (
@@ -53,8 +93,8 @@ export default function RegisterPage() {
         <Card>
           <CardContent className="p-8">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold mb-2">Create Your Account</h1>
-              <p className="text-gray-600">Join the StartupEco community</p>
+              <h1 className="text-2xl font-bold mb-2">Here2Next&apos;e Katıl</h1>
+              <p className="text-gray-600">Hesabınızı oluşturun</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -66,11 +106,11 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name
+                  Ad Soyad
                 </label>
                 <Input
                   type="text"
-                  placeholder="John Doe"
+                  placeholder="Adınız Soyadınız"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required
@@ -79,11 +119,11 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
+                  E-posta
                 </label>
                 <Input
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder="ornek@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -92,23 +132,23 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  I am a...
+                  Rolünüz
                 </label>
                 <Select value={role} onValueChange={(value) => setRole(value as UserRole)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select your role" />
+                    <SelectValue placeholder="Rolünüzü seçin" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="startup">Startup Founder</SelectItem>
-                    <SelectItem value="corporate">Corporate Executive</SelectItem>
-                    <SelectItem value="investor">Investor</SelectItem>
+                    <SelectItem value="startup">Startup Kurucu</SelectItem>
+                    <SelectItem value="corporate">Kurumsal Yönetici</SelectItem>
+                    <SelectItem value="investor">Yatırımcı</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Password
+                  Şifre
                 </label>
                 <Input
                   type="password"
@@ -121,7 +161,7 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Confirm Password
+                  Şifre Tekrar
                 </label>
                 <Input
                   type="password"
@@ -137,31 +177,20 @@ export default function RegisterPage() {
                 disabled={loading}
                 className="w-full bg-emerald-600 hover:bg-emerald-700"
               >
-                {loading ? 'Creating account...' : 'Create Account'}
+                {loading ? 'Kayıt yapılıyor...' : 'Kayıt Ol'}
               </Button>
             </form>
 
             <div className="mt-6 pt-6 border-t text-center">
               <p className="text-sm text-gray-600">
-                Already have an account?{' '}
+                Zaten hesabınız var mı?{' '}
                 <Link href="/login" className="text-emerald-600 hover:text-emerald-700 font-semibold">
-                  Sign in
+                  Giriş Yap
                 </Link>
               </p>
             </div>
           </CardContent>
         </Card>
-
-        <p className="text-center text-xs text-gray-600 mt-6">
-          By creating an account, you agree to our{' '}
-          <Link href="/terms" className="text-emerald-600 hover:text-emerald-700">
-            Terms of Service
-          </Link>{' '}
-          and{' '}
-          <Link href="/privacy" className="text-emerald-600 hover:text-emerald-700">
-            Privacy Policy
-          </Link>
-        </p>
       </div>
     </main>
   );
