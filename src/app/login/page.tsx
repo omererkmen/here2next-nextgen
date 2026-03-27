@@ -57,8 +57,8 @@ export default function LoginPage() {
         <Card>
           <CardContent className="p-8">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold mb-2">Tekrar Hoşgeldiniz</h1>
-              <p className="text-gray-600">Hesabınıza giriş yapın</p>
+              <h1 className="text-2xl font-bold mb-2">{t('auth.login.title')}</h1>
+              <p className="text-gray-600">{t('auth.login.subtitle')}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -70,7 +70,7 @@ export default function LoginPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  E-posta
+                  {t('auth.login.email')}
                 </label>
                 <Input
                   type="email"
@@ -83,7 +83,7 @@ export default function LoginPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Şifre
+                  {t('auth.login.password')}
                 </label>
                 <Input
                   type="password"
@@ -99,15 +99,15 @@ export default function LoginPage() {
                 disabled={loading}
                 className="w-full bg-emerald-600 hover:bg-emerald-700"
               >
-                {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+                {loading ? t('auth.login.loading') : t('auth.login.submit')}
               </Button>
             </form>
 
             <div className="mt-6 pt-6 border-t text-center">
               <p className="text-sm text-gray-600">
-                Hesabınız yok mu?{' '}
+                {t('auth.login.noAccount')}{' '}
                 <Link href="/register" className="text-emerald-600 hover:text-emerald-700 font-semibold">
-                  Kayıt Ol
+                  {t('auth.register.title')}
                 </Link>
               </p>
             </div>

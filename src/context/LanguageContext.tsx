@@ -92,14 +92,24 @@ const translations: Record<string, { tr: string; en: string }> = {
 
   // Auth
   "auth.login.title": { tr: "Giriş Yap", en: "Sign In" },
+  "auth.login.subtitle": { tr: "Hesabınıza giriş yapın", en: "Sign in to your account" },
   "auth.login.email": { tr: "E-posta", en: "Email" },
   "auth.login.password": { tr: "Şifre", en: "Password" },
   "auth.login.submit": { tr: "Giriş Yap", en: "Sign In" },
+  "auth.login.loading": { tr: "Giriş yapılıyor...", en: "Signing in..." },
   "auth.login.noAccount": { tr: "Hesabınız yok mu?", en: "Don't have an account?" },
   "auth.register.title": { tr: "Kayıt Ol", en: "Sign Up" },
+  "auth.register.subtitle": { tr: "Hesabınızı oluşturun", en: "Create your account" },
   "auth.register.name": { tr: "Ad Soyad", en: "Full Name" },
+  "auth.register.namePlaceholder": { tr: "Adınız Soyadınız", en: "Your Full Name" },
   "auth.register.role": { tr: "Hesap Türü", en: "Account Type" },
+  "auth.register.rolePlaceholder": { tr: "Rolünüzü seçin", en: "Select your role" },
+  "auth.register.roleStartup": { tr: "Startup Kurucu", en: "Startup Founder" },
+  "auth.register.roleCorporate": { tr: "Kurumsal Yönetici", en: "Corporate Executive" },
+  "auth.register.roleInvestor": { tr: "Yatırımcı", en: "Investor" },
+  "auth.register.confirmPassword": { tr: "Şifre Tekrar", en: "Confirm Password" },
   "auth.register.submit": { tr: "Kayıt Ol", en: "Sign Up" },
+  "auth.register.loading": { tr: "Kayıt yapılıyor...", en: "Signing up..." },
   "auth.register.hasAccount": { tr: "Zaten hesabınız var mı?", en: "Already have an account?" },
 
   // Footer

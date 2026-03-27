@@ -93,8 +93,8 @@ export default function RegisterPage() {
         <Card>
           <CardContent className="p-8">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold mb-2">Here2Next&apos;e Katıl</h1>
-              <p className="text-gray-600">Hesabınızı oluşturun</p>
+              <h1 className="text-2xl font-bold mb-2">{t('auth.register.title')}</h1>
+              <p className="text-gray-600">{t('auth.register.subtitle')}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -106,11 +106,11 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Ad Soyad
+                  {t('auth.register.name')}
                 </label>
                 <Input
                   type="text"
-                  placeholder="Adınız Soyadınız"
+                  placeholder={t('auth.register.namePlaceholder')}
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required
@@ -119,7 +119,7 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  E-posta
+                  {t('auth.login.email')}
                 </label>
                 <Input
                   type="email"
@@ -132,23 +132,23 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Rolünüz
+                  {t('auth.register.role')}
                 </label>
                 <Select value={role} onValueChange={(value) => setRole(value as UserRole)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Rolünüzü seçin" />
+                    <SelectValue placeholder={t('auth.register.rolePlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="startup">Startup Kurucu</SelectItem>
-                    <SelectItem value="corporate">Kurumsal Yönetici</SelectItem>
-                    <SelectItem value="investor">Yatırımcı</SelectItem>
+                    <SelectItem value="startup">{t('auth.register.roleStartup')}</SelectItem>
+                    <SelectItem value="corporate">{t('auth.register.roleCorporate')}</SelectItem>
+                    <SelectItem value="investor">{t('auth.register.roleInvestor')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Şifre
+                  {t('auth.login.password')}
                 </label>
                 <Input
                   type="password"
@@ -161,7 +161,7 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Şifre Tekrar
+                  {t('auth.register.confirmPassword')}
                 </label>
                 <Input
                   type="password"
@@ -177,15 +177,15 @@ export default function RegisterPage() {
                 disabled={loading}
                 className="w-full bg-emerald-600 hover:bg-emerald-700"
               >
-                {loading ? 'Kayıt yapılıyor...' : 'Kayıt Ol'}
+                {loading ? t('auth.register.loading') : t('auth.register.submit')}
               </Button>
             </form>
 
             <div className="mt-6 pt-6 border-t text-center">
               <p className="text-sm text-gray-600">
-                Zaten hesabınız var mı?{' '}
+                {t('auth.register.hasAccount')}{' '}
                 <Link href="/login" className="text-emerald-600 hover:text-emerald-700 font-semibold">
-                  Giriş Yap
+                  {t('auth.login.title')}
                 </Link>
               </p>
             </div>
