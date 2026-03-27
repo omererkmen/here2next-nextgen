@@ -43,6 +43,10 @@ const translations: Record<string, { tr: string; en: string }> = {
   "section.members": { tr: "Kurucu Üyeler", en: "Founding Members" },
   "section.viewAll": { tr: "Tümünü Gör", en: "View All" },
 
+  // Home - Manifesto
+  "home.manifesto.desc": { tr: "İşbirliğinin gücüne inanıyoruz. Startup'lar inovasyonu, kurumlar ölçeği getirir. Birlikte dönüşüm yaratırlar.", en: "We believe in the power of collaboration. Startups bring innovation. Corporates bring scale. Together, they create transformation." },
+  "home.manifesto.cta": { tr: "Misyonumuzu Oku", en: "Read Our Mission" },
+
   // How it works
   "how.step1.title": { tr: "Profil Oluştur", en: "Create Profile" },
   "how.step1.desc": { tr: "Startup veya kurum olarak detaylı profilinizi oluşturun", en: "Create your detailed profile as a startup or corporate" },
