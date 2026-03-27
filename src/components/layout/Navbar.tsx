@@ -76,14 +76,18 @@ export default function Navbar() {
 
             {/* Auth Buttons */}
             <div className="hidden sm:flex items-center gap-2">
-              <Button variant="ghost" size="sm" className="gap-2">
-                <LogIn className="w-4 h-4" />
-                {t("nav.login")}
-              </Button>
-              <Button size="sm" className="bg-emerald-700 hover:bg-emerald-800 gap-2">
-                <UserPlus className="w-4 h-4" />
-                {t("nav.signup")}
-              </Button>
+              <Link href="/login">
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <LogIn className="w-4 h-4" />
+                  {t("nav.login")}
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button size="sm" className="bg-emerald-700 hover:bg-emerald-800 gap-2">
+                  <UserPlus className="w-4 h-4" />
+                  {t("nav.signup")}
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -121,14 +125,18 @@ export default function Navbar() {
                 </Link>
               ))}
               <div className="px-3 py-2 space-y-2">
-                <Button variant="outline" size="sm" className="w-full gap-2 justify-start">
-                  <LogIn className="w-4 h-4" />
-                  {t("nav.login")}
-                </Button>
-                <Button size="sm" className="w-full bg-emerald-700 hover:bg-emerald-800 gap-2 justify-start">
-                  <UserPlus className="w-4 h-4" />
-                  {t("nav.signup")}
-                </Button>
+                <Link href="/login" onClick={() => setMobileOpen(false)}>
+                  <Button variant="outline" size="sm" className="w-full gap-2 justify-start">
+                    <LogIn className="w-4 h-4" />
+                    {t("nav.login")}
+                  </Button>
+                </Link>
+                <Link href="/register" onClick={() => setMobileOpen(false)}>
+                  <Button size="sm" className="w-full bg-emerald-700 hover:bg-emerald-800 gap-2 justify-start">
+                    <UserPlus className="w-4 h-4" />
+                    {t("nav.signup")}
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
