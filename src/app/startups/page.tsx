@@ -44,7 +44,7 @@ export default function StartupsPage() {
     return matchesSearch && matchesSector && matchesStage;
   });
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-400">Loading...</div></div>;
+  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   return (
     <main className="w-full">
@@ -60,7 +60,7 @@ export default function StartupsPage() {
           {/* Filters */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="relative">
-              <Search className="absolute left-3 top-3 text-gray-400" size={18} />
+              <Search className="absolute left-3 top-3 text-gray-600" size={18} />
               <Input
                 placeholder="Search startups..."
                 value={search}
@@ -116,7 +116,7 @@ export default function StartupsPage() {
                   </p>
                   <div className="flex flex-wrap gap-1 mb-4">
                     {(startup.tags ?? []).slice(0, 2).map((tag: string) => (
-                      <Badge key={tag} variant="outline" className="text-[10px]">
+                      <Badge key={tag} variant="outline" className="text-xs">
                         {tag}
                       </Badge>
                     ))}
@@ -159,19 +159,19 @@ export default function StartupsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-500">Founded</p>
+                  <p className="text-sm text-gray-600">Founded</p>
                   <p className="font-semibold">{selectedStartup.founded_year}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Team Size</p>
+                  <p className="text-sm text-gray-600">Team Size</p>
                   <p className="font-semibold">{selectedStartup.team_size} people</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Funding Raised</p>
+                  <p className="text-sm text-gray-600">Funding Raised</p>
                   <p className="font-semibold">{selectedStartup.funding}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Stage</p>
+                  <p className="text-sm text-gray-600">Stage</p>
                   <p className="font-semibold">{stageLabels[selectedStartup.stage as keyof typeof stageLabels]}</p>
                 </div>
               </div>

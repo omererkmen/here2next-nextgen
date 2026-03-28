@@ -119,7 +119,7 @@ export default function DashboardPage() {
     fetchAll();
   }, [router]);
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-400">Loading...</div></div>;
+  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   const isStartup = profile?.role === 'startup';
   const isCorporate = profile?.role === 'corporate';
@@ -129,7 +129,7 @@ export default function DashboardPage() {
       case 'pending': return <Clock size={14} className="text-amber-500" />;
       case 'accepted': return <CheckCircle2 size={14} className="text-green-500" />;
       case 'rejected': return <XCircle size={14} className="text-red-500" />;
-      default: return <Clock size={14} className="text-gray-400" />;
+      default: return <Clock size={14} className="text-gray-600" />;
     }
   };
 
@@ -164,7 +164,7 @@ export default function DashboardPage() {
                 )}
               </div>
               <p className="text-gray-600">{profile?.email}</p>
-              {company?.sector && <p className="text-sm text-gray-500 mt-1">{company.sector} • {company.location}</p>}
+              {company?.sector && <p className="text-sm text-gray-600 mt-1">{company.sector} • {company.location}</p>}
             </div>
             <div className="flex gap-2">
               <Link href={isStartup ? `/startups/${company?.slug}` : `/corporates/${company?.slug}`}>
@@ -184,7 +184,7 @@ export default function DashboardPage() {
             <Card>
               <CardContent className="p-4 text-center">
                 <p className="text-3xl font-bold text-emerald-600">{matches.length}</p>
-                <p className="text-sm text-gray-500">{lang === 'tr' ? 'Eşleşme' : 'Matches'}</p>
+                <p className="text-sm text-gray-600">{lang === 'tr' ? 'Eşleşme' : 'Matches'}</p>
               </CardContent>
             </Card>
             <Card>
@@ -192,7 +192,7 @@ export default function DashboardPage() {
                 <p className="text-3xl font-bold text-blue-600">
                   {isStartup ? applications.length : incomingApps.length}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-600">
                   {isStartup ? (lang === 'tr' ? 'Başvuru' : 'Applications') : (lang === 'tr' ? 'Gelen Başvuru' : 'Incoming')}
                 </p>
               </CardContent>
@@ -200,7 +200,7 @@ export default function DashboardPage() {
             <Card>
               <CardContent className="p-4 text-center">
                 <p className="text-3xl font-bold text-purple-600">{events.length}</p>
-                <p className="text-sm text-gray-500">{lang === 'tr' ? 'Etkinlik Kaydı' : 'Event Registrations'}</p>
+                <p className="text-sm text-gray-600">{lang === 'tr' ? 'Etkinlik Kaydı' : 'Event Registrations'}</p>
               </CardContent>
             </Card>
             <Card>
@@ -208,7 +208,7 @@ export default function DashboardPage() {
                 <p className="text-3xl font-bold text-amber-600">
                   {matches.filter(m => m.status === 'connected').length}
                 </p>
-                <p className="text-sm text-gray-500">{lang === 'tr' ? 'Bağlantı' : 'Connections'}</p>
+                <p className="text-sm text-gray-600">{lang === 'tr' ? 'Bağlantı' : 'Connections'}</p>
               </CardContent>
             </Card>
           </div>
@@ -245,7 +245,7 @@ export default function DashboardPage() {
                             <h4 className="font-medium">
                               {lang === 'tr' ? app.wishlist_items?.title_tr : app.wishlist_items?.title_en}
                             </h4>
-                            <p className="text-sm text-gray-500 mt-1">
+                            <p className="text-sm text-gray-600 mt-1">
                               {app.wishlist_items?.corporates?.name}
                             </p>
                             {app.message && (
@@ -254,7 +254,7 @@ export default function DashboardPage() {
                           </div>
                           <div className="flex items-center gap-2">
                             <Badge className={statusColor(app.status)}>{app.status}</Badge>
-                            <span className="text-xs text-gray-400">
+                            <span className="text-xs text-gray-600">
                               {new Date(app.created_at).toLocaleDateString()}
                             </span>
                           </div>
@@ -264,7 +264,7 @@ export default function DashboardPage() {
                   </div>
                 ) : (
                   <Card>
-                    <CardContent className="p-8 text-center text-gray-500">
+                    <CardContent className="p-8 text-center text-gray-600">
                       <Send className="mx-auto mb-4 text-gray-300" size={48} />
                       <p>{lang === 'tr' ? 'Henüz başvuru yapmadınız' : 'No applications yet'}</p>
                       <Link href="/wishlist">
@@ -284,12 +284,12 @@ export default function DashboardPage() {
                           <AvatarPlaceholder name={app.startups?.name || '?'} size="sm" />
                           <div className="flex-1">
                             <h4 className="font-medium">{app.startups?.name}</h4>
-                            <p className="text-xs text-gray-500">{app.startups?.sector}</p>
+                            <p className="text-xs text-gray-600">{app.startups?.sector}</p>
                             <p className="text-sm text-gray-600 mt-1">
                               {lang === 'tr' ? 'İhtiyaç:' : 'Need:'} {lang === 'tr' ? app.wishlist_items?.title_tr : app.wishlist_items?.title_en}
                             </p>
                             {app.message && (
-                              <p className="text-sm text-gray-500 mt-1 line-clamp-1 italic">"{app.message}"</p>
+                              <p className="text-sm text-gray-600 mt-1 line-clamp-1 italic">"{app.message}"</p>
                             )}
                           </div>
                           <div className="flex items-center gap-2">
@@ -301,7 +301,7 @@ export default function DashboardPage() {
                   </div>
                 ) : (
                   <Card>
-                    <CardContent className="p-8 text-center text-gray-500">
+                    <CardContent className="p-8 text-center text-gray-600">
                       <ListChecks className="mx-auto mb-4 text-gray-300" size={48} />
                       <p>{lang === 'tr' ? 'Henüz gelen başvuru yok' : 'No incoming applications yet'}</p>
                       <Link href="/wishlist">
@@ -325,7 +325,7 @@ export default function DashboardPage() {
                         <AvatarPlaceholder name={isStartup ? match.corporate_name : match.startup_name} size="sm" />
                         <div className="flex-1">
                           <h4 className="font-medium">{isStartup ? match.corporate_name : match.startup_name}</h4>
-                          {!isStartup && <p className="text-xs text-gray-500">{match.startup_sector}</p>}
+                          {!isStartup && <p className="text-xs text-gray-600">{match.startup_sector}</p>}
                           <div className="flex items-center gap-2 mt-2">
                             <Progress value={match.score} className="h-2 flex-1 max-w-[200px]" />
                             <span className="text-sm font-semibold text-emerald-600">{match.score}%</span>
@@ -338,7 +338,7 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 <Card>
-                  <CardContent className="p-8 text-center text-gray-500">
+                  <CardContent className="p-8 text-center text-gray-600">
                     <Zap className="mx-auto mb-4 text-gray-300" size={48} />
                     <p>{lang === 'tr' ? 'Henüz eşleşme yok' : 'No matches yet'}</p>
                     <Link href="/matching">
@@ -363,7 +363,7 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex-1">
                           <h4 className="font-medium">{lang === 'tr' ? reg.events?.title_tr : reg.events?.title_en}</h4>
-                          <p className="text-sm text-gray-500 mt-1">
+                          <p className="text-sm text-gray-600 mt-1">
                             {reg.events?.date && new Date(reg.events.date).toLocaleDateString()} • {reg.events?.location}
                           </p>
                         </div>
@@ -374,7 +374,7 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 <Card>
-                  <CardContent className="p-8 text-center text-gray-500">
+                  <CardContent className="p-8 text-center text-gray-600">
                     <Calendar className="mx-auto mb-4 text-gray-300" size={48} />
                     <p>{lang === 'tr' ? 'Henüz etkinlik kaydınız yok' : 'No event registrations yet'}</p>
                     <Link href="/events">

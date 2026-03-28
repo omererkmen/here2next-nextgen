@@ -42,7 +42,7 @@ export default function HomePage() {
     fetchAllData();
   }, []);
 
-  if (loading) return <div className="flex items-center justify-center min-h-screen"><div className="text-slate-400">Loading...</div></div>;
+  if (loading) return <div className="flex items-center justify-center min-h-screen"><div className="text-slate-600">Loading...</div></div>;
 
   return (
     <main className="w-full">
@@ -75,19 +75,19 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-emerald-700">240+</div>
-              <p className="text-gray-600 mt-2">{t('stats.startups')}</p>
+              <p className="text-gray-700 mt-2">{t('stats.startups')}</p>
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-emerald-700">50+</div>
-              <p className="text-gray-600 mt-2">{t('stats.corporates')}</p>
+              <p className="text-gray-700 mt-2">{t('stats.corporates')}</p>
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-emerald-700">180+</div>
-              <p className="text-gray-600 mt-2">{t('stats.matches')}</p>
+              <p className="text-gray-700 mt-2">{t('stats.matches')}</p>
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-emerald-700">45+</div>
-              <p className="text-gray-600 mt-2">{t('stats.events')}</p>
+              <p className="text-gray-700 mt-2">{t('stats.events')}</p>
             </div>
           </div>
         </div>
@@ -103,28 +103,28 @@ export default function HomePage() {
                 <Users className="text-emerald-700" size={32} />
               </div>
               <h3 className="font-semibold text-lg mb-2">{t('how.step1.title')}</h3>
-              <p className="text-gray-600">{t('how.step1.desc')}</p>
+              <p className="text-gray-700">{t('how.step1.desc')}</p>
             </div>
             <div className="text-center">
               <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Target className="text-emerald-700" size={32} />
               </div>
               <h3 className="font-semibold text-lg mb-2">{t('how.step2.title')}</h3>
-              <p className="text-gray-600">{t('how.step2.desc')}</p>
+              <p className="text-gray-700">{t('how.step2.desc')}</p>
             </div>
             <div className="text-center">
               <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Zap className="text-emerald-700" size={32} />
               </div>
               <h3 className="font-semibold text-lg mb-2">{t('how.step3.title')}</h3>
-              <p className="text-gray-600">{t('how.step3.desc')}</p>
+              <p className="text-gray-700">{t('how.step3.desc')}</p>
             </div>
             <div className="text-center">
               <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Briefcase className="text-emerald-700" size={32} />
               </div>
               <h3 className="font-semibold text-lg mb-2">{t('how.step4.title')}</h3>
-              <p className="text-gray-600">{t('how.step4.desc')}</p>
+              <p className="text-gray-700">{t('how.step4.desc')}</p>
             </div>
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function HomePage() {
                   </div>
                   <h3 className="font-bold text-lg mb-2">{startup.name}</h3>
                   <Badge variant="secondary" className="mb-3">{startup.sector}</Badge>
-                  <p className="text-sm text-gray-600 line-clamp-2 mb-4">{lang === 'tr' ? startup.description_tr : startup.description_en}</p>
+                  <p className="text-sm text-gray-700 line-clamp-2 mb-4">{lang === 'tr' ? startup.description_tr : startup.description_en}</p>
                   <div className="pt-4 border-t">
                     <Link href={`/startups/${startup.id}`} className="text-emerald-600 hover:text-emerald-700 text-sm font-semibold">
                       {t('startups.viewProfile')} →
@@ -174,12 +174,12 @@ export default function HomePage() {
             {wishlist.map((item) => (
               <Card key={item.id}>
                 <CardContent className="p-6">
-                  <p className="text-sm text-gray-500 mb-2">{item.corporate_name}</p>
+                  <p className="text-sm text-gray-600 mb-2">{item.corporate_name}</p>
                   <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? item.title_tr : item.title_en}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{lang === 'tr' ? item.description_tr : item.description_en}</p>
+                  <p className="text-gray-700 text-sm mb-4">{lang === 'tr' ? item.description_tr : item.description_en}</p>
                   <div className="flex gap-2 flex-wrap">
                     {(item.tags ?? []).map((tag: string) => (
-                      <Badge key={tag} variant="outline" className="text-[10px]">{tag}</Badge>
+                      <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
                     ))}
                   </div>
                 </CardContent>
@@ -204,8 +204,8 @@ export default function HomePage() {
                 <CardContent className="p-6">
                   <p className="text-sm text-emerald-600 font-semibold mb-2">{new Date(event.date).toLocaleDateString()}</p>
                   <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? event.title_tr : event.title_en}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{event.location}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-gray-700 text-sm mb-4">{event.location}</p>
+                  <p className="text-sm text-gray-600">
                     {event.attendee_count} {lang === 'tr' ? 'katılımcı' : 'attendees'}
                   </p>
                 </CardContent>
@@ -228,9 +228,9 @@ export default function HomePage() {
             {news.map((article) => (
               <Card key={article.id}>
                 <CardContent className="p-6">
-                  <Badge variant="secondary" className="mb-3 text-[10px]">{article.category}</Badge>
+                  <Badge variant="secondary" className="mb-3 text-xs">{article.category}</Badge>
                   <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? article.title_tr : article.title_en}</h3>
-                  <p className="text-gray-600 text-sm">{new Date(article.published_at).toLocaleDateString()}</p>
+                  <p className="text-gray-700 text-sm">{new Date(article.published_at).toLocaleDateString()}</p>
                 </CardContent>
               </Card>
             ))}

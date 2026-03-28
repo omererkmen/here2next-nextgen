@@ -59,7 +59,7 @@ export default function EventsPage() {
                 <p className="text-2xl font-bold text-emerald-700">
                   {dateObj.getDate()}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-600">
                   {dateObj.getFullYear()}
                 </p>
               </div>
@@ -104,7 +104,7 @@ export default function EventsPage() {
     );
   };
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-400">Loading...</div></div>;
+  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   return (
     <main className="w-full">

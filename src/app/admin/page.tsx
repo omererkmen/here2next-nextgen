@@ -69,7 +69,7 @@ export default function AdminPage() {
     { label: lang === 'tr' ? 'Haber' : 'News', value: stats.news, icon: FileText, color: 'text-rose-600', bg: 'bg-rose-100' },
   ];
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-400">Loading...</div></div>;
+  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   return (
     <main className="w-full">
@@ -95,7 +95,7 @@ export default function AdminPage() {
                       <Icon className={stat.color} size={20} />
                     </div>
                     <p className="text-2xl font-bold">{stat.value}</p>
-                    <p className="text-xs text-gray-500">{stat.label}</p>
+                    <p className="text-xs text-gray-600">{stat.label}</p>
                   </CardContent>
                 </Card>
               );
@@ -123,9 +123,9 @@ export default function AdminPage() {
                       <Rocket size={16} className="text-emerald-500" />
                       <div className="flex-1">
                         <p className="font-medium text-sm">{s.name}</p>
-                        <p className="text-xs text-gray-500">{s.sector}</p>
+                        <p className="text-xs text-gray-600">{s.sector}</p>
                       </div>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-gray-600">
                         {new Date(s.created_at).toLocaleDateString()}
                       </span>
                     </Link>
@@ -149,7 +149,7 @@ export default function AdminPage() {
                       <ListChecks size={16} className="text-blue-500" />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm">{(app.startups as any)?.name}</p>
-                        <p className="text-xs text-gray-500 truncate">
+                        <p className="text-xs text-gray-600 truncate">
                           {lang === 'tr' ? (app.wishlist_items as any)?.title_tr : (app.wishlist_items as any)?.title_en}
                         </p>
                       </div>

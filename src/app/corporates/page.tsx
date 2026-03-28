@@ -58,7 +58,7 @@ export default function CorporatesPage() {
     corp.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-400">Loading...</div></div>;
+  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   return (
     <main className="w-full">
@@ -74,7 +74,7 @@ export default function CorporatesPage() {
           {/* Search */}
           <div className="mb-8">
             <div className="relative max-w-md">
-              <Search className="absolute left-3 top-3 text-gray-400" size={18} />
+              <Search className="absolute left-3 top-3 text-gray-600" size={18} />
               <Input
                 placeholder="Search corporates..."
                 value={search}
@@ -143,19 +143,19 @@ export default function CorporatesPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-500">Sector</p>
+                  <p className="text-sm text-gray-600">Sector</p>
                   <p className="font-semibold">{selectedCorporate.sector}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Location</p>
+                  <p className="text-sm text-gray-600">Location</p>
                   <p className="font-semibold">{selectedCorporate.location}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Member Since</p>
+                  <p className="text-sm text-gray-600">Member Since</p>
                   <p className="font-semibold">{selectedCorporate.memberSince}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Open Needs</p>
+                  <p className="text-sm text-gray-600">Open Needs</p>
                   <p className="font-semibold">{selectedCorporate.wishlistCount} items</p>
                 </div>
               </div>

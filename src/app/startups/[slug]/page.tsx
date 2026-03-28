@@ -48,7 +48,7 @@ export default function StartupDetailPage() {
     fetchData();
   }, [slug]);
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-400">Loading...</div></div>;
+  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   if (!startup) {
     return (
@@ -102,28 +102,28 @@ export default function StartupDetailPage() {
                 <Card>
                   <CardContent className="p-4 text-center">
                     <Calendar className="mx-auto mb-2 text-emerald-600" size={24} />
-                    <p className="text-sm text-gray-500">{lang === 'tr' ? 'Kuruluş' : 'Founded'}</p>
+                    <p className="text-sm text-gray-600">{lang === 'tr' ? 'Kuruluş' : 'Founded'}</p>
                     <p className="text-xl font-bold">{startup.founded_year || '-'}</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardContent className="p-4 text-center">
                     <Users className="mx-auto mb-2 text-blue-600" size={24} />
-                    <p className="text-sm text-gray-500">{lang === 'tr' ? 'Ekip' : 'Team'}</p>
+                    <p className="text-sm text-gray-600">{lang === 'tr' ? 'Ekip' : 'Team'}</p>
                     <p className="text-xl font-bold">{startup.team_size || '-'}</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardContent className="p-4 text-center">
                     <DollarSign className="mx-auto mb-2 text-amber-600" size={24} />
-                    <p className="text-sm text-gray-500">{lang === 'tr' ? 'Yatırım' : 'Funding'}</p>
+                    <p className="text-sm text-gray-600">{lang === 'tr' ? 'Yatırım' : 'Funding'}</p>
                     <p className="text-xl font-bold">{startup.funding || '-'}</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardContent className="p-4 text-center">
                     <Zap className="mx-auto mb-2 text-purple-600" size={24} />
-                    <p className="text-sm text-gray-500">{lang === 'tr' ? 'Aşama' : 'Stage'}</p>
+                    <p className="text-sm text-gray-600">{lang === 'tr' ? 'Aşama' : 'Stage'}</p>
                     <p className="text-xl font-bold">{stageLabels[startup.stage as keyof typeof stageLabels]}</p>
                   </CardContent>
                 </Card>

@@ -57,7 +57,7 @@ export default function CorporateDetailPage() {
     fetchData();
   }, [slug]);
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-400">Loading...</div></div>;
+  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   if (!corporate) {
     return (
@@ -134,7 +134,7 @@ export default function CorporateDetailPage() {
                             <div className="flex items-center gap-2 mt-2">
                               <Badge variant="outline" className="text-xs">{item.sector}</Badge>
                               {item.deadline && (
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-gray-600">
                                   {lang === 'tr' ? 'Son:' : 'Deadline:'} {new Date(item.deadline).toLocaleDateString()}
                                 </span>
                               )}
@@ -151,7 +151,7 @@ export default function CorporateDetailPage() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-gray-600 text-sm">
                       {lang === 'tr' ? 'Henüz ihtiyaç listesi eklenmemiş' : 'No wishlist items yet'}
                     </p>
                   )}
@@ -169,7 +169,7 @@ export default function CorporateDetailPage() {
                           <AvatarPlaceholder name={match.startup_name} size="sm" />
                           <div className="flex-1 min-w-0">
                             <p className="font-medium">{match.startup_name}</p>
-                            <p className="text-xs text-gray-500">{match.startup_sector}</p>
+                            <p className="text-xs text-gray-600">{match.startup_sector}</p>
                             <div className="flex items-center gap-2 mt-1">
                               <Progress value={match.score} className="h-2 flex-1" />
                               <span className="text-sm font-semibold text-emerald-600">{match.score}%</span>

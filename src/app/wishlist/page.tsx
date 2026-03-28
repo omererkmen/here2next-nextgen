@@ -170,7 +170,7 @@ export default function WishlistPage() {
       (item.corporate_name ?? '').toLowerCase().includes(search.toLowerCase())
   );
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-400">Loading...</div></div>;
+  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   return (
     <main className="w-full">
@@ -196,7 +196,7 @@ export default function WishlistPage() {
           {/* Search */}
           <div className="mb-8">
             <div className="relative max-w-md">
-              <Search className="absolute left-3 top-3 text-gray-400" size={18} />
+              <Search className="absolute left-3 top-3 text-gray-600" size={18} />
               <Input
                 placeholder={lang === 'tr' ? 'Başlık veya şirket ara...' : 'Search by title or company...'}
                 value={search}
@@ -215,12 +215,12 @@ export default function WishlistPage() {
                     <div className="flex-1 flex gap-4 items-start min-w-0">
                       <AvatarPlaceholder name={item.corporate_name ?? 'Corporate'} size="lg" />
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm text-gray-500 mb-1">{item.corporate_name}</p>
+                        <p className="text-sm text-gray-600 mb-1">{item.corporate_name}</p>
                         <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? item.title_tr : item.title_en}</h3>
                         <p className="text-sm text-gray-600 mb-3 line-clamp-2">{lang === 'tr' ? item.description_tr : item.description_en}</p>
                         <div className="flex flex-wrap gap-2">
                           {(item.tags ?? []).map((tag: string) => (
-                            <Badge key={tag} variant="outline" className="text-[10px]">
+                            <Badge key={tag} variant="outline" className="text-xs">
                               {tag}
                             </Badge>
                           ))}
@@ -265,7 +265,7 @@ export default function WishlistPage() {
 
           {filtered.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-gray-500">
+              <p className="text-gray-600">
                 {lang === 'tr' ? 'Fırsat bulunamadı' : 'No opportunities found'}
               </p>
             </div>

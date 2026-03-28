@@ -26,7 +26,7 @@ export default function NewsPage() {
     fetchNews();
   }, []);
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-400">Loading...</div></div>;
+  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   const [featured, ...rest] = articles;
 
@@ -63,7 +63,7 @@ export default function NewsPage() {
                       <p className="text-gray-600 mb-6">{lang === 'tr' ? featured.summary_tr : featured.summary_en}</p>
                     </div>
                     <div className="flex items-center justify-between">
-                      <p className="text-sm text-gray-500">{new Date(featured.published_at).toLocaleDateString()}</p>
+                      <p className="text-sm text-gray-600">{new Date(featured.published_at).toLocaleDateString()}</p>
                       <Link
                         href={`/news/${featured.slug}`}
                         className="text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-2"
@@ -99,13 +99,13 @@ export default function NewsPage() {
 
                   {/* Content */}
                   <div className="p-6">
-                    <Badge className="mb-3 bg-emerald-100 text-emerald-700 border-0 text-[10px]">
+                    <Badge className="mb-3 bg-emerald-100 text-emerald-700 border-0 text-xs">
                       {article.category}
                     </Badge>
                     <h3 className="font-bold text-lg mb-2 line-clamp-2">{lang === 'tr' ? article.title_tr : article.title_en}</h3>
                     <p className="text-sm text-gray-600 mb-4 line-clamp-2">{lang === 'tr' ? article.summary_tr : article.summary_en}</p>
                     <div className="flex items-center justify-between pt-4 border-t">
-                      <p className="text-xs text-gray-500">{new Date(article.published_at).toLocaleDateString()}</p>
+                      <p className="text-xs text-gray-600">{new Date(article.published_at).toLocaleDateString()}</p>
                       <Link
                         href={`/news/${article.slug}`}
                         className="text-emerald-600 hover:text-emerald-700 text-sm font-semibold"
