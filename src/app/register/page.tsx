@@ -69,14 +69,8 @@ export default function RegisterPage() {
       }
 
       if (data.user) {
-        // Update profiles table
-        await supabase.from('profiles').upsert({
-          id: data.user.id,
-          email,
-          full_name: fullName,
-          role,
-        });
-
+        // Profile is auto-created by handle_new_user() trigger
+        // with full_name and role from user metadata
         router.push('/');
         router.refresh();
       }
