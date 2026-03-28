@@ -271,8 +271,11 @@ CREATE POLICY "Read own registrations" ON event_registrations FOR SELECT USING (
 ALTER TABLE match_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Startup creates match request" ON match_requests FOR INSERT
-  WITH CHECK (EXISTS (SELECT 1 FROM startups WHERE id = startup_id AND profile_id = auth.uid()));
+CREATE POLICY "User creates match request" ON match_requests FOR INSERT
+  WITH CHECK (
+    EXISTS (SELECT 1 FROM startups WHERE id = startup_id AND profile_id = auth.uid())
+    OR EXISTS (SELECT 1 FROM corporates WHERE id = corporate_id AND profile_id = auth.uid())
+  );
 CREATE POLICY "Read own match requests" ON match_requests FOR SELECT
   USING (
     EXISTS (SELECT 1 FROM startups WHERE id = startup_id AND profile_id = auth.uid())
@@ -313,9 +316,12 @@ CREATE OR REPLACE VIEW matches_full AS
 SELECT
   m.*,
   s.name AS startup_name,
+  s.slug AS startup_slug,
   s.sector AS startup_sector,
   s.logo_url AS startup_logo,
   c.name AS corporate_name,
+  c.slug AS corporate_slug,
+  c.sector AS corporate_sector,
   c.logo_url AS corporate_logo
 FROM match_results m
 JOIN startups s ON s.id = m.startup_id

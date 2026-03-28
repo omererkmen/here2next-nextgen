@@ -132,7 +132,7 @@ export default function MatchingPage() {
                   <CardContent className="p-6">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
                       {/* Left: Startup */}
-                      <Link href={`/startups/${match.startup_name?.toLowerCase().replace(/\s+/g, '-')}`} className="flex gap-4 items-center justify-center lg:justify-start hover:opacity-80 transition-opacity">
+                      <Link href={`/startups/${match.startup_slug || match.startup_name?.toLowerCase().replace(/\s+/g, '-')}`} className="flex gap-4 items-center justify-center lg:justify-start hover:opacity-80 transition-opacity">
                         <AvatarPlaceholder name={match.startup_name} size="lg" />
                         <div className="text-center lg:text-left">
                           <h3 className="font-bold text-lg">{match.startup_name}</h3>
@@ -155,9 +155,12 @@ export default function MatchingPage() {
                       </div>
 
                       {/* Right: Corporate */}
-                      <Link href={`/corporates/${match.corporate_name?.toLowerCase().replace(/\s+/g, '-')}`} className="flex gap-4 items-center justify-center lg:justify-end hover:opacity-80 transition-opacity">
+                      <Link href={`/corporates/${match.corporate_slug || match.corporate_name?.toLowerCase().replace(/\s+/g, '-')}`} className="flex gap-4 items-center justify-center lg:justify-end hover:opacity-80 transition-opacity">
                         <div className="text-center lg:text-right">
                           <h3 className="font-bold text-lg">{match.corporate_name}</h3>
+                          <Badge variant="secondary" className="text-xs">
+                            {match.corporate_sector}
+                          </Badge>
                         </div>
                         <AvatarPlaceholder name={match.corporate_name} size="lg" />
                       </Link>
@@ -195,7 +198,7 @@ export default function MatchingPage() {
                           {lang === 'tr' ? 'Bağlantı Kur' : 'Connect'}
                         </Button>
                       )}
-                      <Link href={`/startups/${match.startup_name?.toLowerCase().replace(/\s+/g, '-')}`} className="flex-1">
+                      <Link href={`/startups/${match.startup_slug || match.startup_name?.toLowerCase().replace(/\s+/g, '-')}`} className="flex-1">
                         <Button variant="outline" className="w-full">
                           {lang === 'tr' ? 'Detayları Gör' : 'View Details'}
                         </Button>
