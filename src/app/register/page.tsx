@@ -71,7 +71,8 @@ export default function RegisterPage() {
       if (data.user) {
         // Profile is auto-created by handle_new_user() trigger
         // with full_name and role from user metadata
-        router.push('/');
+        // Redirect to onboarding to create startup/corporate profile
+        router.push('/onboarding');
         router.refresh();
       }
     } catch (err) {

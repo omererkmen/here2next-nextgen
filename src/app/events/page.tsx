@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Calendar, MapPin, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -91,9 +92,11 @@ export default function EventsPage() {
 
             {/* CTA */}
             <div className="flex-shrink-0 flex items-center">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 w-full md:w-auto">
-                {dateObj >= new Date() ? 'Register' : 'View Details'}
-              </Button>
+              <Link href={`/events/${event.id}`}>
+                <Button className="bg-emerald-600 hover:bg-emerald-700 w-full md:w-auto">
+                  {dateObj >= new Date() ? (lang === 'tr' ? 'Kayıt Ol' : 'Register') : (lang === 'tr' ? 'Detaylar' : 'View Details')}
+                </Button>
+              </Link>
             </div>
           </div>
         </CardContent>

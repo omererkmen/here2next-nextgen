@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Search, MapPin, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -86,10 +87,9 @@ export default function CorporatesPage() {
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((corp) => (
+              <Link key={corp.id} href={`/corporates/${corp.slug}`}>
               <Card
-                key={corp.id}
-                className="hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setSelectedCorporate(corp)}
+                className="hover:shadow-lg transition-shadow cursor-pointer h-full"
               >
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
@@ -112,6 +112,7 @@ export default function CorporatesPage() {
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             ))}
           </div>
         </div>

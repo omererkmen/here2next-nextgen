@@ -99,10 +99,9 @@ export default function StartupsPage() {
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {filtered.map((startup) => (
+              <Link key={startup.id} href={`/startups/${startup.slug}`}>
               <Card
-                key={startup.id}
-                className="hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setSelectedStartup(startup)}
+                className="hover:shadow-lg transition-shadow cursor-pointer h-full"
               >
                 <CardContent className="p-6">
                   <div className="mb-4">
@@ -132,6 +131,7 @@ export default function StartupsPage() {
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             ))}
           </div>
         </div>

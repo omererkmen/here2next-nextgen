@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, Globe, Rocket, Building2, ListChecks, Calendar, Newspaper, Zap, LogIn, UserPlus, LogOut, User } from "lucide-react";
+import { Menu, X, Globe, Rocket, Building2, ListChecks, Calendar, Newspaper, Zap, LogIn, UserPlus, LogOut, User, LayoutDashboard } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -113,6 +113,12 @@ export default function Navbar() {
             <div className="hidden sm:flex items-center gap-2">
               {user ? (
                 <>
+                  <Link href="/dashboard">
+                    <Button variant="ghost" size="sm" className="gap-2 text-slate-600">
+                      <LayoutDashboard className="w-4 h-4" />
+                      {lang === 'tr' ? 'Panel' : 'Dashboard'}
+                    </Button>
+                  </Link>
                   <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-md">
                     <User className="w-4 h-4 text-emerald-700" />
                     <span className="text-sm font-medium text-slate-700 max-w-[150px] truncate">{userName}</span>
@@ -177,6 +183,12 @@ export default function Navbar() {
               <div className="px-3 py-2 space-y-2">
                 {user ? (
                   <>
+                    <Link href="/dashboard" onClick={() => setMobileOpen(false)}>
+                      <Button variant="outline" size="sm" className="w-full gap-2 justify-start">
+                        <LayoutDashboard className="w-4 h-4" />
+                        {lang === 'tr' ? 'Panel' : 'Dashboard'}
+                      </Button>
+                    </Link>
                     <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-md">
                       <User className="w-4 h-4 text-emerald-700" />
                       <span className="text-sm font-medium text-slate-700">{userName}</span>
