@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X, Globe, Rocket, Building2, ListChecks, Calendar, Newspaper, Zap, LogIn, UserPlus } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, Globe, Rocket, Building2, ListChecks, Calendar, Newspaper, Zap, LogIn, UserPlus, LogOut, User } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { href: "/", key: "nav.home", icon: null },
@@ -22,7 +23,41 @@ const navItems = [
 export default function Navbar() {
   const { t, lang, setLang } = useLang();
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+      if (user) {
+        setUserName(user.user_metadata?.full_name || user.email || '');
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        setUserName(session.user.user_metadata?.full_name || session.user.email || '');
+      } else {
+        setUserName('');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setUser(null);
+    setUserName('');
+    router.push('/');
+    router.refresh();
+  };
 
   const isActive = (href: string) => pathname === href;
 
@@ -76,18 +111,33 @@ export default function Navbar() {
 
             {/* Auth Buttons */}
             <div className="hidden sm:flex items-center gap-2">
-              <Link href="/login">
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <LogIn className="w-4 h-4" />
-                  {t("nav.login")}
-                </Button>
-              </Link>
-              <Link href="/register">
-                <Button size="sm" className="bg-emerald-700 hover:bg-emerald-800 gap-2">
-                  <UserPlus className="w-4 h-4" />
-                  {t("nav.signup")}
-                </Button>
-              </Link>
+              {user ? (
+                <>
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-md">
+                    <User className="w-4 h-4 text-emerald-700" />
+                    <span className="text-sm font-medium text-slate-700 max-w-[150px] truncate">{userName}</span>
+                  </div>
+                  <Button variant="ghost" size="sm" className="gap-2 text-slate-600" onClick={handleSignOut}>
+                    <LogOut className="w-4 h-4" />
+                    {lang === 'tr' ? 'Çıkış' : 'Logout'}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login">
+                    <Button variant="ghost" size="sm" className="gap-2">
+                      <LogIn className="w-4 h-4" />
+                      {t("nav.login")}
+                    </Button>
+                  </Link>
+                  <Link href="/register">
+                    <Button size="sm" className="bg-emerald-700 hover:bg-emerald-800 gap-2">
+                      <UserPlus className="w-4 h-4" />
+                      {t("nav.signup")}
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -125,18 +175,33 @@ export default function Navbar() {
                 </Link>
               ))}
               <div className="px-3 py-2 space-y-2">
-                <Link href="/login" onClick={() => setMobileOpen(false)}>
-                  <Button variant="outline" size="sm" className="w-full gap-2 justify-start">
-                    <LogIn className="w-4 h-4" />
-                    {t("nav.login")}
-                  </Button>
-                </Link>
-                <Link href="/register" onClick={() => setMobileOpen(false)}>
-                  <Button size="sm" className="w-full bg-emerald-700 hover:bg-emerald-800 gap-2 justify-start">
-                    <UserPlus className="w-4 h-4" />
-                    {t("nav.signup")}
-                  </Button>
-                </Link>
+                {user ? (
+                  <>
+                    <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-md">
+                      <User className="w-4 h-4 text-emerald-700" />
+                      <span className="text-sm font-medium text-slate-700">{userName}</span>
+                    </div>
+                    <Button variant="outline" size="sm" className="w-full gap-2 justify-start" onClick={() => { handleSignOut(); setMobileOpen(false); }}>
+                      <LogOut className="w-4 h-4" />
+                      {lang === 'tr' ? 'Çıkış Yap' : 'Logout'}
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login" onClick={() => setMobileOpen(false)}>
+                      <Button variant="outline" size="sm" className="w-full gap-2 justify-start">
+                        <LogIn className="w-4 h-4" />
+                        {t("nav.login")}
+                      </Button>
+                    </Link>
+                    <Link href="/register" onClick={() => setMobileOpen(false)}>
+                      <Button size="sm" className="w-full bg-emerald-700 hover:bg-emerald-800 gap-2 justify-start">
+                        <UserPlus className="w-4 h-4" />
+                        {t("nav.signup")}
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
