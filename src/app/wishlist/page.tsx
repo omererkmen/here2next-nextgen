@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, Plus, Clock, Users, X } from 'lucide-react';
+import { Search, Plus, Clock, Users, X, Send, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +27,11 @@ export default function WishlistPage() {
     sector: '',
     tags: '',
   });
+  const [applyDialogOpen, setApplyDialogOpen] = useState(false);
+  const [applyingTo, setApplyingTo] = useState<any>(null);
+  const [applyMessage, setApplyMessage] = useState('');
+  const [applySubmitting, setApplySubmitting] = useState(false);
+  const [appliedItems, setAppliedItems] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchWishlist();
@@ -95,6 +100,68 @@ export default function WishlistPage() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleApply = async () => {
+    if (!applyingTo) return;
+    setApplySubmitting(true);
+
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        alert(lang === 'tr' ? 'Lütfen önce giriş yapın' : 'Please sign in first');
+        setApplySubmitting(false);
+        return;
+      }
+
+      // Find user's startup
+      const { data: startup } = await supabase
+        .from('startups')
+        .select('id')
+        .eq('profile_id', user.id)
+        .single();
+
+      if (!startup) {
+        alert(lang === 'tr'
+          ? 'Başvuru yapabilmek için bir startup hesabınız olmalıdır'
+          : 'You need a startup account to apply');
+        setApplySubmitting(false);
+        return;
+      }
+
+      const { error } = await supabase.from('wishlist_applications').insert({
+        wishlist_item_id: applyingTo.id,
+        startup_id: startup.id,
+        message: applyMessage,
+        status: 'pending',
+      });
+
+      if (error) {
+        if (error.code === '23505') {
+          alert(lang === 'tr' ? 'Bu fırsata zaten başvurdunuz' : 'You have already applied to this opportunity');
+        } else {
+          alert(error.message);
+        }
+      } else {
+        setAppliedItems(prev => new Set(prev).add(applyingTo.id));
+        setApplyDialogOpen(false);
+        setApplyMessage('');
+        setApplyingTo(null);
+        fetchWishlist();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setApplySubmitting(false);
+    }
+  };
+
+  const openApplyDialog = (item: any) => {
+    setApplyingTo(item);
+    setApplyMessage('');
+    setApplyDialogOpen(true);
   };
 
   const filtered = wishlist.filter(
@@ -180,7 +247,15 @@ export default function WishlistPage() {
                       <Badge className="bg-emerald-100 text-emerald-700 border-0">
                         {lang === 'tr' ? (item.status === 'open' ? 'Açık' : item.status) : item.status}
                       </Badge>
-                      <Button className="bg-emerald-600 hover:bg-emerald-700">{t('wishlist.apply')}</Button>
+                      {appliedItems.has(item.id) ? (
+                        <Button disabled className="bg-gray-100 text-emerald-700 border border-emerald-200 gap-2">
+                          <CheckCircle size={16} /> {lang === 'tr' ? 'Başvuruldu' : 'Applied'}
+                        </Button>
+                      ) : (
+                        <Button className="bg-emerald-600 hover:bg-emerald-700 gap-2" onClick={() => openApplyDialog(item)}>
+                          <Send size={16} /> {t('wishlist.apply')}
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -285,6 +360,58 @@ export default function WishlistPage() {
               {submitting
                 ? (lang === 'tr' ? 'Kaydediliyor...' : 'Saving...')
                 : t('common.save')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      {/* Apply Dialog */}
+      <Dialog open={applyDialogOpen} onOpenChange={setApplyDialogOpen}>
+        <DialogContent className="rounded-lg">
+          <DialogHeader>
+            <DialogTitle>{lang === 'tr' ? 'Başvuru Yap' : 'Apply'}</DialogTitle>
+            <DialogDescription>
+              {applyingTo && (
+                <>
+                  <span className="font-medium text-slate-800">
+                    {lang === 'tr' ? applyingTo.title_tr : applyingTo.title_en}
+                  </span>
+                  {' — '}
+                  {applyingTo.corporate_name}
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 mt-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {lang === 'tr' ? 'Mesajınız' : 'Your message'}
+              </label>
+              <Textarea
+                value={applyMessage}
+                onChange={(e) => setApplyMessage(e.target.value)}
+                placeholder={lang === 'tr'
+                  ? 'Bu ihtiyacı nasıl çözebileceğinizi açıklayın...'
+                  : 'Explain how you can solve this need...'}
+                rows={4}
+              />
+            </div>
+          </div>
+
+          <DialogFooter className="mt-6">
+            <Button variant="outline" onClick={() => setApplyDialogOpen(false)}>
+              {t('common.cancel')}
+            </Button>
+            <Button
+              className="bg-emerald-600 hover:bg-emerald-700 gap-2"
+              onClick={handleApply}
+              disabled={applySubmitting}
+            >
+              {applySubmitting
+                ? (lang === 'tr' ? 'Gönderiliyor...' : 'Sending...')
+                : (
+                  <><Send size={16} /> {lang === 'tr' ? 'Başvuru Gönder' : 'Send Application'}</>
+                )}
             </Button>
           </DialogFooter>
         </DialogContent>
