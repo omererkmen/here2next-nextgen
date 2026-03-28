@@ -106,7 +106,7 @@ interface SelectValueProps {
 function SelectValue({ placeholder = "Select an option" }: SelectValueProps) {
   const { value } = useSelect()
 
-  return <span>{value || placeholder}</span>
+  return <span className={value ? 'text-gray-900' : 'text-gray-500'}>{value || placeholder}</span>
 }
 SelectValue.displayName = "SelectValue"
 

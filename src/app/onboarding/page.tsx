@@ -20,6 +20,7 @@ export default function OnboardingPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState(1);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Common fields
   const [name, setName] = useState('');
@@ -76,9 +77,23 @@ export default function OnboardingPage() {
   const generateSlug = (text: string) =>
     text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+  const validateStep1 = () => {
+    const newErrors: Record<string, string> = {};
+    if (!name.trim()) newErrors.name = lang === 'tr' ? 'Bu alan zorunludur' : 'This field is required';
+    if (!sector) newErrors.sector = lang === 'tr' ? 'Sektör seçimi zorunludur' : 'Sector is required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleStep1Next = () => {
+    if (validateStep1()) {
+      setStep(2);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!name || !sector) {
-      alert(lang === 'tr' ? 'Lütfen zorunlu alanları doldurun' : 'Please fill in required fields');
+      setErrors({ name: !name ? 'Zorunlu' : '', sector: !sector ? 'Zorunlu' : '' });
       return;
     }
     setSubmitting(true);
@@ -186,26 +201,35 @@ export default function OnboardingPage() {
                 </h2>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    {lang === 'tr' ? (isStartup ? 'Startup Adı *' : 'Kurum Adı *') : (isStartup ? 'Startup Name *' : 'Company Name *')}
+                  <label className="block text-sm font-medium text-gray-900 mb-1.5">
+                    {lang === 'tr' ? (isStartup ? 'Startup Adı' : 'Kurum Adı') : (isStartup ? 'Startup Name' : 'Company Name')}
+                    <span className="text-red-500 ml-1">*</span>
                   </label>
-                  <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={isStartup ? 'PayFlex' : 'Koç Holding'} />
+                  <Input
+                    value={name}
+                    onChange={(e) => { setName(e.target.value); if (errors.name) setErrors(prev => ({ ...prev, name: '' })); }}
+                    placeholder={isStartup ? 'PayFlex' : 'Koç Holding'}
+                    className={errors.name ? 'border-red-500 focus-visible:ring-red-500' : ''}
+                  />
+                  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    {lang === 'tr' ? 'Sektör *' : 'Sector *'}
+                  <label className="block text-sm font-medium text-gray-900 mb-1.5">
+                    {lang === 'tr' ? 'Sektör' : 'Sector'}
+                    <span className="text-red-500 ml-1">*</span>
                   </label>
-                  <Select value={sector} onValueChange={setSector}>
-                    <SelectTrigger><SelectValue placeholder={lang === 'tr' ? 'Sektör seçin' : 'Select sector'} /></SelectTrigger>
+                  <Select value={sector} onValueChange={(v) => { setSector(v); if (errors.sector) setErrors(prev => ({ ...prev, sector: '' })); }}>
+                    <SelectTrigger className={errors.sector ? 'border-red-500 focus:ring-red-500' : ''}><SelectValue placeholder={lang === 'tr' ? 'Sektör seçin' : 'Select sector'} /></SelectTrigger>
                     <SelectContent>
                       {sectors.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
                     </SelectContent>
                   </Select>
+                  {errors.sector && <p className="text-red-500 text-sm mt-1">{errors.sector}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-sm font-medium text-gray-900 mb-1.5">
                     <MapPin size={14} className="inline mr-1" />
                     {lang === 'tr' ? 'Konum' : 'Location'}
                   </label>
@@ -213,7 +237,7 @@ export default function OnboardingPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-sm font-medium text-gray-900 mb-1.5">
                     <Globe size={14} className="inline mr-1" />
                     Website
                   </label>
@@ -224,7 +248,7 @@ export default function OnboardingPage() {
                   <>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        <label className="block text-sm font-medium text-gray-900 mb-1.5">
                           {lang === 'tr' ? 'Aşama *' : 'Stage *'}
                         </label>
                         <Select value={stage} onValueChange={setStage}>
@@ -239,7 +263,7 @@ export default function OnboardingPage() {
                         </Select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        <label className="block text-sm font-medium text-gray-900 mb-1.5">
                           {lang === 'tr' ? 'Kuruluş Yılı' : 'Founded Year'}
                         </label>
                         <Input type="number" value={foundedYear} onChange={(e) => setFoundedYear(e.target.value)} />
@@ -248,14 +272,14 @@ export default function OnboardingPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        <label className="block text-sm font-medium text-gray-900 mb-1.5">
                           <Users size={14} className="inline mr-1" />
                           {lang === 'tr' ? 'Ekip Büyüklüğü' : 'Team Size'}
                         </label>
                         <Input type="number" value={teamSize} onChange={(e) => setTeamSize(e.target.value)} />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        <label className="block text-sm font-medium text-gray-900 mb-1.5">
                           <DollarSign size={14} className="inline mr-1" />
                           {lang === 'tr' ? 'Toplam Yatırım' : 'Total Funding'}
                         </label>
@@ -265,7 +289,7 @@ export default function OnboardingPage() {
                   </>
                 )}
 
-                <Button onClick={() => setStep(2)} className="w-full bg-emerald-600 hover:bg-emerald-700 mt-2">
+                <Button onClick={handleStep1Next} className="w-full bg-emerald-600 hover:bg-emerald-700 mt-2">
                   {lang === 'tr' ? 'Devam Et' : 'Continue'}
                 </Button>
               </div>
@@ -278,7 +302,7 @@ export default function OnboardingPage() {
                 </h2>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-sm font-medium text-gray-900 mb-1.5">
                     <FileText size={14} className="inline mr-1" />
                     {lang === 'tr' ? 'Açıklama (Türkçe)' : 'Description (Turkish)'}
                   </label>
@@ -291,7 +315,7 @@ export default function OnboardingPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-sm font-medium text-gray-900 mb-1.5">
                     <FileText size={14} className="inline mr-1" />
                     {lang === 'tr' ? 'Açıklama (İngilizce)' : 'Description (English)'}
                   </label>
@@ -305,7 +329,7 @@ export default function OnboardingPage() {
 
                 {isStartup && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    <label className="block text-sm font-medium text-gray-900 mb-1.5">
                       <Tag size={14} className="inline mr-1" />
                       {lang === 'tr' ? 'Etiketler (virgülle ayırın)' : 'Tags (comma separated)'}
                     </label>

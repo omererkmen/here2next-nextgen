@@ -100,7 +100,7 @@ export default function RegisterPage() {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   {t('auth.register.name')}
                 </label>
                 <Input
@@ -112,7 +112,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   {t('auth.login.email')}
                 </label>
                 <Input
@@ -124,7 +124,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   {t('auth.register.role')}
                 </label>
                 <Select value={role} onValueChange={(value) => setRole(value as UserRole)}>
@@ -140,7 +140,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   {t('auth.login.password')}
                 </label>
                 <Input
@@ -152,7 +152,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   {t('auth.register.confirmPassword')}
                 </label>
                 <Input
