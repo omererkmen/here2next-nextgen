@@ -24,6 +24,7 @@ export default function WishlistPage() {
     title_en: '',
     description_tr: '',
     description_en: '',
+    sector: '',
     tags: '',
   });
 
@@ -55,14 +56,30 @@ export default function WishlistPage() {
         return;
       }
 
-      const { error } = await supabase.from('wishlist').insert({
+      // Find the user's corporate profile
+      const { data: corporate } = await supabase
+        .from('corporates')
+        .select('id')
+        .eq('profile_id', user.id)
+        .single();
+
+      if (!corporate) {
+        alert(lang === 'tr'
+          ? 'İhtiyaç eklemek için kurumsal hesabınız olmalıdır'
+          : 'You need a corporate account to add a need');
+        setSubmitting(false);
+        return;
+      }
+
+      const { error } = await supabase.from('wishlist_items').insert({
+        corporate_id: corporate.id,
         title_tr: formData.title_tr,
         title_en: formData.title_en,
         description_tr: formData.description_tr,
         description_en: formData.description_en,
+        sector: formData.sector,
         tags: formData.tags.split(',').map((t) => t.trim()).filter(Boolean),
         status: 'open',
-        created_by: user.id,
       });
 
       if (error) {
@@ -70,7 +87,7 @@ export default function WishlistPage() {
         alert(error.message);
       } else {
         setDialogOpen(false);
-        setFormData({ title_tr: '', title_en: '', description_tr: '', description_en: '', tags: '' });
+        setFormData({ title_tr: '', title_en: '', description_tr: '', description_en: '', sector: '', tags: '' });
         fetchWishlist();
       }
     } catch (err) {
@@ -232,6 +249,16 @@ export default function WishlistPage() {
                 value={formData.description_en}
                 onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
                 placeholder={lang === 'tr' ? 'Detaylı açıklama (İngilizce)' : 'Detailed description (English)'}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {lang === 'tr' ? 'Sektör' : 'Sector'}
+              </label>
+              <Input
+                value={formData.sector}
+                onChange={(e) => setFormData({ ...formData, sector: e.target.value })}
+                placeholder={lang === 'tr' ? 'Örn: Teknoloji, Finans, Enerji' : 'e.g. Technology, Finance, Energy'}
               />
             </div>
             <div>
