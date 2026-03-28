@@ -220,6 +220,28 @@ CREATE INDEX idx_messages_receiver ON messages(receiver_id);
 CREATE INDEX idx_messages_created ON messages(created_at DESC);
 
 -- ============================================
+-- FEEDBACK (bugs, feature requests, comments from test users)
+-- ============================================
+CREATE TABLE feedback (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  profile_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  type TEXT NOT NULL CHECK (type IN ('bug', 'feature', 'comment')),
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  page_url TEXT,
+  priority TEXT NOT NULL DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high', 'critical')),
+  status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'in_progress', 'resolved', 'closed', 'wont_fix')),
+  admin_notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_feedback_type ON feedback(type);
+CREATE INDEX idx_feedback_status ON feedback(status);
+CREATE INDEX idx_feedback_priority ON feedback(priority);
+CREATE INDEX idx_feedback_created ON feedback(created_at DESC);
+
+-- ============================================
 -- ROW LEVEL SECURITY (RLS)
 -- ============================================
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
@@ -283,6 +305,14 @@ CREATE POLICY "Read own match requests" ON match_requests FOR SELECT
   );
 CREATE POLICY "Corporate updates match request" ON match_requests FOR UPDATE
   USING (EXISTS (SELECT 1 FROM corporates WHERE id = corporate_id AND profile_id = auth.uid()));
+
+ALTER TABLE feedback ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Authenticated user submits feedback" ON feedback FOR INSERT
+  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "User reads own feedback" ON feedback FOR SELECT
+  USING (profile_id = auth.uid() OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admin manages feedback" ON feedback FOR UPDATE
+  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
 
 CREATE POLICY "User sends message" ON messages FOR INSERT WITH CHECK (auth.uid() = sender_id);
 CREATE POLICY "User reads own messages" ON messages FOR SELECT

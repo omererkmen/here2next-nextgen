@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Plus, Building2, Users, Calendar, FileText, TrendingUp, Clock, Rocket, ListChecks, Zap } from 'lucide-react';
+import { Plus, Building2, Users, Calendar, FileText, TrendingUp, Clock, Rocket, ListChecks, Zap, MessageSquareWarning } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +11,7 @@ import { createClient } from '@/lib/supabase/client';
 
 export default function AdminPage() {
   const { lang } = useLang();
-  const [stats, setStats] = useState({ startups: 0, corporates: 0, events: 0, news: 0, matches: 0, applications: 0 });
+  const [stats, setStats] = useState({ startups: 0, corporates: 0, events: 0, news: 0, matches: 0, applications: 0, feedback: 0 });
   const [recentStartups, setRecentStartups] = useState<any[]>([]);
   const [recentApps, setRecentApps] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -21,13 +21,14 @@ export default function AdminPage() {
       const supabase = createClient();
 
       // Fetch counts in parallel
-      const [startups, corporates, events, news, matches, applications] = await Promise.all([
+      const [startups, corporates, events, news, matches, applications, feedback] = await Promise.all([
         supabase.from('startups').select('*', { count: 'exact', head: true }),
         supabase.from('corporates').select('*', { count: 'exact', head: true }),
         supabase.from('events').select('*', { count: 'exact', head: true }),
         supabase.from('news_articles').select('*', { count: 'exact', head: true }),
         supabase.from('match_results').select('*', { count: 'exact', head: true }),
         supabase.from('wishlist_applications').select('*', { count: 'exact', head: true }),
+        supabase.from('feedback').select('*', { count: 'exact', head: true }),
       ]);
 
       setStats({
@@ -37,6 +38,7 @@ export default function AdminPage() {
         news: news.count || 0,
         matches: matches.count || 0,
         applications: applications.count || 0,
+        feedback: feedback.count || 0,
       });
 
       // Recent startups
@@ -196,6 +198,12 @@ export default function AdminPage() {
               <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2">
                 <FileText size={24} className="text-purple-600" />
                 <span>{lang === 'tr' ? 'Haberler' : 'News'}</span>
+              </Button>
+            </Link>
+            <Link href="/admin/feedback">
+              <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2 border-orange-200 hover:bg-orange-50">
+                <MessageSquareWarning size={24} className="text-orange-600" />
+                <span>{lang === 'tr' ? `Geri Bildirim (${stats.feedback})` : `Feedback (${stats.feedback})`}</span>
               </Button>
             </Link>
           </div>
