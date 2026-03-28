@@ -3,7 +3,8 @@ import { cn } from "@/lib/utils"
 
 interface SelectContextType {
   value: string
-  onValueChange: (value: string) => void
+  label: string
+  onValueChange: (value: string, label: string) => void
   isOpen: boolean
   setIsOpen: (open: boolean) => void
 }
@@ -36,11 +37,13 @@ function Select({
   const [uncontrolledValue, setUncontrolledValue] = React.useState(
     defaultValue
   )
+  const [label, setLabel] = React.useState("")
   const [isOpen, setIsOpen] = React.useState(false)
   const isControlled = controlledValue !== undefined
 
   const value = isControlled ? controlledValue : uncontrolledValue
-  const setValue = (newValue: string) => {
+  const setValue = (newValue: string, newLabel: string) => {
+    setLabel(newLabel)
     if (onValueChange) {
       onValueChange(newValue)
     }
@@ -52,9 +55,9 @@ function Select({
 
   return (
     <SelectContext.Provider
-      value={{ value, onValueChange: setValue, isOpen, setIsOpen }}
+      value={{ value, label, onValueChange: setValue, isOpen, setIsOpen }}
     >
-      <div>{children}</div>
+      <div className="relative">{children}</div>
     </SelectContext.Provider>
   )
 }
@@ -104,9 +107,10 @@ interface SelectValueProps {
 }
 
 function SelectValue({ placeholder = "Select an option" }: SelectValueProps) {
-  const { value } = useSelect()
+  const { value, label } = useSelect()
+  const displayText = label || value
 
-  return <span className={value ? 'text-gray-900' : 'text-gray-500'}>{value || placeholder}</span>
+  return <span className={displayText ? 'text-gray-900' : 'text-gray-600'}>{displayText || placeholder}</span>
 }
 SelectValue.displayName = "SelectValue"
 
@@ -116,13 +120,13 @@ interface SelectContentProps
 const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps>(
   ({ className, children, ...props }, ref) => {
     const { isOpen, setIsOpen } = useSelect()
+    const internalRef = React.useRef<HTMLDivElement>(null)
+    const resolvedRef = (ref as React.RefObject<HTMLDivElement>) || internalRef
 
     React.useEffect(() => {
       const handleClickOutside = (e: MouseEvent) => {
-        if (ref && "current" in ref && ref.current) {
-          if (!ref.current.contains(e.target as Node)) {
-            setIsOpen(false)
-          }
+        if (resolvedRef.current && !resolvedRef.current.contains(e.target as Node)) {
+          setIsOpen(false)
         }
       }
 
@@ -133,15 +137,15 @@ const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps>(
       return () => {
         document.removeEventListener("click", handleClickOutside)
       }
-    }, [isOpen, setIsOpen, ref])
+    }, [isOpen, setIsOpen, resolvedRef])
 
     if (!isOpen) return null
 
     return (
       <div
-        ref={ref}
+        ref={resolvedRef}
         className={cn(
-          "absolute z-50 mt-1 max-h-60 w-full min-w-[8rem] overflow-auto rounded-md border border-slate-200 bg-white p-1 shadow-md dark:border-slate-800 dark:bg-slate-950",
+          "absolute z-50 mt-1 max-h-60 w-full min-w-[8rem] overflow-auto rounded-md border border-slate-200 bg-white p-1 shadow-md",
           className
         )}
         {...props}
@@ -162,13 +166,18 @@ const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
     const { value: selectedValue, onValueChange } = useSelect()
     const isSelected = selectedValue === value
 
+    const handleClick = () => {
+      const labelText = typeof children === 'string' ? children : value
+      onValueChange(value, labelText)
+    }
+
     return (
       <div
         ref={ref}
-        onClick={() => onValueChange(value)}
+        onClick={handleClick}
         className={cn(
-          "relative flex cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-slate-800 dark:focus:bg-slate-800",
-          isSelected && "bg-slate-100 dark:bg-slate-800",
+          "relative flex cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm text-gray-900 outline-none hover:bg-slate-100 focus:bg-slate-100",
+          isSelected && "bg-slate-100",
           className
         )}
         {...props}
