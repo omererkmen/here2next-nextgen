@@ -115,6 +115,9 @@ const translations: Record<string, { tr: string; en: string }> = {
   "auth.register.submit": { tr: "Kayıt Ol", en: "Sign Up" },
   "auth.register.loading": { tr: "Kayıt yapılıyor...", en: "Signing up..." },
   "auth.register.hasAccount": { tr: "Zaten hesabınız var mı?", en: "Already have an account?" },
+  "auth.register.errorAllFields": { tr: "Lütfen tüm alanları doldurun", en: "Please fill in all fields" },
+  "auth.register.errorPasswordMatch": { tr: "Şifreler eşleşmiyor", en: "Passwords do not match" },
+  "auth.register.errorPasswordLength": { tr: "Şifre en az 8 karakter olmalıdır", en: "Password must be at least 8 characters" },
 
   // Footer
   "footer.about": { tr: "Hakkımızda", en: "About Us" },

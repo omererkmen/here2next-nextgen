@@ -28,17 +28,17 @@ export default function RegisterPage() {
     setError('');
 
     if (!fullName || !email || !password || !confirmPassword || !role) {
-      setError('Lütfen tüm alanları doldurun');
+      setError(t('auth.register.errorAllFields'));
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Şifreler eşleşmiyor');
+      setError(t('auth.register.errorPasswordMatch'));
       return;
     }
 
     if (password.length < 8) {
-      setError('Şifre en az 8 karakter olmalıdır');
+      setError(t('auth.register.errorPasswordLength'));
       return;
     }
 
@@ -113,7 +113,6 @@ export default function RegisterPage() {
                   placeholder={t('auth.register.namePlaceholder')}
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  required
                 />
               </div>
 
@@ -126,7 +125,6 @@ export default function RegisterPage() {
                   placeholder="ornek@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
               </div>
 
@@ -155,7 +153,6 @@ export default function RegisterPage() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
                 />
               </div>
 
@@ -168,7 +165,6 @@ export default function RegisterPage() {
                   placeholder="••••••••"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
                 />
               </div>
 
