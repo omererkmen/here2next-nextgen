@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, MapPin, Award, Globe, ExternalLink, Calendar, ListChecks } from 'lucide-react';
+import { ArrowLeft, MapPin, Award, Globe, ExternalLink, Calendar, ListChecks, Send, CheckCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -21,9 +21,19 @@ export default function CorporateDetailPage() {
   const [matches, setMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Action states
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [msgOpen, setMsgOpen] = useState(false);
+  const [msgText, setMsgText] = useState('');
+  const [msgLoading, setMsgLoading] = useState(false);
+  const [msgSent, setMsgSent] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
       const supabase = createClient();
+
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUser(user);
 
       const { data: corpData } = await supabase
         .from('corporates')
@@ -56,6 +66,28 @@ export default function CorporateDetailPage() {
     }
     fetchData();
   }, [slug]);
+
+  const handleSendMessage = async () => {
+    if (!currentUser) { router.push('/login'); return; }
+    if (!msgText.trim()) return;
+
+    setMsgLoading(true);
+    const supabase = createClient();
+    const { error } = await supabase.from('messages').insert({
+      sender_id: currentUser.id,
+      receiver_id: corporate.profile_id,
+      content: msgText.trim(),
+    });
+
+    if (error) {
+      alert(lang === 'tr' ? 'Mesaj gönderilemedi: ' + error.message : 'Failed to send message: ' + error.message);
+    } else {
+      setMsgSent(true);
+      setMsgText('');
+      setTimeout(() => { setMsgOpen(false); setMsgSent(false); }, 2000);
+    }
+    setMsgLoading(false);
+  };
 
   if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
@@ -205,11 +237,49 @@ export default function CorporateDetailPage() {
                       <Globe size={16} /> {corporate.website} <ExternalLink size={12} />
                     </a>
                   )}
-                  <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
+
+                  {/* Get in Touch Button */}
+                  <Button
+                    className="w-full bg-emerald-600 hover:bg-emerald-700"
+                    onClick={() => {
+                      if (!currentUser) { router.push('/login'); return; }
+                      setMsgOpen(!msgOpen);
+                    }}
+                  >
+                    <Send size={16} className="mr-2" />
                     {lang === 'tr' ? 'İletişime Geç' : 'Get in Touch'}
                   </Button>
+
+                  {/* Message Input */}
+                  {msgOpen && (
+                    <div className="space-y-3 pt-2 border-t">
+                      <textarea
+                        className="w-full min-h-[80px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        placeholder={lang === 'tr' ? 'Mesajınızı yazın...' : 'Write your message...'}
+                        value={msgText}
+                        onChange={(e) => setMsgText(e.target.value)}
+                      />
+                      {msgSent ? (
+                        <div className="flex items-center gap-2 text-emerald-600 text-sm font-medium">
+                          <CheckCircle size={16} />
+                          {lang === 'tr' ? 'Mesaj gönderildi!' : 'Message sent!'}
+                        </div>
+                      ) : (
+                        <Button
+                          className="w-full bg-emerald-600 hover:bg-emerald-700"
+                          onClick={handleSendMessage}
+                          disabled={msgLoading || !msgText.trim()}
+                        >
+                          {msgLoading ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Send size={16} className="mr-2" />}
+                          {lang === 'tr' ? 'Gönder' : 'Send'}
+                        </Button>
+                      )}
+                    </div>
+                  )}
+
                   <Link href="/wishlist" className="block">
                     <Button variant="outline" className="w-full">
+                      <ListChecks size={16} className="mr-2" />
                       {lang === 'tr' ? 'Wishlist\'e Git' : 'View Wishlist'}
                     </Button>
                   </Link>

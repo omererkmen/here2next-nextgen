@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, MapPin, Users, DollarSign, Calendar, Globe, Zap, ExternalLink } from 'lucide-react';
+import { ArrowLeft, MapPin, Users, DollarSign, Calendar, Globe, Zap, ExternalLink, Send, Handshake, CheckCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -21,9 +21,23 @@ export default function StartupDetailPage() {
   const [matches, setMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Action states
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [userCorporate, setUserCorporate] = useState<any>(null);
+  const [matchRequested, setMatchRequested] = useState(false);
+  const [matchLoading, setMatchLoading] = useState(false);
+  const [msgOpen, setMsgOpen] = useState(false);
+  const [msgText, setMsgText] = useState('');
+  const [msgLoading, setMsgLoading] = useState(false);
+  const [msgSent, setMsgSent] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
       const supabase = createClient();
+
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUser(user);
 
       const { data: startupData } = await supabase
         .from('startups')
@@ -43,10 +57,77 @@ export default function StartupDetailPage() {
         .limit(5);
 
       if (matchData) setMatches(matchData);
+
+      // If user is corporate, check if already requested match
+      if (user) {
+        const { data: corpData } = await supabase
+          .from('corporates')
+          .select('id')
+          .eq('profile_id', user.id)
+          .single();
+
+        if (corpData) {
+          setUserCorporate(corpData);
+          const { data: existingReq } = await supabase
+            .from('match_requests')
+            .select('id')
+            .eq('startup_id', startupData.id)
+            .eq('corporate_id', corpData.id)
+            .single();
+          if (existingReq) setMatchRequested(true);
+        }
+      }
+
       setLoading(false);
     }
     fetchData();
   }, [slug]);
+
+  const handleRequestMatch = async () => {
+    if (!currentUser) { router.push('/login'); return; }
+    if (!userCorporate) { alert(lang === 'tr' ? 'Eşleşme talebi göndermek için kurumsal hesabınız olmalıdır.' : 'You need a corporate account to request a match.'); return; }
+
+    setMatchLoading(true);
+    const supabase = createClient();
+    const { error } = await supabase.from('match_requests').insert({
+      startup_id: startup.id,
+      corporate_id: userCorporate.id,
+      message: lang === 'tr' ? 'Eşleşme talebi gönderildi.' : 'Match request sent.',
+    });
+
+    if (error) {
+      if (error.code === '23505') {
+        setMatchRequested(true);
+      } else {
+        alert(lang === 'tr' ? 'Bir hata oluştu: ' + error.message : 'An error occurred: ' + error.message);
+      }
+    } else {
+      setMatchRequested(true);
+    }
+    setMatchLoading(false);
+  };
+
+  const handleSendMessage = async () => {
+    if (!currentUser) { router.push('/login'); return; }
+    if (!msgText.trim()) return;
+
+    setMsgLoading(true);
+    const supabase = createClient();
+    const { error } = await supabase.from('messages').insert({
+      sender_id: currentUser.id,
+      receiver_id: startup.profile_id,
+      content: msgText.trim(),
+    });
+
+    if (error) {
+      alert(lang === 'tr' ? 'Mesaj gönderilemedi: ' + error.message : 'Failed to send message: ' + error.message);
+    } else {
+      setMsgSent(true);
+      setMsgText('');
+      setTimeout(() => { setMsgOpen(false); setMsgSent(false); }, 2000);
+    }
+    setMsgLoading(false);
+  };
 
   if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
@@ -189,12 +270,59 @@ export default function StartupDetailPage() {
                       <Globe size={16} /> {startup.website} <ExternalLink size={12} />
                     </a>
                   )}
-                  <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
-                    {lang === 'tr' ? 'Eşleşme Talep Et' : 'Request Match'}
-                  </Button>
-                  <Button variant="outline" className="w-full">
+
+                  {/* Request Match Button */}
+                  {matchRequested ? (
+                    <Button className="w-full bg-gray-100 text-gray-600 cursor-default hover:bg-gray-100" disabled>
+                      <CheckCircle size={16} className="mr-2" />
+                      {lang === 'tr' ? 'Talep Gönderildi' : 'Request Sent'}
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full bg-emerald-600 hover:bg-emerald-700"
+                      onClick={handleRequestMatch}
+                      disabled={matchLoading}
+                    >
+                      {matchLoading ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Handshake size={16} className="mr-2" />}
+                      {lang === 'tr' ? 'Eşleşme Talep Et' : 'Request Match'}
+                    </Button>
+                  )}
+
+                  {/* Send Message Button */}
+                  <Button variant="outline" className="w-full" onClick={() => {
+                    if (!currentUser) { router.push('/login'); return; }
+                    setMsgOpen(!msgOpen);
+                  }}>
+                    <Send size={16} className="mr-2" />
                     {lang === 'tr' ? 'Mesaj Gönder' : 'Send Message'}
                   </Button>
+
+                  {/* Message Input */}
+                  {msgOpen && (
+                    <div className="space-y-3 pt-2 border-t">
+                      <textarea
+                        className="w-full min-h-[80px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        placeholder={lang === 'tr' ? 'Mesajınızı yazın...' : 'Write your message...'}
+                        value={msgText}
+                        onChange={(e) => setMsgText(e.target.value)}
+                      />
+                      {msgSent ? (
+                        <div className="flex items-center gap-2 text-emerald-600 text-sm font-medium">
+                          <CheckCircle size={16} />
+                          {lang === 'tr' ? 'Mesaj gönderildi!' : 'Message sent!'}
+                        </div>
+                      ) : (
+                        <Button
+                          className="w-full bg-emerald-600 hover:bg-emerald-700"
+                          onClick={handleSendMessage}
+                          disabled={msgLoading || !msgText.trim()}
+                        >
+                          {msgLoading ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Send size={16} className="mr-2" />}
+                          {lang === 'tr' ? 'Gönder' : 'Send'}
+                        </Button>
+                      )}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>

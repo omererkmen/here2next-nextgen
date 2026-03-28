@@ -188,6 +188,38 @@ CREATE TABLE match_results (
 CREATE INDEX idx_matches_score ON match_results(score DESC);
 
 -- ============================================
+-- MATCH REQUESTS (startup requests to connect with corporate)
+-- ============================================
+CREATE TABLE match_requests (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  startup_id UUID REFERENCES startups(id) ON DELETE CASCADE NOT NULL,
+  corporate_id UUID REFERENCES corporates(id) ON DELETE CASCADE NOT NULL,
+  message TEXT,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'rejected')),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(startup_id, corporate_id)
+);
+
+CREATE INDEX idx_match_requests_status ON match_requests(status);
+
+-- ============================================
+-- MESSAGES (direct messaging between users)
+-- ============================================
+CREATE TABLE messages (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  sender_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  receiver_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  content TEXT NOT NULL,
+  is_read BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_messages_sender ON messages(sender_id);
+CREATE INDEX idx_messages_receiver ON messages(receiver_id);
+CREATE INDEX idx_messages_created ON messages(created_at DESC);
+
+-- ============================================
 -- ROW LEVEL SECURITY (RLS)
 -- ============================================
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
@@ -235,6 +267,25 @@ CREATE POLICY "Read own applications" ON wishlist_applications FOR SELECT
 
 CREATE POLICY "User registers for events" ON event_registrations FOR INSERT WITH CHECK (auth.uid() = profile_id);
 CREATE POLICY "Read own registrations" ON event_registrations FOR SELECT USING (auth.uid() = profile_id);
+
+ALTER TABLE match_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Startup creates match request" ON match_requests FOR INSERT
+  WITH CHECK (EXISTS (SELECT 1 FROM startups WHERE id = startup_id AND profile_id = auth.uid()));
+CREATE POLICY "Read own match requests" ON match_requests FOR SELECT
+  USING (
+    EXISTS (SELECT 1 FROM startups WHERE id = startup_id AND profile_id = auth.uid())
+    OR EXISTS (SELECT 1 FROM corporates WHERE id = corporate_id AND profile_id = auth.uid())
+  );
+CREATE POLICY "Corporate updates match request" ON match_requests FOR UPDATE
+  USING (EXISTS (SELECT 1 FROM corporates WHERE id = corporate_id AND profile_id = auth.uid()));
+
+CREATE POLICY "User sends message" ON messages FOR INSERT WITH CHECK (auth.uid() = sender_id);
+CREATE POLICY "User reads own messages" ON messages FOR SELECT
+  USING (auth.uid() = sender_id OR auth.uid() = receiver_id);
+CREATE POLICY "Receiver marks as read" ON messages FOR UPDATE
+  USING (auth.uid() = receiver_id);
 
 -- ============================================
 -- VIEWS (for convenience)
