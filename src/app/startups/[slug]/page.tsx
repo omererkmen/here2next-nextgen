@@ -110,6 +110,10 @@ export default function StartupDetailPage() {
   const handleSendMessage = async () => {
     if (!currentUser) { router.push('/login'); return; }
     if (!msgText.trim()) return;
+    if (!startup.profile_id) {
+      alert(lang === 'tr' ? 'Bu startup henüz bir kullanıcı hesabına bağlı değil.' : 'This startup is not linked to a user account yet.');
+      return;
+    }
 
     setMsgLoading(true);
     const supabase = createClient();

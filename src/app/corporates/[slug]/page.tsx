@@ -70,6 +70,10 @@ export default function CorporateDetailPage() {
   const handleSendMessage = async () => {
     if (!currentUser) { router.push('/login'); return; }
     if (!msgText.trim()) return;
+    if (!corporate.profile_id) {
+      alert(lang === 'tr' ? 'Bu kurum henüz bir kullanıcı hesabına bağlı değil.' : 'This corporate is not linked to a user account yet.');
+      return;
+    }
 
     setMsgLoading(true);
     const supabase = createClient();
