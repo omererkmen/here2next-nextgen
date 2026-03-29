@@ -54,6 +54,10 @@ export default function OnboardingPage() {
       if (!profile) { router.push('/login'); return; }
       setRole(profile.role);
 
+      // Pre-fill company name from signup meta data
+      const companyFromMeta = user.user_metadata?.company_name;
+      if (companyFromMeta) setName(companyFromMeta);
+
       // Check if already has a company profile
       if (profile.role === 'startup') {
         const { data: existing } = await supabase

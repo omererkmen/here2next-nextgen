@@ -124,6 +124,8 @@ const translations: Record<string, { tr: string; en: string }> = {
   "auth.register.roleStartup": { tr: "Startup Kurucu", en: "Startup Founder" },
   "auth.register.roleCorporate": { tr: "Kurumsal Yönetici", en: "Corporate Executive" },
   "auth.register.roleInvestor": { tr: "Yatırımcı", en: "Investor" },
+  "auth.register.startupName": { tr: "Startup Adı", en: "Startup Name" },
+  "auth.register.corporateName": { tr: "Kurum Adı", en: "Corporate Name" },
   "auth.register.confirmPassword": { tr: "Şifre Tekrar", en: "Confirm Password" },
   "auth.register.submit": { tr: "Kayıt Ol", en: "Sign Up" },
   "auth.register.loading": { tr: "Kayıt yapılıyor...", en: "Signing up..." },

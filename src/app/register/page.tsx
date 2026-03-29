@@ -30,6 +30,7 @@ function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState<UserRole>('');
+  const [companyName, setCompanyName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -44,7 +45,7 @@ function RegisterPage() {
     e.preventDefault();
     setError('');
 
-    if (!fullName || !email || !password || !confirmPassword || !role) {
+    if (!fullName || !email || !password || !confirmPassword || !role || ((role === 'startup' || role === 'corporate') && !companyName)) {
       setError(t('auth.register.errorAllFields'));
       return;
     }
@@ -71,6 +72,7 @@ function RegisterPage() {
           data: {
             full_name: fullName,
             role,
+            company_name: companyName || undefined,
           },
           emailRedirectTo: `${window.location.origin}/auth/callback?next=/onboarding`,
         },
@@ -155,6 +157,22 @@ function RegisterPage() {
                   </SelectContent>
                 </Select>
               </div>
+
+              {(role === 'startup' || role === 'corporate') && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    {role === 'startup'
+                      ? (t('auth.register.startupName') || 'Startup Adı')
+                      : (t('auth.register.corporateName') || 'Kurum Adı')}
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder={role === 'startup' ? 'Örn: PayFlex' : 'Örn: Anadolu Efes'}
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                  />
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-medium text-gray-900 mb-2">
