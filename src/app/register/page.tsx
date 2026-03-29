@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,15 @@ import { logActivity } from '@/lib/activityLog';
 
 type UserRole = 'startup' | 'corporate' | 'investor' | '';
 
-export default function RegisterPage() {
+export default function RegisterPageWrapper() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="text-slate-600">Loading...</div></div>}>
+      <RegisterPage />
+    </Suspense>
+  );
+}
+
+function RegisterPage() {
   const { t } = useLang();
   const router = useRouter();
   const searchParams = useSearchParams();
