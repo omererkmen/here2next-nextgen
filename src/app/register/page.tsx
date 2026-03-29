@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -13,39 +13,22 @@ import { logActivity } from '@/lib/activityLog';
 
 type UserRole = 'startup' | 'corporate' | 'investor' | '';
 
-export default function RegisterPageWrapper() {
-  return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="text-slate-600">Loading...</div></div>}>
-      <RegisterPage />
-    </Suspense>
-  );
-}
-
-function RegisterPage() {
+export default function RegisterPage() {
   const { t } = useLang();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState<UserRole>('');
-  const [companyName, setCompanyName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    const roleParam = searchParams.get('role');
-    if (roleParam === 'startup' || roleParam === 'corporate' || roleParam === 'investor') {
-      setRole(roleParam);
-    }
-  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    if (!fullName || !email || !password || !confirmPassword || !role || ((role === 'startup' || role === 'corporate') && !companyName)) {
+    if (!fullName || !email || !password || !confirmPassword || !role) {
       setError(t('auth.register.errorAllFields'));
       return;
     }
@@ -72,7 +55,6 @@ function RegisterPage() {
           data: {
             full_name: fullName,
             role,
-            company_name: companyName || undefined,
           },
           emailRedirectTo: `${window.location.origin}/auth/callback?next=/onboarding`,
         },
@@ -81,7 +63,7 @@ function RegisterPage() {
       if (signUpError) {
         await logActivity('signup', { success: false, reason: signUpError.message, role }, email);
         if (signUpError.message.includes('already registered')) {
-          setError('Bu e-posta adresi zaten kayıtlı');
+          setError('Bu e-posta adresi zaten kayitli');
         } else {
           setError(signUpError.message);
         }
@@ -91,11 +73,10 @@ function RegisterPage() {
 
       if (data.user) {
         await logActivity('signup', { success: true, role, full_name: fullName }, email);
-        // Redirect to verify-email page — user must confirm their email
         router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`);
       }
     } catch (err) {
-      setError('Bir hata oluştu. Lütfen tekrar deneyin.');
+      setError('Bir hata olustu. Lutfen tekrar deneyin.');
     } finally {
       setLoading(false);
     }
@@ -157,24 +138,6 @@ function RegisterPage() {
                   </SelectContent>
                 </Select>
               </div>
-
-              {(role === 'startup' || role === 'corporate') && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    {role === 'startup'
-                      ? (t('auth.register.startupName') || 'Startup Adı')
-                      : (t('auth.register.corporateName') || 'Kurum Adı')}
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder={role === 'startup' ? 'Örn: PayFlex' : 'Örn: Anadolu Efes'}
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    autoComplete="off"
-                    name="company-name-h2n"
-                  />
-                </div>
-              )}
 
               <div>
                 <label className="block text-sm font-medium text-gray-900 mb-2">

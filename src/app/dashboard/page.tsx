@@ -56,32 +56,33 @@ export default function DashboardPage() {
           .eq('profile_id', user.id)
           .single();
 
-        if (!startup) { router.push('/onboarding'); return; }
-        setCompany(startup);
+        if (startup) {
+          setCompany(startup);
 
-        // My applications (as startup)
-        const { data: apps } = await supabase
-          .from('wishlist_applications')
-          .select('*, wishlist_items(title_tr, title_en, status, corporates:corporate_id(name))')
-          .eq('startup_id', startup.id)
-          .order('created_at', { ascending: false });
-        if (apps) setApplications(apps);
+          // My applications (as startup)
+          const { data: apps } = await supabase
+            .from('wishlist_applications')
+            .select('*, wishlist_items(title_tr, title_en, status, corporates:corporate_id(name))')
+            .eq('startup_id', startup.id)
+            .order('created_at', { ascending: false });
+          if (apps) setApplications(apps);
 
-        // My matches
-        const { data: matchData } = await supabase
-          .from('matches_full')
-          .select('*')
-          .eq('startup_id', startup.id)
-          .order('score', { ascending: false });
-        if (matchData) setMatches(matchData);
+          // My matches
+          const { data: matchData } = await supabase
+            .from('matches_full')
+            .select('*')
+            .eq('startup_id', startup.id)
+            .order('score', { ascending: false });
+          if (matchData) setMatches(matchData);
 
-        // My sent match requests (as startup)
-        const { data: sentReqs } = await supabase
-          .from('match_requests')
-          .select('*, corporates(name, slug)')
-          .eq('startup_id', startup.id)
-          .order('created_at', { ascending: false });
-        if (sentReqs) setMatchRequests(sentReqs);
+          // My sent match requests (as startup)
+          const { data: sentReqs } = await supabase
+            .from('match_requests')
+            .select('*, corporates(name, slug)')
+            .eq('startup_id', startup.id)
+            .order('created_at', { ascending: false });
+          if (sentReqs) setMatchRequests(sentReqs);
+        }
 
       } else if (profileData.role === 'corporate') {
         // Get corporate
@@ -91,40 +92,41 @@ export default function DashboardPage() {
           .eq('profile_id', user.id)
           .single();
 
-        if (!corp) { router.push('/onboarding'); return; }
-        setCompany(corp);
+        if (corp) {
+          setCompany(corp);
 
-        // Incoming applications to my wishlist items
-        const { data: wishItems } = await supabase
-          .from('wishlist_items')
-          .select('id, title_tr, title_en')
-          .eq('corporate_id', corp.id);
+          // Incoming applications to my wishlist items
+          const { data: wishItems } = await supabase
+            .from('wishlist_items')
+            .select('id, title_tr, title_en')
+            .eq('corporate_id', corp.id);
 
-        if (wishItems && wishItems.length > 0) {
-          const itemIds = wishItems.map(w => w.id);
-          const { data: incoming } = await supabase
-            .from('wishlist_applications')
-            .select('*, startups(name, sector), wishlist_items(title_tr, title_en)')
-            .in('wishlist_item_id', itemIds)
+          if (wishItems && wishItems.length > 0) {
+            const itemIds = wishItems.map(w => w.id);
+            const { data: incoming } = await supabase
+              .from('wishlist_applications')
+              .select('*, startups(name, sector), wishlist_items(title_tr, title_en)')
+              .in('wishlist_item_id', itemIds)
+              .order('created_at', { ascending: false });
+            if (incoming) setIncomingApps(incoming);
+          }
+
+          // My matches
+          const { data: matchData } = await supabase
+            .from('matches_full')
+            .select('*')
+            .eq('corporate_id', corp.id)
+            .order('score', { ascending: false });
+          if (matchData) setMatches(matchData);
+
+          // Incoming match requests (as corporate)
+          const { data: incomingReqs } = await supabase
+            .from('match_requests')
+            .select('*, startups(name, slug, sector, stage)')
+            .eq('corporate_id', corp.id)
             .order('created_at', { ascending: false });
-          if (incoming) setIncomingApps(incoming);
+          if (incomingReqs) setMatchRequests(incomingReqs);
         }
-
-        // My matches
-        const { data: matchData } = await supabase
-          .from('matches_full')
-          .select('*')
-          .eq('corporate_id', corp.id)
-          .order('score', { ascending: false });
-        if (matchData) setMatches(matchData);
-
-        // Incoming match requests (as corporate)
-        const { data: incomingReqs } = await supabase
-          .from('match_requests')
-          .select('*, startups(name, slug, sector, stage)')
-          .eq('corporate_id', corp.id)
-          .order('created_at', { ascending: false });
-        if (incomingReqs) setMatchRequests(incomingReqs);
       }
 
       // My messages
@@ -168,6 +170,8 @@ export default function DashboardPage() {
 
   const isStartup = profile?.role === 'startup';
   const isCorporate = profile?.role === 'corporate';
+  const isInvestor = profile?.role === 'investor';
+  const hasCompany = !!company;
   const pendingRequests = matchRequests.filter(r => r.status === 'pending').length;
   const unreadMessages = messages.filter(m => !m.is_read && m.receiver_id === profile?.id).length;
 
@@ -205,7 +209,7 @@ export default function DashboardPage() {
               <h1 className="text-3xl font-bold mb-1">{company?.name || profile?.full_name}</h1>
               <div className="flex items-center gap-3 mb-2">
                 <Badge variant="secondary">
-                  {isStartup ? 'Startup' : (lang === 'tr' ? 'Kurumsal' : 'Corporate')}
+                  {isStartup ? 'Startup' : isInvestor ? (lang === 'tr' ? 'Yatırımcı' : 'Investor') : (lang === 'tr' ? 'Kurumsal' : 'Corporate')}
                 </Badge>
                 {isStartup && company?.stage && (
                   <Badge variant="outline">{stageLabels[company.stage as keyof typeof stageLabels]}</Badge>
@@ -217,19 +221,56 @@ export default function DashboardPage() {
               <p className="text-gray-600">{profile?.email}</p>
               {company?.sector && <p className="text-sm text-gray-600 mt-1">{company.sector} • {company.location}</p>}
             </div>
-            <div className="flex gap-2">
-              <Link href={isStartup ? `/startups/${company?.slug}` : `/corporates/${company?.slug}`}>
-                <Button variant="outline" className="gap-2">
-                  <ExternalLink size={16} /> {lang === 'tr' ? 'Profili Gör' : 'View Profile'}
-                </Button>
-              </Link>
-            </div>
+            {hasCompany && (
+              <div className="flex gap-2">
+                <Link href={isStartup ? `/startups/${company?.slug}` : `/corporates/${company?.slug}`}>
+                  <Button variant="outline" className="gap-2">
+                    <ExternalLink size={16} /> {lang === 'tr' ? 'Profili Gör' : 'View Profile'}
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-6 border-b">
+      {/* Create Profile CTA — shown when user hasn't created a company profile yet */}
+      {!hasCompany && (isStartup || isCorporate) && (
+        <section className="py-6">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <Card className="border-emerald-200 bg-emerald-50/50">
+              <CardContent className="p-6 flex flex-col sm:flex-row items-center gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
+                  {isStartup ? <Rocket className="text-emerald-600" size={24} /> : <Building2 className="text-emerald-600" size={24} />}
+                </div>
+                <div className="flex-1 text-center sm:text-left">
+                  <h3 className="font-semibold text-lg">
+                    {lang === 'tr'
+                      ? (isStartup ? 'Startup Profilinizi Olusturun' : 'Kurum Profilinizi Olusturun')
+                      : (isStartup ? 'Create Your Startup Profile' : 'Create Your Corporate Profile')}
+                  </h3>
+                  <p className="text-gray-600 text-sm mt-1">
+                    {lang === 'tr'
+                      ? 'Platformda gorunur olmak ve eslesme almak icin profilinizi tamamlayin.'
+                      : 'Complete your profile to be visible on the platform and receive matches.'}
+                  </p>
+                </div>
+                <Link href="/onboarding">
+                  <Button className="bg-emerald-600 hover:bg-emerald-700 gap-2">
+                    {isStartup ? <Rocket size={16} /> : <Building2 size={16} />}
+                    {lang === 'tr'
+                      ? (isStartup ? 'Startup Ekle' : 'Kurum Ekle')
+                      : (isStartup ? 'Add Startup' : 'Add Corporate')}
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      )}
+
+      {/* Stats — only show when company profile exists */}
+      {hasCompany && <section className="py-6 border-b">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <Card>
@@ -270,10 +311,10 @@ export default function DashboardPage() {
             </Card>
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* Tabs Content */}
-      <section className="py-8 sm:py-12">
+      {hasCompany && <section className="py-8 sm:py-12">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs defaultValue="requests" className="w-full">
             <TabsList className="grid w-full max-w-2xl grid-cols-5 mb-8">
@@ -611,7 +652,7 @@ export default function DashboardPage() {
             </TabsContent>
           </Tabs>
         </div>
-      </section>
+      </section>}
     </main>
   );
 }

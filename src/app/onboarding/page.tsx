@@ -54,9 +54,11 @@ export default function OnboardingPage() {
       if (!profile) { router.push('/login'); return; }
       setRole(profile.role);
 
-      // Pre-fill company name from signup meta data
-      const companyFromMeta = user.user_metadata?.company_name;
-      if (companyFromMeta) setName(companyFromMeta);
+      // Investors don't need onboarding — send them straight to dashboard
+      if (profile.role === 'investor') {
+        router.push('/dashboard');
+        return;
+      }
 
       // Check if already has a company profile
       if (profile.role === 'startup') {
@@ -219,13 +221,23 @@ export default function OnboardingPage() {
         </div>
 
         {/* Progress */}
-        <div className="flex items-center justify-center gap-2 mb-8">
+        <div className="flex items-center justify-center gap-2 mb-4">
           {[1, 2].map((s) => (
             <div
               key={s}
               className={`h-2 rounded-full transition-all ${s <= step ? 'bg-emerald-500 w-16' : 'bg-gray-200 w-8'}`}
             />
           ))}
+        </div>
+
+        {/* Skip button */}
+        <div className="text-center mb-8">
+          <button
+            onClick={() => router.push('/dashboard')}
+            className="text-sm text-gray-500 hover:text-emerald-600 underline underline-offset-2 transition-colors"
+          >
+            {lang === 'tr' ? 'Daha sonra tamamla, atla →' : 'Complete later, skip →'}
+          </button>
         </div>
 
         <Card>
