@@ -13,7 +13,8 @@ INSERT INTO corporates (id, name, slug, sector, description_tr, description_en, 
   ('10000000-0000-0000-0000-000000000c06', 'Tüpraş', 'tupras', 'Enerji', 'Türkiye''nin en büyük sanayi kuruluşu ve rafineri.', 'Turkey''s largest industrial enterprise and refinery.', 'Kocaeli', 'https://tupras.com.tr', true, 2022),
   ('10000000-0000-0000-0000-000000000c07', 'Türk Hava Yolları', 'thy', 'Havacılık', 'Türkiye''nin bayrak taşıyıcı havayolu.', 'Turkey''s flag carrier airline.', 'İstanbul', 'https://turkishairlines.com', true, 2022),
   ('10000000-0000-0000-0000-000000000c08', 'Türkiye İş Bankası', 'isbank', 'Bankacılık', 'Türkiye''nin en büyük özel bankası.', 'Turkey''s largest private bank.', 'İstanbul', 'https://isbank.com.tr', true, 2022),
-  ('10000000-0000-0000-0000-000000000c09', 'Koç Holding', 'koc-holding', 'Holding', 'Türkiye''nin en büyük sanayi ve hizmet grubu.', 'Turkey''s largest industrial and service conglomerate.', 'İstanbul', 'https://koc.com.tr', false, 2023);
+  ('10000000-0000-0000-0000-000000000c09', 'Koç Holding', 'koc-holding', 'Holding', 'Türkiye''nin en büyük sanayi ve hizmet grubu.', 'Turkey''s largest industrial and service conglomerate.', 'İstanbul', 'https://koc.com.tr', false, 2023),
+  ('10000000-0000-0000-0000-000000000c10', 'YNK (Yeni Nesil Kafası)', 'ynk', 'İnovasyon', 'Startup ekosistemi ve girişimcilik kültürünü destekleyen kurucu üye platform.', 'Founding member platform supporting the startup ecosystem and entrepreneurship culture.', 'İstanbul', 'https://yeninesilikafasi.com', true, 2022);
 
 -- ============================================
 -- STARTUPS

@@ -11,16 +11,16 @@ import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
 
 const feedbackTypes = [
-  { value: 'bug', icon: Bug, color: 'text-red-600 bg-red-50 border-red-200 hover:border-red-400', activeColor: 'border-red-500 bg-red-100 ring-2 ring-red-300' },
-  { value: 'feature', icon: Lightbulb, color: 'text-amber-600 bg-amber-50 border-amber-200 hover:border-amber-400', activeColor: 'border-amber-500 bg-amber-100 ring-2 ring-amber-300' },
-  { value: 'comment', icon: MessageCircle, color: 'text-blue-600 bg-blue-50 border-blue-200 hover:border-blue-400', activeColor: 'border-blue-500 bg-blue-100 ring-2 ring-blue-300' },
+  { value: 'bug', icon: Bug, color: 'text-red-700 bg-white border-red-200 hover:border-red-400 hover:bg-red-50', activeColor: 'border-red-500 bg-red-50 ring-2 ring-red-300 text-red-700' },
+  { value: 'feature', icon: Lightbulb, color: 'text-amber-700 bg-white border-amber-200 hover:border-amber-400 hover:bg-amber-50', activeColor: 'border-amber-500 bg-amber-50 ring-2 ring-amber-300 text-amber-700' },
+  { value: 'comment', icon: MessageCircle, color: 'text-blue-700 bg-white border-blue-200 hover:border-blue-400 hover:bg-blue-50', activeColor: 'border-blue-500 bg-blue-50 ring-2 ring-blue-300 text-blue-700' },
 ];
 
 const priorities = [
-  { value: 'low', label: { tr: 'Düşük', en: 'Low' }, color: 'bg-gray-100 text-gray-700' },
-  { value: 'medium', label: { tr: 'Orta', en: 'Medium' }, color: 'bg-amber-100 text-amber-700' },
-  { value: 'high', label: { tr: 'Yüksek', en: 'High' }, color: 'bg-orange-100 text-orange-700' },
-  { value: 'critical', label: { tr: 'Kritik', en: 'Critical' }, color: 'bg-red-100 text-red-700' },
+  { value: 'low', label: { tr: 'Düşük', en: 'Low' }, color: 'bg-gray-100 text-gray-800' },
+  { value: 'medium', label: { tr: 'Orta', en: 'Medium' }, color: 'bg-amber-100 text-amber-800' },
+  { value: 'high', label: { tr: 'Yüksek', en: 'High' }, color: 'bg-orange-100 text-orange-800' },
+  { value: 'critical', label: { tr: 'Kritik', en: 'Critical' }, color: 'bg-red-100 text-red-800' },
 ];
 
 export default function FeedbackPage() {
@@ -114,12 +114,12 @@ export default function FeedbackPage() {
 
   const statusColor = (status: string) => {
     switch (status) {
-      case 'open': return 'bg-blue-100 text-blue-700 border-0';
-      case 'in_progress': return 'bg-amber-100 text-amber-700 border-0';
-      case 'resolved': return 'bg-green-100 text-green-700 border-0';
-      case 'closed': return 'bg-gray-100 text-gray-700 border-0';
-      case 'wont_fix': return 'bg-red-100 text-red-700 border-0';
-      default: return 'bg-gray-100 text-gray-700 border-0';
+      case 'open': return 'bg-blue-100 text-blue-800 border-0';
+      case 'in_progress': return 'bg-amber-100 text-amber-800 border-0';
+      case 'resolved': return 'bg-green-100 text-green-800 border-0';
+      case 'closed': return 'bg-gray-200 text-gray-800 border-0';
+      case 'wont_fix': return 'bg-red-100 text-red-800 border-0';
+      default: return 'bg-gray-200 text-gray-800 border-0';
     }
   };
 
@@ -143,7 +143,7 @@ export default function FeedbackPage() {
           <h1 className="text-3xl sm:text-4xl font-bold mb-2">
             {lang === 'tr' ? 'Geri Bildirim' : 'Feedback'}
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-700">
             {lang === 'tr'
               ? 'Bug bildirin, özellik talep edin veya görüşlerinizi paylaşın. Her geri bildirim platformu iyileştirmemize yardımcı olur.'
               : 'Report bugs, request features, or share your thoughts. Every feedback helps us improve.'}
@@ -259,7 +259,7 @@ export default function FeedbackPage() {
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                           priority === p.value
                             ? `${p.color} ring-2 ring-offset-1 ring-gray-400`
-                            : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                            : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
                         }`}
                       >
                         {p.label[lang]}
