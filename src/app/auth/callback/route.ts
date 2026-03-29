@@ -31,8 +31,13 @@ export async function GET(request: Request) {
       }
     );
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      // If this is a password recovery session, redirect to reset-password page
+      // Otherwise use the next param (defaults to /onboarding for new signups)
+      if (data.session?.user?.recovery_sent_at || next === '/auth/reset-password') {
+        return NextResponse.redirect(`${origin}/auth/reset-password`);
+      }
       return NextResponse.redirect(`${origin}${next}`);
     }
   }
