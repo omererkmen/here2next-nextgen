@@ -170,6 +170,8 @@ function RegisterPage() {
                     placeholder={role === 'startup' ? 'Örn: PayFlex' : 'Örn: Anadolu Efes'}
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
+                    autoComplete="organization"
+                    name="company-name"
                   />
                 </div>
               )}
