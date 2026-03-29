@@ -32,9 +32,10 @@ export default function LoginPage() {
 
       if (signInError) {
         if (signInError.message === 'Invalid login credentials') {
-          setError('E-posta veya şifre hatalı');
+          setError(t('auth.login.errorInvalid'));
         } else if (signInError.message.includes('Email not confirmed')) {
-          setError('E-posta adresiniz doğrulanmamış');
+          router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`);
+          return;
         } else {
           setError(signInError.message);
         }
@@ -92,6 +93,15 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+              </div>
+
+              <div className="flex justify-end">
+                <Link
+                  href="/auth/forgot-password"
+                  className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                >
+                  {t('auth.login.forgotPassword')}
+                </Link>
               </div>
 
               <Button

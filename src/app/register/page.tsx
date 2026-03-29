@@ -55,6 +55,7 @@ export default function RegisterPage() {
             full_name: fullName,
             role,
           },
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=/onboarding`,
         },
       });
 
@@ -69,11 +70,8 @@ export default function RegisterPage() {
       }
 
       if (data.user) {
-        // Profile is auto-created by handle_new_user() trigger
-        // with full_name and role from user metadata
-        // Redirect to onboarding to create startup/corporate profile
-        router.push('/onboarding');
-        router.refresh();
+        // Redirect to verify-email page — user must confirm their email
+        router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`);
       }
     } catch (err) {
       setError('Bir hata oluştu. Lütfen tekrar deneyin.');
