@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Bug, Lightbulb, MessageCircle, Send, CheckCircle, Loader2, ArrowLeft, AlertTriangle } from 'lucide-react';
+import { Bug, Lightbulb, MessageCircle, Send, CheckCircle, Loader2, ArrowLeft, AlertTriangle, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -35,6 +35,9 @@ export default function FeedbackPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [myFeedback, setMyFeedback] = useState<any[]>([]);
+  const [allFeedback, setAllFeedback] = useState<any[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [errors, setErrors] = useState<{ title?: string; description?: string }>({});
 
   useEffect(() => {
@@ -44,13 +47,34 @@ export default function FeedbackPage() {
       if (!u) { router.push('/login'); return; }
       setUser(u);
 
-      // Fetch user's previous feedback
-      const { data } = await supabase
-        .from('feedback')
-        .select('*')
-        .eq('profile_id', u.id)
-        .order('created_at', { ascending: false });
-      if (data) setMyFeedback(data);
+      // Check if user is admin
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', u.id)
+        .single();
+      const admin = profile?.role === 'admin';
+      setIsAdmin(admin);
+
+      if (admin) {
+        // Admin sees ALL feedback
+        const { data } = await supabase
+          .from('feedback')
+          .select('*, profiles(full_name, email)')
+          .order('created_at', { ascending: false });
+        if (data) {
+          setAllFeedback(data);
+          setMyFeedback(data.filter((fb: any) => fb.profile_id === u.id));
+        }
+      } else {
+        // Regular user sees only own feedback
+        const { data } = await supabase
+          .from('feedback')
+          .select('*')
+          .eq('profile_id', u.id)
+          .order('created_at', { ascending: false });
+        if (data) setMyFeedback(data);
+      }
     }
     init();
   }, [router]);
@@ -94,6 +118,26 @@ export default function FeedbackPage() {
     }
     setSubmitting(false);
   };
+
+  const handleStatusChange = async (feedbackId: string, newStatus: string) => {
+    setUpdatingId(feedbackId);
+    const supabase = createClient();
+    const { error } = await supabase
+      .from('feedback')
+      .update({ status: newStatus, updated_at: new Date().toISOString() })
+      .eq('id', feedbackId);
+
+    if (!error) {
+      // Update both lists
+      const updateList = (list: any[]) =>
+        list.map((fb) => fb.id === feedbackId ? { ...fb, status: newStatus } : fb);
+      setAllFeedback(updateList);
+      setMyFeedback(updateList);
+    }
+    setUpdatingId(null);
+  };
+
+  const statuses = ['open', 'in_progress', 'resolved', 'closed', 'wont_fix'];
 
   const typeLabels: Record<string, { tr: string; en: string }> = {
     bug: { tr: 'Bug / Hata', en: 'Bug Report' },
@@ -284,8 +328,82 @@ export default function FeedbackPage() {
             </Card>
           )}
 
-          {/* My Previous Feedback — grouped by category */}
-          {myFeedback.length > 0 && (
+          {/* Admin: All Feedback */}
+          {isAdmin && allFeedback.length > 0 && (
+            <div className="mt-10">
+              <div className="flex items-center gap-2 mb-4">
+                <Shield size={20} className="text-emerald-700" />
+                <h2 className="text-xl font-bold">
+                  {lang === 'tr' ? 'Tüm Geri Bildirimler (Admin)' : 'All Feedback (Admin)'}
+                </h2>
+                <Badge className="bg-emerald-100 text-emerald-800 border-0">{allFeedback.length}</Badge>
+              </div>
+
+              {(['bug', 'feature', 'comment'] as const).map((category) => {
+                const items = allFeedback.filter((fb) => fb.type === category);
+                if (items.length === 0) return null;
+
+                const categoryConfig = {
+                  bug: { icon: <Bug size={18} className="text-red-600" />, label: typeLabels.bug, borderColor: 'border-red-200', bgColor: 'bg-red-50' },
+                  feature: { icon: <Lightbulb size={18} className="text-amber-600" />, label: typeLabels.feature, borderColor: 'border-amber-200', bgColor: 'bg-amber-50' },
+                  comment: { icon: <MessageCircle size={18} className="text-blue-600" />, label: typeLabels.comment, borderColor: 'border-blue-200', bgColor: 'bg-blue-50' },
+                };
+                const cfg = categoryConfig[category];
+
+                return (
+                  <div key={category} className="mb-6">
+                    <div className={`flex items-center gap-2 px-3 py-2 rounded-t-lg ${cfg.bgColor} border ${cfg.borderColor} border-b-0`}>
+                      {cfg.icon}
+                      <h3 className="font-semibold text-sm text-gray-900">{cfg.label[lang]}</h3>
+                      <span className="text-xs text-gray-500">({items.length})</span>
+                    </div>
+                    <div className={`border ${cfg.borderColor} rounded-b-lg divide-y divide-gray-100`}>
+                      {items.map((fb) => (
+                        <div key={fb.id} className="p-4 bg-white last:rounded-b-lg">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                              <h4 className="font-medium text-sm text-gray-900">{fb.title}</h4>
+                              <Badge variant="outline" className="text-xs">
+                                {priorities.find(p => p.value === fb.priority)?.label[lang]}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-2">{fb.description}</p>
+                            <p className="text-xs text-gray-400 mb-2">
+                              {fb.profiles?.full_name || fb.profiles?.email || '—'} • {new Date(fb.created_at).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US')}
+                              {fb.page_url && ` • ${fb.page_url}`}
+                            </p>
+                            {/* Admin status buttons */}
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="text-xs font-medium text-gray-500 mr-1">
+                                {lang === 'tr' ? 'Durum:' : 'Status:'}
+                              </span>
+                              {statuses.map((s) => (
+                                <button
+                                  key={s}
+                                  onClick={() => handleStatusChange(fb.id, s)}
+                                  disabled={updatingId === fb.id}
+                                  className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+                                    fb.status === s
+                                      ? `${statusColor(s)} ring-2 ring-offset-1 ring-gray-400`
+                                      : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100'
+                                  } ${updatingId === fb.id ? 'opacity-50' : ''}`}
+                                >
+                                  {statusLabel(s)}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Regular user: My Previous Feedback — grouped by category */}
+          {!isAdmin && myFeedback.length > 0 && (
             <div className="mt-10">
               <h2 className="text-xl font-bold mb-4">
                 {lang === 'tr' ? 'Önceki Geri Bildirimlerim' : 'My Previous Feedback'}
@@ -300,44 +418,39 @@ export default function FeedbackPage() {
                   feature: { icon: <Lightbulb size={18} className="text-amber-600" />, label: typeLabels.feature, borderColor: 'border-amber-200', bgColor: 'bg-amber-50' },
                   comment: { icon: <MessageCircle size={18} className="text-blue-600" />, label: typeLabels.comment, borderColor: 'border-blue-200', bgColor: 'bg-blue-50' },
                 };
-
                 const cfg = categoryConfig[category];
 
                 return (
                   <div key={category} className="mb-6">
                     <div className={`flex items-center gap-2 px-3 py-2 rounded-t-lg ${cfg.bgColor} border ${cfg.borderColor} border-b-0`}>
                       {cfg.icon}
-                      <h3 className="font-semibold text-sm text-gray-900">
-                        {cfg.label[lang]}
-                      </h3>
+                      <h3 className="font-semibold text-sm text-gray-900">{cfg.label[lang]}</h3>
                       <span className="text-xs text-gray-500">({items.length})</span>
                     </div>
                     <div className={`border ${cfg.borderColor} rounded-b-lg divide-y divide-gray-100`}>
                       {items.map((fb) => (
-                        <div key={fb.id} className="p-4 bg-white first:rounded-t-none last:rounded-b-lg">
-                          <div className="flex items-start gap-3">
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                <h4 className="font-medium text-sm text-gray-900">{fb.title}</h4>
-                                <Badge className={statusColor(fb.status)}>{statusLabel(fb.status)}</Badge>
-                                <Badge variant="outline" className="text-xs">
-                                  {priorities.find(p => p.value === fb.priority)?.label[lang]}
-                                </Badge>
-                              </div>
-                              <p className="text-sm text-gray-600 line-clamp-2">{fb.description}</p>
-                              {fb.admin_notes && (
-                                <div className="mt-2 p-2 bg-emerald-50 rounded text-sm">
-                                  <span className="font-medium text-emerald-700">
-                                    {lang === 'tr' ? 'Admin yanıtı: ' : 'Admin response: '}
-                                  </span>
-                                  {fb.admin_notes}
-                                </div>
-                              )}
-                              <p className="text-xs text-gray-500 mt-1">
-                                {new Date(fb.created_at).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US')}
-                                {fb.page_url && ` • ${fb.page_url}`}
-                              </p>
+                        <div key={fb.id} className="p-4 bg-white last:rounded-b-lg">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                              <h4 className="font-medium text-sm text-gray-900">{fb.title}</h4>
+                              <Badge className={statusColor(fb.status)}>{statusLabel(fb.status)}</Badge>
+                              <Badge variant="outline" className="text-xs">
+                                {priorities.find(p => p.value === fb.priority)?.label[lang]}
+                              </Badge>
                             </div>
+                            <p className="text-sm text-gray-600 line-clamp-2">{fb.description}</p>
+                            {fb.admin_notes && (
+                              <div className="mt-2 p-2 bg-emerald-50 rounded text-sm">
+                                <span className="font-medium text-emerald-700">
+                                  {lang === 'tr' ? 'Admin yanıtı: ' : 'Admin response: '}
+                                </span>
+                                {fb.admin_notes}
+                              </div>
+                            )}
+                            <p className="text-xs text-gray-500 mt-1">
+                              {new Date(fb.created_at).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US')}
+                              {fb.page_url && ` • ${fb.page_url}`}
+                            </p>
                           </div>
                         </div>
                       ))}
