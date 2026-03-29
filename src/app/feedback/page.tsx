@@ -284,45 +284,67 @@ export default function FeedbackPage() {
             </Card>
           )}
 
-          {/* My Previous Feedback */}
+          {/* My Previous Feedback — grouped by category */}
           {myFeedback.length > 0 && (
             <div className="mt-10">
               <h2 className="text-xl font-bold mb-4">
                 {lang === 'tr' ? 'Önceki Geri Bildirimlerim' : 'My Previous Feedback'}
               </h2>
-              <div className="space-y-3">
-                {myFeedback.map((fb) => (
-                  <Card key={fb.id}>
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="mt-0.5">{typeIcon(fb.type)}</div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-medium text-sm">{fb.title}</h4>
-                            <Badge className={statusColor(fb.status)} >{statusLabel(fb.status)}</Badge>
-                            <Badge variant="outline" className="text-xs">
-                              {priorities.find(p => p.value === fb.priority)?.label[lang]}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-gray-600 line-clamp-2">{fb.description}</p>
-                          {fb.admin_notes && (
-                            <div className="mt-2 p-2 bg-emerald-50 rounded text-sm">
-                              <span className="font-medium text-emerald-700">
-                                {lang === 'tr' ? 'Admin yanıtı: ' : 'Admin response: '}
-                              </span>
-                              {fb.admin_notes}
+
+              {(['bug', 'feature', 'comment'] as const).map((category) => {
+                const items = myFeedback.filter((fb) => fb.type === category);
+                if (items.length === 0) return null;
+
+                const categoryConfig = {
+                  bug: { icon: <Bug size={18} className="text-red-600" />, label: typeLabels.bug, borderColor: 'border-red-200', bgColor: 'bg-red-50' },
+                  feature: { icon: <Lightbulb size={18} className="text-amber-600" />, label: typeLabels.feature, borderColor: 'border-amber-200', bgColor: 'bg-amber-50' },
+                  comment: { icon: <MessageCircle size={18} className="text-blue-600" />, label: typeLabels.comment, borderColor: 'border-blue-200', bgColor: 'bg-blue-50' },
+                };
+
+                const cfg = categoryConfig[category];
+
+                return (
+                  <div key={category} className="mb-6">
+                    <div className={`flex items-center gap-2 px-3 py-2 rounded-t-lg ${cfg.bgColor} border ${cfg.borderColor} border-b-0`}>
+                      {cfg.icon}
+                      <h3 className="font-semibold text-sm text-gray-900">
+                        {cfg.label[lang]}
+                      </h3>
+                      <span className="text-xs text-gray-500">({items.length})</span>
+                    </div>
+                    <div className={`border ${cfg.borderColor} rounded-b-lg divide-y divide-gray-100`}>
+                      {items.map((fb) => (
+                        <div key={fb.id} className="p-4 bg-white first:rounded-t-none last:rounded-b-lg">
+                          <div className="flex items-start gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                <h4 className="font-medium text-sm text-gray-900">{fb.title}</h4>
+                                <Badge className={statusColor(fb.status)}>{statusLabel(fb.status)}</Badge>
+                                <Badge variant="outline" className="text-xs">
+                                  {priorities.find(p => p.value === fb.priority)?.label[lang]}
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-gray-600 line-clamp-2">{fb.description}</p>
+                              {fb.admin_notes && (
+                                <div className="mt-2 p-2 bg-emerald-50 rounded text-sm">
+                                  <span className="font-medium text-emerald-700">
+                                    {lang === 'tr' ? 'Admin yanıtı: ' : 'Admin response: '}
+                                  </span>
+                                  {fb.admin_notes}
+                                </div>
+                              )}
+                              <p className="text-xs text-gray-500 mt-1">
+                                {new Date(fb.created_at).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US')}
+                                {fb.page_url && ` • ${fb.page_url}`}
+                              </p>
                             </div>
-                          )}
-                          <p className="text-xs text-gray-600 mt-1">
-                            {new Date(fb.created_at).toLocaleDateString()}
-                            {fb.page_url && ` • ${fb.page_url}`}
-                          </p>
+                          </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
