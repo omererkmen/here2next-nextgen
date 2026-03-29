@@ -64,7 +64,7 @@ export default function HomePage() {
               <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 w-full">{t('hero.cta.corporate')}</Button>
             </Link>
             <Link href="/startups">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 w-full">{t('hero.cta.explore')}</Button>
+              <Button size="lg" className="bg-transparent border border-white text-white hover:bg-white/10 w-full">{t('hero.cta.explore')}</Button>
             </Link>
           </div>
         </div>
