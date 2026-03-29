@@ -57,10 +57,10 @@ export default function HomePage() {
             {t('hero.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/register">
+            <Link href="/register?role=startup">
               <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 w-full">{t('hero.cta.startup')}</Button>
             </Link>
-            <Link href="/register">
+            <Link href="/register?role=corporate">
               <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 w-full">{t('hero.cta.corporate')}</Button>
             </Link>
             <Link href="/startups">
