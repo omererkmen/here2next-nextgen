@@ -176,14 +176,20 @@ export default function AdminPage() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-xl font-bold mb-6">{lang === 'tr' ? 'Hızlı İşlemler' : 'Quick Actions'}</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Link href="/startups">
-              <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2">
+            <Link href="/admin/users">
+              <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2 border-slate-200 hover:bg-slate-50">
+                <Users size={24} className="text-slate-600" />
+                <span>{lang === 'tr' ? 'Kullanıcılar' : 'Users'}</span>
+              </Button>
+            </Link>
+            <Link href="/admin/startups">
+              <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2 border-emerald-200 hover:bg-emerald-50">
                 <Rocket size={24} className="text-emerald-600" />
                 <span>{lang === 'tr' ? 'Startup\'ları Yönet' : 'Manage Startups'}</span>
               </Button>
             </Link>
-            <Link href="/corporates">
-              <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2">
+            <Link href="/admin/corporates">
+              <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2 border-blue-200 hover:bg-blue-50">
                 <Building2 size={24} className="text-blue-600" />
                 <span>{lang === 'tr' ? 'Kurumları Yönet' : 'Manage Corporates'}</span>
               </Button>
