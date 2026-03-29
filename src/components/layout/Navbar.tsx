@@ -8,6 +8,7 @@ import { useLang } from "@/context/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { logActivity } from "@/lib/activityLog";
 import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
@@ -51,6 +52,7 @@ export default function Navbar() {
   }, []);
 
   const handleSignOut = async () => {
+    await logActivity('logout');
     const supabase = createClient();
     await supabase.auth.signOut();
     setUser(null);

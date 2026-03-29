@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
+import { logActivity } from '@/lib/activityLog';
 
 type UserRole = 'startup' | 'corporate' | 'investor' | '';
 
@@ -60,6 +61,7 @@ export default function RegisterPage() {
       });
 
       if (signUpError) {
+        await logActivity('signup', { success: false, reason: signUpError.message, role }, email);
         if (signUpError.message.includes('already registered')) {
           setError('Bu e-posta adresi zaten kayıtlı');
         } else {
@@ -70,6 +72,7 @@ export default function RegisterPage() {
       }
 
       if (data.user) {
+        await logActivity('signup', { success: true, role, full_name: fullName }, email);
         // Redirect to verify-email page — user must confirm their email
         router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`);
       }

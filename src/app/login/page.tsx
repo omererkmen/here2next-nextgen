@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
+import { logActivity } from '@/lib/activityLog';
 
 export default function LoginPage() {
   const { t } = useLang();
@@ -31,6 +32,7 @@ export default function LoginPage() {
       });
 
       if (signInError) {
+        await logActivity('login_failed', { reason: signInError.message }, email);
         if (signInError.message === 'Invalid login credentials') {
           setError(t('auth.login.errorInvalid'));
         } else if (signInError.message.includes('Email not confirmed')) {
@@ -43,6 +45,7 @@ export default function LoginPage() {
         return;
       }
 
+      await logActivity('login_success', {}, email);
       router.push('/');
       router.refresh();
     } catch (err) {
