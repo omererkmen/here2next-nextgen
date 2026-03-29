@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Zap, Users, Target, Briefcase, TrendingUp } from 'lucide-react';
+import { ArrowRight, Zap, Users, Target, Briefcase, TrendingUp, X, Eye, Lightbulb, Handshake, Sparkles, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -18,6 +18,7 @@ export default function HomePage() {
   const [news, setNews] = useState<any[]>([]);
   const [corporates, setCorporates] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [missionOpen, setMissionOpen] = useState(false);
 
   useEffect(() => {
     async function fetchAllData() {
@@ -260,11 +261,72 @@ export default function HomePage() {
           <p className="text-lg text-emerald-50 mb-8 max-w-2xl mx-auto">
             {t('home.manifesto.desc')}
           </p>
-          <Button size="lg" className="bg-white text-emerald-700 hover:bg-gray-100">
+          <Button size="lg" className="bg-white text-emerald-700 hover:bg-gray-100" onClick={() => setMissionOpen(true)}>
             {t('home.manifesto.cta')}
           </Button>
         </div>
       </section>
+
+      {/* Mission Modal */}
+      {missionOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setMissionOpen(false)}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div
+            className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="sticky top-0 bg-gradient-to-r from-emerald-800 to-teal-700 text-white px-6 py-5 rounded-t-2xl flex items-center justify-between">
+              <h2 className="text-2xl font-bold">{t('mission.title')}</h2>
+              <button onClick={() => setMissionOpen(false)} className="p-1 hover:bg-white/20 rounded-full transition-colors">
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="px-6 py-6 space-y-6">
+              <p className="text-gray-700 leading-relaxed">{t('mission.p1')}</p>
+              <p className="text-gray-700 leading-relaxed">{t('mission.p2')}</p>
+
+              {/* Vision */}
+              <div className="bg-emerald-50 rounded-xl p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="bg-emerald-100 w-10 h-10 rounded-full flex items-center justify-center">
+                    <Eye className="text-emerald-700" size={20} />
+                  </div>
+                  <h3 className="text-lg font-bold text-emerald-800">{t('mission.vision.title')}</h3>
+                </div>
+                <p className="text-gray-700 leading-relaxed">{t('mission.vision.desc')}</p>
+              </div>
+
+              {/* Values */}
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">{t('mission.values.title')}</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { key: 'mission.value1', icon: <ShieldCheck className="text-emerald-600" size={20} /> },
+                    { key: 'mission.value2', icon: <Handshake className="text-emerald-600" size={20} /> },
+                    { key: 'mission.value3', icon: <Lightbulb className="text-emerald-600" size={20} /> },
+                    { key: 'mission.value4', icon: <Sparkles className="text-emerald-600" size={20} /> },
+                  ].map((v) => (
+                    <div key={v.key} className="flex items-start gap-3 bg-gray-50 rounded-lg p-3">
+                      <div className="mt-0.5">{v.icon}</div>
+                      <p className="text-sm text-gray-700">{t(v.key)}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t flex justify-end">
+              <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => setMissionOpen(false)}>
+                {t('home.manifesto.close')}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

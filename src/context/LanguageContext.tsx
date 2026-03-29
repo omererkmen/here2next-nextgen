@@ -46,6 +46,19 @@ const translations: Record<string, { tr: string; en: string }> = {
   // Home - Manifesto
   "home.manifesto.desc": { tr: "İşbirliğinin gücüne inanıyoruz. Startup'lar inovasyonu, kurumlar ölçeği getirir. Birlikte dönüşüm yaratırlar.", en: "We believe in the power of collaboration. Startups bring innovation. Corporates bring scale. Together, they create transformation." },
   "home.manifesto.cta": { tr: "Misyonumuzu Oku", en: "Read Our Mission" },
+  "home.manifesto.close": { tr: "Kapat", en: "Close" },
+
+  // Mission Modal
+  "mission.title": { tr: "Misyonumuz", en: "Our Mission" },
+  "mission.p1": { tr: "Here2Next, Türkiye'nin inovasyon ekosistemini güçlendirmek için kurulmuş bir startup-kurum işbirliği platformudur. Amacımız, büyük kurumların kaynaklarını ve deneyimlerini, startup'ların çevikliği ve yaratıcılığı ile buluşturarak birlikte değer yaratmaktır.", en: "Here2Next is a startup-corporate collaboration platform established to strengthen Turkey's innovation ecosystem. Our goal is to create shared value by combining the resources and experience of large corporations with the agility and creativity of startups." },
+  "mission.p2": { tr: "Startup'ların büyümesini hızlandırmak, kurumların dijital dönüşümünü desteklemek ve Türkiye'yi küresel inovasyon sahnesinde daha güçlü bir konuma taşımak için çalışıyoruz.", en: "We work to accelerate startup growth, support corporate digital transformation, and position Turkey more strongly on the global innovation stage." },
+  "mission.vision.title": { tr: "Vizyonumuz", en: "Our Vision" },
+  "mission.vision.desc": { tr: "Türkiye'nin en kapsamlı startup-kurum eşleşme platformu olarak, her sektörde inovasyona dayalı işbirlikleri oluşturmak ve ekosistemi sürdürülebilir şekilde büyütmek.", en: "As Turkey's most comprehensive startup-corporate matching platform, to build innovation-driven collaborations across every sector and grow the ecosystem sustainably." },
+  "mission.values.title": { tr: "Değerlerimiz", en: "Our Values" },
+  "mission.value1": { tr: "Şeffaflık — Tüm süreçlerimizde açık ve güvenilir iletişim", en: "Transparency — Open and trustworthy communication in all processes" },
+  "mission.value2": { tr: "İşbirliği — Birlikte daha güçlü olduğumuza inanıyoruz", en: "Collaboration — We believe we are stronger together" },
+  "mission.value3": { tr: "İnovasyon — Yenilikçi çözümleri destekliyor ve teşvik ediyoruz", en: "Innovation — We support and encourage innovative solutions" },
+  "mission.value4": { tr: "Sürdürülebilirlik — Uzun vadeli, kalıcı değer yaratmayı hedefliyoruz", en: "Sustainability — We aim to create long-term, lasting value" },
 
   // How it works
   "how.step1.title": { tr: "Profil Oluştur", en: "Create Profile" },
