@@ -125,10 +125,12 @@ export default function Navbar() {
                       {lang === 'tr' ? 'Geri Bildirim' : 'Feedback'}
                     </Button>
                   </Link>
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-md">
-                    <User className="w-4 h-4 text-emerald-700" />
-                    <span className="text-sm font-medium text-slate-700 max-w-[150px] truncate">{userName}</span>
-                  </div>
+                  <Link href="/profile">
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-md hover:bg-slate-100 transition-colors cursor-pointer">
+                      <User className="w-4 h-4 text-emerald-700" />
+                      <span className="text-sm font-medium text-slate-700 max-w-[150px] truncate">{userName}</span>
+                    </div>
+                  </Link>
                   <Button variant="ghost" size="sm" className="gap-2 text-slate-600" onClick={handleSignOut}>
                     <LogOut className="w-4 h-4" />
                     {lang === 'tr' ? 'Çıkış' : 'Logout'}
@@ -201,10 +203,12 @@ export default function Navbar() {
                         {lang === 'tr' ? 'Geri Bildirim' : 'Feedback'}
                       </Button>
                     </Link>
-                    <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-md">
-                      <User className="w-4 h-4 text-emerald-700" />
-                      <span className="text-sm font-medium text-slate-700">{userName}</span>
-                    </div>
+                    <Link href="/profile" onClick={() => setMobileOpen(false)}>
+                      <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-md hover:bg-slate-100 transition-colors">
+                        <User className="w-4 h-4 text-emerald-700" />
+                        <span className="text-sm font-medium text-slate-700">{userName}</span>
+                      </div>
+                    </Link>
                     <Button variant="outline" size="sm" className="w-full gap-2 justify-start" onClick={() => { handleSignOut(); setMobileOpen(false); }}>
                       <LogOut className="w-4 h-4" />
                       {lang === 'tr' ? 'Çıkış Yap' : 'Logout'}

@@ -162,6 +162,19 @@ const translations: Record<string, { tr: string; en: string }> = {
   "auth.reset.successTitle": { tr: "Şifre Güncellendi", en: "Password Updated" },
   "auth.reset.successDescription": { tr: "Şifreniz başarıyla güncellendi. Ana sayfaya yönlendiriliyorsunuz...", en: "Your password has been updated. Redirecting to home page..." },
 
+  // Profile
+  "profile.title": { tr: "Profil Düzenle", en: "Edit Profile" },
+  "profile.email": { tr: "E-posta", en: "Email" },
+  "profile.emailReadonly": { tr: "E-posta adresi değiştirilemez", en: "Email address cannot be changed" },
+  "profile.name": { tr: "Ad Soyad", en: "Full Name" },
+  "profile.role": { tr: "Hesap Türü", en: "Account Type" },
+  "profile.roleWarning": { tr: "Rol değişikliği platformdaki erişiminizi değiştirir", en: "Changing role will affect your platform access" },
+  "profile.memberSince": { tr: "Üyelik Tarihi", en: "Member Since" },
+  "profile.save": { tr: "Kaydet", en: "Save" },
+  "profile.saving": { tr: "Kaydediliyor...", en: "Saving..." },
+  "profile.saved": { tr: "Profil başarıyla güncellendi!", en: "Profile updated successfully!" },
+  "profile.changePassword": { tr: "Şifre Değiştir", en: "Change Password" },
+
   // Footer
   "footer.about": { tr: "Hakkımızda", en: "About Us" },
   "footer.aboutText": { tr: "Here2Next, Türkiye'nin önde gelen kurumlarının startup-kurum işbirliğini güçlendirmek için kurduğu bir platformdur.", en: "Here2Next is a platform established by Turkey's leading corporations to strengthen startup-corporate collaboration." },
