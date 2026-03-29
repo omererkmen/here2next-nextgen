@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Rocket, Building2, Globe, MapPin, Users, DollarSign, Tag, FileText } from 'lucide-react';
+import { Rocket, Building2, Globe, MapPin, Users, DollarSign, Tag, FileText, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
 import { sectors } from '@/lib/constants';
+import { logActivity } from '@/lib/activityLog';
 
 export default function OnboardingPage() {
   const { lang } = useLang();
@@ -20,6 +21,7 @@ export default function OnboardingPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState(1);
+  const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Common fields
@@ -120,6 +122,8 @@ export default function OnboardingPage() {
           location,
           website,
           tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+          status: 'pending',
+          featured: false,
         });
         if (error) {
           alert(error.message);
@@ -136,6 +140,8 @@ export default function OnboardingPage() {
           description_en: descriptionEn,
           location,
           website,
+          status: 'pending',
+          is_founder: false,
         });
         if (error) {
           alert(error.message);
@@ -144,7 +150,8 @@ export default function OnboardingPage() {
         }
       }
 
-      router.push('/dashboard');
+      await logActivity('signup', { onboarding_completed: true, role, company: name, sector, status: 'pending' });
+      setSubmitted(true);
     } catch (err) {
       alert('Bir hata oluştu');
     } finally {
@@ -161,6 +168,31 @@ export default function OnboardingPage() {
   }
 
   const isStartup = role === 'startup';
+
+  if (submitted) {
+    return (
+      <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50 py-8 px-4">
+        <Card className="max-w-md w-full">
+          <CardContent className="p-8 text-center">
+            <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="text-emerald-600" size={32} />
+            </div>
+            <h1 className="text-2xl font-bold mb-3">
+              {lang === 'tr' ? 'Başvurunuz Alındı!' : 'Application Received!'}
+            </h1>
+            <p className="text-gray-600 mb-6">
+              {lang === 'tr'
+                ? 'Profiliniz inceleme için gönderildi. Admin onayından sonra platformda yayınlanacaktır.'
+                : 'Your profile has been submitted for review. It will be published on the platform after admin approval.'}
+            </p>
+            <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => router.push('/')}>
+              {lang === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
+            </Button>
+          </CardContent>
+        </Card>
+      </main>
+    );
+  }
 
   return (
     <main className="w-full min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 py-12 px-4">

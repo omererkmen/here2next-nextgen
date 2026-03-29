@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Plus, Building2, Users, Calendar, FileText, TrendingUp, Clock, Rocket, ListChecks, Zap, MessageSquareWarning, Activity } from 'lucide-react';
+import { Plus, Building2, Users, Calendar, FileText, TrendingUp, Clock, Rocket, ListChecks, Zap, MessageSquareWarning, Activity, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -204,6 +204,12 @@ export default function AdminPage() {
               <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2 border-orange-200 hover:bg-orange-50">
                 <MessageSquareWarning size={24} className="text-orange-600" />
                 <span>{lang === 'tr' ? `Geri Bildirim (${stats.feedback})` : `Feedback (${stats.feedback})`}</span>
+              </Button>
+            </Link>
+            <Link href="/admin/approvals">
+              <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2 border-amber-200 hover:bg-amber-50">
+                <ShieldCheck size={24} className="text-amber-600" />
+                <span>{lang === 'tr' ? 'Onay Bekleyenler' : 'Pending Approvals'}</span>
               </Button>
             </Link>
             <Link href="/admin/logs">
