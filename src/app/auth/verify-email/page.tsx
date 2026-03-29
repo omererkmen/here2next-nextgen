@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,7 +9,7 @@ import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
 import { Mail, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const { t } = useLang();
   const searchParams = useSearchParams();
   const email = searchParams.get('email') || '';
@@ -131,5 +131,17 @@ export default function VerifyEmailPage() {
         </Card>
       </div>
     </main>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={
+      <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50">
+        <div className="text-gray-500">Yükleniyor...</div>
+      </main>
+    }>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
