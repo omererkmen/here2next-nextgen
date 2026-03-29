@@ -171,6 +171,7 @@ export default function DashboardPage() {
   const isStartup = profile?.role === 'startup';
   const isCorporate = profile?.role === 'corporate';
   const isInvestor = profile?.role === 'investor';
+  const isAdmin = profile?.role === 'admin';
   const hasCompany = !!company;
   const pendingRequests = matchRequests.filter(r => r.status === 'pending').length;
   const unreadMessages = messages.filter(m => !m.is_read && m.receiver_id === profile?.id).length;
@@ -209,7 +210,7 @@ export default function DashboardPage() {
               <h1 className="text-3xl font-bold mb-1">{company?.name || profile?.full_name}</h1>
               <div className="flex items-center gap-3 mb-2">
                 <Badge variant="secondary">
-                  {isStartup ? 'Startup' : isInvestor ? (lang === 'tr' ? 'Yatırımcı' : 'Investor') : (lang === 'tr' ? 'Kurumsal' : 'Corporate')}
+                  {isAdmin ? 'Admin' : isStartup ? 'Startup' : isInvestor ? (lang === 'tr' ? 'Yatırımcı' : 'Investor') : (lang === 'tr' ? 'Kurumsal' : 'Corporate')}
                 </Badge>
                 {isStartup && company?.stage && (
                   <Badge variant="outline">{stageLabels[company.stage as keyof typeof stageLabels]}</Badge>
