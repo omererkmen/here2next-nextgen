@@ -115,7 +115,7 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
         <div
           ref={ref}
           className={cn(
-            `fixed top-0 z-50 h-full w-3/4 border border-slate-200 bg-white p-6 shadow-lg transition-transform duration-200 ease-in-out dark:border-slate-800 dark:bg-slate-950 sm:max-w-sm`,
+            `fixed top-0 z-50 h-full w-3/4 border border-slate-200 bg-white p-6 shadow-lg transition-transform duration-200 ease-in-out sm:max-w-sm`,
             side === "left" ? "left-0" : "right-0",
             className
           )}
