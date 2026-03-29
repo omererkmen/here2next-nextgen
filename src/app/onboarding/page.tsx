@@ -11,7 +11,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { Badge } from '@/components/ui/badge';
 import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
-import { sectors } from '@/lib/constants';
+import { sectors, fundingStatuses } from '@/lib/constants';
 import { logActivity } from '@/lib/activityLog';
 
 export default function OnboardingPage() {
@@ -36,6 +36,7 @@ export default function OnboardingPage() {
   const [stage, setStage] = useState('seed');
   const [foundedYear, setFoundedYear] = useState(new Date().getFullYear().toString());
   const [teamSize, setTeamSize] = useState('5');
+  const [fundingStatus, setFundingStatus] = useState('no_funding');
   const [funding, setFunding] = useState('');
   const [tags, setTags] = useState('');
 
@@ -124,7 +125,8 @@ export default function OnboardingPage() {
           description_en: descriptionEn,
           founded_year: parseInt(foundedYear),
           team_size: parseInt(teamSize),
-          funding,
+          funding_status: fundingStatus,
+          funding: fundingStatus === 'funded' ? funding : '',
           location,
           website,
           tags: tags.split(',').map(t => t.trim()).filter(Boolean),
@@ -329,9 +331,21 @@ export default function OnboardingPage() {
                       <div>
                         <label className="block text-sm font-medium text-gray-900 mb-1.5">
                           <DollarSign size={14} className="inline mr-1" />
-                          {lang === 'tr' ? 'Toplam Yatırım' : 'Total Funding'}
+                          {lang === 'tr' ? 'Yatırım Durumu' : 'Funding Status'}
                         </label>
-                        <Input value={funding} onChange={(e) => setFunding(e.target.value)} placeholder="$500K" />
+                        <Select value={fundingStatus} onValueChange={setFundingStatus}>
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            {fundingStatuses.map(fs => (
+                              <SelectItem key={fs.value} value={fs.value}>
+                                {lang === 'tr' ? fs.label.tr : fs.label.en}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {fundingStatus === 'funded' && (
+                          <Input className="mt-2" value={funding} onChange={(e) => setFunding(e.target.value)} placeholder={lang === 'tr' ? 'Toplam yatırım miktarı (ör: $500K)' : 'Total funding amount (e.g. $500K)'} />
+                        )}
                       </div>
                     </div>
                   </>

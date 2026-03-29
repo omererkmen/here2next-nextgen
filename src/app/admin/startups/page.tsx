@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
-import { sectors, stages } from '@/lib/constants';
+import { sectors, stages, fundingStatuses } from '@/lib/constants';
 
 interface Startup {
   id: string;
@@ -25,6 +25,7 @@ interface Startup {
   description_en: string;
   founded_year: number;
   team_size: number;
+  funding_status: string;
   funding: string;
   created_at: string;
 }
@@ -57,7 +58,7 @@ export default function AdminStartupsPage() {
       name: s.name, sector: s.sector, stage: s.stage, location: s.location,
       website: s.website, status: s.status, description_tr: s.description_tr,
       description_en: s.description_en, founded_year: s.founded_year,
-      team_size: s.team_size, funding: s.funding,
+      team_size: s.team_size, funding_status: s.funding_status, funding: s.funding,
     });
   }
 
@@ -202,8 +203,16 @@ export default function AdminStartupsPage() {
                           <Input type="number" value={editData.team_size || ''} onChange={(e) => setEditData({ ...editData, team_size: parseInt(e.target.value) })} />
                         </div>
                         <div>
-                          <label className="text-xs font-medium text-gray-600 mb-1 block">{lang === 'tr' ? 'Yatırım' : 'Funding'}</label>
-                          <Input value={editData.funding || ''} onChange={(e) => setEditData({ ...editData, funding: e.target.value })} />
+                          <label className="text-xs font-medium text-gray-600 mb-1 block">{lang === 'tr' ? 'Yatırım Durumu' : 'Funding Status'}</label>
+                          <Select value={editData.funding_status || 'no_funding'} onValueChange={(v) => setEditData({ ...editData, funding_status: v })}>
+                            <SelectTrigger><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                              {fundingStatuses.map(fs => <SelectItem key={fs.value} value={fs.value}>{lang === 'tr' ? fs.label.tr : fs.label.en}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                          {editData.funding_status === 'funded' && (
+                            <Input className="mt-2" value={editData.funding || ''} onChange={(e) => setEditData({ ...editData, funding: e.target.value })} placeholder={lang === 'tr' ? 'Toplam yatırım (ör: $500K)' : 'Total funding (e.g. $500K)'} />
+                          )}
                         </div>
                       </div>
                       <div>

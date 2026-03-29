@@ -19,6 +19,18 @@ export const stageLabels: Record<string, string> = {
   series_c_plus: "Series C+",
 };
 
+export const fundingStatuses = [
+  { value: "no_funding", label: { tr: "Yatırım Almadı", en: "No Funding" } },
+  { value: "raising", label: { tr: "Yatırım Turunda", en: "Currently Raising" } },
+  { value: "funded", label: { tr: "Yatırım Aldı", en: "Funded" } },
+];
+
+export const fundingLabels: Record<string, { tr: string; en: string }> = {
+  no_funding: { tr: "Yatırım Almadı", en: "No Funding" },
+  raising: { tr: "Yatırım Turunda", en: "Currently Raising" },
+  funded: { tr: "Yatırım Aldı", en: "Funded" },
+};
+
 export const eventTypeColors: Record<string, string> = {
   summit: "bg-emerald-50 text-emerald-700",
   pitstop: "bg-blue-50 text-blue-700",
