@@ -54,8 +54,8 @@ export default function Footer() {
             <h3 className="font-semibold text-white mb-4">{t("footer.contact")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="mailto:info@here2next.com" className="hover:text-[#2A5CB8] transition-colors">
-                  info@here2next.com
+                <a href="mailto:h2n@here2next.org" className="hover:text-[#2A5CB8] transition-colors">
+                  h2n@here2next.org
                 </a>
               </li>
               <li>
