@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useLang } from "@/context/LanguageContext";
 
 export default function Footer() {
@@ -14,10 +15,7 @@ export default function Footer() {
           {/* About Column */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 bg-[#102668] rounded flex items-center justify-center text-white font-bold text-xs">
-                H2N
-              </div>
-              <span className="font-bold text-white">Here2Next</span>
+              <Image src="/logo.png" alt="Here2Next" width={120} height={37} className="h-8 w-auto brightness-0 invert" />
             </div>
             <p className="text-sm text-slate-400">
               {t("footer.aboutText")}

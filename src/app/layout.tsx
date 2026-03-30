@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   title: "Here2Next NextGen - Startup & Kurum İşbirliği Platformu",
   description:
     "Here2Next üyeleri için startup-kurum işbirliğini kolaylaştıran platform. Keşfet, eşleş, büyü.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({

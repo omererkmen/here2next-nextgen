@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { logActivity } from "@/lib/activityLog";
 import { createClient } from "@/lib/supabase/client";
+import Image from "next/image";
 
 const navItems = [
   { href: "/", key: "nav.home", icon: null },
@@ -72,16 +73,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-            <div className="w-10 h-10 bg-[#183690] rounded flex items-center justify-center text-white font-bold text-sm">
-              H2N
-            </div>
-            <div className="hidden sm:flex items-center gap-2">
-              <span className="font-bold text-slate-900">Here2Next</span>
-              <Badge variant="secondary" className="text-xs">
-                NextGen
-              </Badge>
-            </div>
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+            <Image src="/logo.png" alt="Here2Next" width={140} height={43} className="h-9 w-auto" priority />
+            <Badge variant="secondary" className="text-xs hidden sm:inline-flex">
+              NextGen
+            </Badge>
           </Link>
 
           {/* Desktop Navigation */}

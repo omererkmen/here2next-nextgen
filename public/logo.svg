@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100">
+  <!-- "here" text -->
+  <text x="0" y="78" font-family="Poppins, Arial, sans-serif" font-weight="800" font-size="72" fill="#183690" letter-spacing="-2">here</text>
+
+  <!-- "2" with decorative accents -->
+  <g transform="translate(178, 8)">
+    <!-- Main "2" -->
+    <text x="0" y="70" font-family="Poppins, Arial, sans-serif" font-weight="800" font-size="72" fill="#edac46">2</text>
+    <!-- Cyan arc accent (top-right of 2) -->
+    <path d="M 38 12 A 14 14 0 0 1 50 26" stroke="#5093b6" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <!-- Gold arc accent (top of 2) -->
+    <path d="M 22 6 A 18 18 0 0 1 38 12" stroke="#edac46" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <!-- Green triangle accent (bottom-left of 2) -->
+    <polygon points="8,78 20,78 14,66" fill="#8cb45b"/>
+    <!-- Pink bar accent (bottom of 2) -->
+    <rect x="4" y="82" width="28" height="8" rx="2" fill="#c848aa"/>
+  </g>
+
+  <!-- "next" text -->
+  <text x="228" y="78" font-family="Poppins, Arial, sans-serif" font-weight="800" font-size="72" fill="#edac46" letter-spacing="-2">next</text>
+</svg>
