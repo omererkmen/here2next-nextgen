@@ -11,6 +11,7 @@ type LogAction =
   | 'match_request'
   | 'wishlist_apply'
   | 'event_register'
+  | 'role_change'
   | 'error';
 
 export async function logActivity(
