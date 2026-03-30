@@ -18,7 +18,7 @@ const stats = [
 const stakeholders = [
   "Kuveyt Türk Ventures", "Sun Tekstil", "Aktif Ventures", "C Ventures",
   "Yıldız Ventures", "Vestel Ventures", "Tüpraş", "Farklabs",
-  "Migros", "EnerjiSA", "Bsch"
+  "Migros", "EnerjiSA", "BSH"
 ];
 
 const startupsReviewed = [
