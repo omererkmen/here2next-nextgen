@@ -56,7 +56,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50 py-8 px-4">
+    <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4">
       <div className="w-full max-w-md">
         <Card>
           <CardContent className="p-8">
@@ -101,7 +101,7 @@ export default function LoginPage() {
               <div className="flex justify-end">
                 <Link
                   href="/auth/forgot-password"
-                  className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                  className="text-sm text-[#1B3A7B] hover:text-[#122858] font-medium"
                 >
                   {t('auth.login.forgotPassword')}
                 </Link>
@@ -110,7 +110,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-emerald-600 hover:bg-emerald-700"
+                className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
               >
                 {loading ? t('auth.login.loading') : t('auth.login.submit')}
               </Button>
@@ -119,7 +119,7 @@ export default function LoginPage() {
             <div className="mt-6 pt-6 border-t text-center">
               <p className="text-sm text-gray-600">
                 {t('auth.login.noAccount')}{' '}
-                <Link href="/register" className="text-emerald-600 hover:text-emerald-700 font-semibold">
+                <Link href="/register" className="text-[#1B3A7B] hover:text-[#122858] font-semibold">
                   {t('auth.register.title')}
                 </Link>
               </p>

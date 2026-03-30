@@ -179,11 +179,11 @@ export default function OnboardingPage() {
 
   if (submitted) {
     return (
-      <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50 py-8 px-4">
+      <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4">
         <Card className="max-w-md w-full">
           <CardContent className="p-8 text-center">
-            <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="text-emerald-600" size={32} />
+            <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="text-[#1B3A7B]" size={32} />
             </div>
             <h1 className="text-2xl font-bold mb-3">
               {lang === 'tr' ? 'Başvurunuz Alındı!' : 'Application Received!'}
@@ -193,7 +193,7 @@ export default function OnboardingPage() {
                 ? 'Profiliniz inceleme için gönderildi. Admin onayından sonra platformda yayınlanacaktır.'
                 : 'Your profile has been submitted for review. It will be published on the platform after admin approval.'}
             </p>
-            <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => router.push('/')}>
+            <Button className="bg-[#1B3A7B] hover:bg-[#122858]" onClick={() => router.push('/')}>
               {lang === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
             </Button>
           </CardContent>
@@ -203,12 +203,12 @@ export default function OnboardingPage() {
   }
 
   return (
-    <main className="w-full min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 py-12 px-4">
+    <main className="w-full min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 mb-4">
-            {isStartup ? <Rocket className="text-emerald-600" size={32} /> : <Building2 className="text-emerald-600" size={32} />}
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
+            {isStartup ? <Rocket className="text-[#1B3A7B]" size={32} /> : <Building2 className="text-[#1B3A7B]" size={32} />}
           </div>
           <h1 className="text-3xl font-bold mb-2">
             {lang === 'tr'
@@ -227,7 +227,7 @@ export default function OnboardingPage() {
           {[1, 2].map((s) => (
             <div
               key={s}
-              className={`h-2 rounded-full transition-all ${s <= step ? 'bg-emerald-500 w-16' : 'bg-gray-200 w-8'}`}
+              className={`h-2 rounded-full transition-all ${s <= step ? 'bg-[#1B3A7B] w-16' : 'bg-gray-200 w-8'}`}
             />
           ))}
         </div>
@@ -236,7 +236,7 @@ export default function OnboardingPage() {
         <div className="text-center mb-8">
           <button
             onClick={() => router.push('/dashboard')}
-            className="text-sm text-gray-500 hover:text-emerald-600 underline underline-offset-2 transition-colors"
+            className="text-sm text-gray-500 hover:text-[#1B3A7B] underline underline-offset-2 transition-colors"
           >
             {lang === 'tr' ? 'Daha sonra tamamla, atla →' : 'Complete later, skip →'}
           </button>
@@ -351,7 +351,7 @@ export default function OnboardingPage() {
                   </>
                 )}
 
-                <Button onClick={handleStep1Next} className="w-full bg-emerald-600 hover:bg-emerald-700 mt-2">
+                <Button onClick={handleStep1Next} className="w-full bg-[#1B3A7B] hover:bg-[#122858] mt-2">
                   {lang === 'tr' ? 'Devam Et' : 'Continue'}
                 </Button>
               </div>
@@ -417,7 +417,7 @@ export default function OnboardingPage() {
                   <Button
                     onClick={handleSubmit}
                     disabled={submitting}
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                    className="flex-1 bg-[#1B3A7B] hover:bg-[#122858]"
                   >
                     {submitting
                       ? (lang === 'tr' ? 'Kaydediliyor...' : 'Saving...')

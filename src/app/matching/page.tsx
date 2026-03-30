@@ -102,7 +102,7 @@ export default function MatchingPage() {
   return (
     <main className="w-full">
       {/* Header Banner */}
-      <section className="bg-gradient-to-r from-emerald-800 to-teal-700 text-white py-12 sm:py-16">
+      <section className="bg-gradient-to-r from-[#122858] to-[#2A4FA0] text-white py-12 sm:py-16">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-4">
             <Zap size={28} />
@@ -110,7 +110,7 @@ export default function MatchingPage() {
               {lang === 'tr' ? 'AI Destekli Eşleşme Sonuçları' : 'AI-Powered Matching Results'}
             </h1>
           </div>
-          <p className="text-emerald-50 max-w-2xl">
+          <p className="text-blue-50 max-w-2xl">
             {lang === 'tr'
               ? `Profilinize ve ihtiyaçlarınıza göre ${matches.length} yüksek potansiyelli ortaklık belirledik.`
               : `We've identified ${matches.length} high-potential partnerships based on your profile and needs.`}
@@ -145,11 +145,11 @@ export default function MatchingPage() {
                       {/* Center: Score */}
                       <div className="flex flex-col items-center gap-4">
                         <div className="text-center">
-                          <div className="text-4xl font-bold text-emerald-600 mb-2">{match.score}%</div>
+                          <div className="text-4xl font-bold text-[#1B3A7B] mb-2">{match.score}%</div>
                           <p className="text-sm text-gray-600 mb-3">{lang === 'tr' ? 'Eşleşme Skoru' : 'Match Score'}</p>
                           <Progress value={match.score} className="w-full" />
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-emerald-600 font-semibold">
+                        <div className="flex items-center gap-2 text-sm text-[#1B3A7B] font-semibold">
                           <CheckCircle size={16} /> {lang === 'tr' ? 'Güçlü Eşleşme' : 'Great match'}
                         </div>
                       </div>
@@ -174,7 +174,7 @@ export default function MatchingPage() {
                       <ul className="space-y-2">
                         {(lang === 'tr' ? match.reasons_tr : match.reasons_en ?? []).map((reason: string, idx: number) => (
                           <li key={idx} className="flex items-start gap-3 text-sm text-gray-600">
-                            <span className="text-emerald-600 font-bold mt-0.5">•</span>
+                            <span className="text-[#1B3A7B] font-bold mt-0.5">•</span>
                             {reason}
                           </li>
                         ))}
@@ -190,7 +190,7 @@ export default function MatchingPage() {
                         </Button>
                       ) : (
                         <Button
-                          className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                          className="flex-1 bg-[#1B3A7B] hover:bg-[#122858]"
                           onClick={() => handleConnect(match)}
                           disabled={isConnecting}
                         >
@@ -213,7 +213,7 @@ export default function MatchingPage() {
       </section>
 
       {/* AI Explanation */}
-      <section className="py-8 sm:py-12 bg-gradient-to-br from-emerald-50 to-teal-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <Card>
             <CardContent className="p-6">

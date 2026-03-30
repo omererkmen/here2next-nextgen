@@ -83,7 +83,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50 py-8 px-4">
+    <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4">
       <div className="w-full max-w-md">
         <Card>
           <CardContent className="p-8">
@@ -166,7 +166,7 @@ export default function RegisterPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-emerald-600 hover:bg-emerald-700"
+                className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
               >
                 {loading ? t('auth.register.loading') : t('auth.register.submit')}
               </Button>
@@ -175,7 +175,7 @@ export default function RegisterPage() {
             <div className="mt-6 pt-6 border-t text-center">
               <p className="text-sm text-gray-600">
                 {t('auth.register.hasAccount')}{' '}
-                <Link href="/login" className="text-emerald-600 hover:text-emerald-700 font-semibold">
+                <Link href="/login" className="text-[#1B3A7B] hover:text-[#122858] font-semibold">
                   {t('auth.login.title')}
                 </Link>
               </p>

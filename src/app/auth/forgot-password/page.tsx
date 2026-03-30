@@ -46,14 +46,14 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50 py-8 px-4">
+    <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4">
       <div className="w-full max-w-md">
         <Card>
           <CardContent className="p-8">
             {sent ? (
               <div className="text-center">
-                <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
-                  <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+                <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                  <CheckCircle2 className="w-8 h-8 text-[#1B3A7B]" />
                 </div>
                 <h1 className="text-2xl font-bold mb-2 text-gray-900">
                   {t('auth.forgot.sentTitle')}
@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
                 <p className="text-gray-600 mb-2">
                   {t('auth.forgot.sentDescription')}
                 </p>
-                <p className="text-emerald-700 font-semibold mb-6">{email}</p>
+                <p className="text-[#1B3A7B] font-semibold mb-6">{email}</p>
                 <p className="text-sm text-gray-500 mb-6">{t('auth.forgot.checkSpam')}</p>
                 <Link href="/login">
                   <Button variant="outline" className="w-full">
@@ -73,8 +73,8 @@ export default function ForgotPasswordPage() {
             ) : (
               <>
                 <div className="text-center mb-8">
-                  <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
-                    <Mail className="w-8 h-8 text-emerald-600" />
+                  <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                    <Mail className="w-8 h-8 text-[#1B3A7B]" />
                   </div>
                   <h1 className="text-2xl font-bold mb-2 text-gray-900">
                     {t('auth.forgot.title')}
@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700"
+                    className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
                   >
                     {loading ? t('auth.forgot.loading') : t('auth.forgot.submit')}
                   </Button>
@@ -114,7 +114,7 @@ export default function ForgotPasswordPage() {
                 <div className="mt-6 pt-6 border-t text-center">
                   <Link
                     href="/login"
-                    className="text-sm text-emerald-600 hover:text-emerald-700 font-semibold inline-flex items-center gap-1"
+                    className="text-sm text-[#1B3A7B] hover:text-[#1B3A7B] font-semibold inline-flex items-center gap-1"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />
                     {t('auth.forgot.backToLogin')}

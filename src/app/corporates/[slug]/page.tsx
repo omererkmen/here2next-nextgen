@@ -107,7 +107,7 @@ export default function CorporateDetailPage() {
   return (
     <main className="w-full">
       {/* Hero */}
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-emerald-50 to-teal-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <button onClick={() => router.back()} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6">
             <ArrowLeft size={18} /> {lang === 'tr' ? 'Geri' : 'Back'}
@@ -153,7 +153,7 @@ export default function CorporateDetailPage() {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <ListChecks className="text-emerald-600" size={20} />
+                    <ListChecks className="text-[#1B3A7B]" size={20} />
                     <h3 className="font-semibold text-lg">
                       {lang === 'tr' ? 'İhtiyaç Listesi' : 'Wishlist'} ({wishlistItems.length})
                     </h3>
@@ -208,7 +208,7 @@ export default function CorporateDetailPage() {
                             <p className="text-xs text-gray-600">{match.startup_sector}</p>
                             <div className="flex items-center gap-2 mt-1">
                               <Progress value={match.score} className="h-2 flex-1" />
-                              <span className="text-sm font-semibold text-emerald-600">{match.score}%</span>
+                              <span className="text-sm font-semibold text-[#1B3A7B]">{match.score}%</span>
                             </div>
                           </div>
                           <Badge className={
@@ -236,7 +236,7 @@ export default function CorporateDetailPage() {
                       href={corporate.website.startsWith('http') ? corporate.website : `https://${corporate.website}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-emerald-600 hover:text-emerald-700"
+                      className="flex items-center gap-2 text-[#1B3A7B] hover:text-[#1B3A7B]"
                     >
                       <Globe size={16} /> {corporate.website} <ExternalLink size={12} />
                     </a>
@@ -244,7 +244,7 @@ export default function CorporateDetailPage() {
 
                   {/* Get in Touch Button */}
                   <Button
-                    className="w-full bg-emerald-600 hover:bg-emerald-700"
+                    className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
                     onClick={() => {
                       if (!currentUser) { router.push('/login'); return; }
                       setMsgOpen(!msgOpen);
@@ -258,19 +258,19 @@ export default function CorporateDetailPage() {
                   {msgOpen && (
                     <div className="space-y-3 pt-2 border-t">
                       <textarea
-                        className="w-full min-h-[80px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        className="w-full min-h-[80px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2A4FA0] focus:border-[#2A4FA0]"
                         placeholder={lang === 'tr' ? 'Mesajınızı yazın...' : 'Write your message...'}
                         value={msgText}
                         onChange={(e) => setMsgText(e.target.value)}
                       />
                       {msgSent ? (
-                        <div className="flex items-center gap-2 text-emerald-600 text-sm font-medium">
+                        <div className="flex items-center gap-2 text-[#1B3A7B] text-sm font-medium">
                           <CheckCircle size={16} />
                           {lang === 'tr' ? 'Mesaj gönderildi!' : 'Message sent!'}
                         </div>
                       ) : (
                         <Button
-                          className="w-full bg-emerald-600 hover:bg-emerald-700"
+                          className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
                           onClick={handleSendMessage}
                           disabled={msgLoading || !msgText.trim()}
                         >

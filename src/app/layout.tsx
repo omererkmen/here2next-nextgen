@@ -1,8 +1,16 @@
 import type { Metadata, Viewport } from "next";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-poppins",
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -23,10 +31,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr" className="h-full antialiased">
+    <html lang="tr" className={`h-full antialiased ${poppins.variable}`}>
       <body
         className="min-h-full flex flex-col bg-white"
-        style={{ fontFamily: "'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif" }}
+        style={{ fontFamily: "var(--font-poppins), 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif" }}
       >
         <LanguageProvider>
           <Navbar />

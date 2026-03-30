@@ -181,7 +181,7 @@ export default function DashboardPage() {
       case 'pending': return 'bg-amber-100 text-amber-700 border-0';
       case 'accepted': return 'bg-green-100 text-green-700 border-0';
       case 'rejected': return 'bg-red-100 text-red-700 border-0';
-      case 'connected': return 'bg-emerald-100 text-emerald-700 border-0';
+      case 'connected': return 'bg-blue-100 text-[#1B3A7B] border-0';
       default: return 'bg-gray-100 text-gray-700 border-0';
     }
   };
@@ -202,7 +202,7 @@ export default function DashboardPage() {
   return (
     <main className="w-full">
       {/* Header */}
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-emerald-50 to-teal-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-start gap-6">
             <AvatarPlaceholder name={company?.name || profile?.full_name || 'U'} size="xl" />
@@ -239,10 +239,10 @@ export default function DashboardPage() {
       {!hasCompany && (isStartup || isCorporate) && (
         <section className="py-6">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-            <Card className="border-emerald-200 bg-emerald-50/50">
+            <Card className="border-blue-200 bg-blue-50/50">
               <CardContent className="p-6 flex flex-col sm:flex-row items-center gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
-                  {isStartup ? <Rocket className="text-emerald-600" size={24} /> : <Building2 className="text-emerald-600" size={24} />}
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                  {isStartup ? <Rocket className="text-[#1B3A7B]" size={24} /> : <Building2 className="text-[#1B3A7B]" size={24} />}
                 </div>
                 <div className="flex-1 text-center sm:text-left">
                   <h3 className="font-semibold text-lg">
@@ -257,7 +257,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <Link href="/onboarding">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700 gap-2">
+                  <Button className="bg-[#1B3A7B] hover:bg-[#122858] gap-2">
                     {isStartup ? <Rocket size={16} /> : <Building2 size={16} />}
                     {lang === 'tr'
                       ? (isStartup ? 'Startup Ekle' : 'Kurum Ekle')
@@ -276,7 +276,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <Card>
               <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold text-emerald-600">{matches.length}</p>
+                <p className="text-3xl font-bold text-[#1B3A7B]">{matches.length}</p>
                 <p className="text-sm text-gray-600">{lang === 'tr' ? 'Eşleşme' : 'Matches'}</p>
               </CardContent>
             </Card>
@@ -384,7 +384,7 @@ export default function DashboardPage() {
                               <>
                                 <Button
                                   size="sm"
-                                  className="bg-emerald-600 hover:bg-emerald-700 gap-1"
+                                  className="bg-[#1B3A7B] hover:bg-[#122858] gap-1"
                                   onClick={() => handleMatchRequestAction(req.id, 'accepted')}
                                   disabled={updatingRequest === req.id}
                                 >
@@ -427,7 +427,7 @@ export default function DashboardPage() {
                         : (lang === 'tr' ? 'Henüz eşleşme talebi göndermediniz' : 'No match requests sent yet')}
                     </p>
                     <Link href="/matching">
-                      <Button className="mt-4 bg-emerald-600 hover:bg-emerald-700">
+                      <Button className="mt-4 bg-[#1B3A7B] hover:bg-[#122858]">
                         {lang === 'tr' ? 'Eşleşmelere Git' : 'View Matching'}
                       </Button>
                     </Link>
@@ -444,7 +444,7 @@ export default function DashboardPage() {
                     const isSent = msg.sender_id === profile?.id;
                     const otherPerson = isSent ? msg.receiver : msg.sender;
                     return (
-                      <Card key={msg.id} className={!msg.is_read && !isSent ? 'border-emerald-300 bg-emerald-50/30' : ''}>
+                      <Card key={msg.id} className={!msg.is_read && !isSent ? 'border-blue-300 bg-blue-50/30' : ''}>
                         <CardContent className="p-4">
                           <div className="flex items-start gap-4">
                             <AvatarPlaceholder name={otherPerson?.full_name || otherPerson?.email || '?'} size="sm" />
@@ -457,7 +457,7 @@ export default function DashboardPage() {
                                   {isSent ? (lang === 'tr' ? 'Gönderildi' : 'Sent') : (lang === 'tr' ? 'Gelen' : 'Received')}
                                 </Badge>
                                 {!msg.is_read && !isSent && (
-                                  <Badge className="bg-emerald-100 text-emerald-700 border-0 text-xs">
+                                  <Badge className="bg-blue-100 text-[#1B3A7B] border-0 text-xs">
                                     {lang === 'tr' ? 'Yeni' : 'New'}
                                   </Badge>
                                 )}
@@ -470,7 +470,7 @@ export default function DashboardPage() {
                             {isSent ? (
                               <Send size={16} className="text-gray-400 flex-shrink-0 mt-1" />
                             ) : (
-                              <Mail size={16} className="text-emerald-500 flex-shrink-0 mt-1" />
+                              <Mail size={16} className="text-blue-500 flex-shrink-0 mt-1" />
                             )}
                           </div>
                         </CardContent>
@@ -528,7 +528,7 @@ export default function DashboardPage() {
                       <Send className="mx-auto mb-4 text-gray-300" size={48} />
                       <p>{lang === 'tr' ? 'Henüz başvuru yapmadınız' : 'No applications yet'}</p>
                       <Link href="/wishlist">
-                        <Button className="mt-4 bg-emerald-600 hover:bg-emerald-700">
+                        <Button className="mt-4 bg-[#1B3A7B] hover:bg-[#122858]">
                           {lang === 'tr' ? 'Wishlist\'e Git' : 'Browse Wishlist'}
                         </Button>
                       </Link>
@@ -565,7 +565,7 @@ export default function DashboardPage() {
                       <ListChecks className="mx-auto mb-4 text-gray-300" size={48} />
                       <p>{lang === 'tr' ? 'Henüz gelen başvuru yok' : 'No incoming applications yet'}</p>
                       <Link href="/wishlist">
-                        <Button className="mt-4 bg-emerald-600 hover:bg-emerald-700">
+                        <Button className="mt-4 bg-[#1B3A7B] hover:bg-[#122858]">
                           {lang === 'tr' ? 'İhtiyaç Ekle' : 'Add a Need'}
                         </Button>
                       </Link>
@@ -586,14 +586,14 @@ export default function DashboardPage() {
                         <div className="flex-1">
                           <Link
                             href={isStartup ? `/corporates/${match.corporate_slug}` : `/startups/${match.startup_slug}`}
-                            className="font-medium hover:text-emerald-600 transition-colors"
+                            className="font-medium hover:text-[#1B3A7B] transition-colors"
                           >
                             {isStartup ? match.corporate_name : match.startup_name}
                           </Link>
                           {!isStartup && <p className="text-xs text-gray-600">{match.startup_sector}</p>}
                           <div className="flex items-center gap-2 mt-2">
                             <Progress value={match.score} className="h-2 flex-1 max-w-[200px]" />
-                            <span className="text-sm font-semibold text-emerald-600">{match.score}%</span>
+                            <span className="text-sm font-semibold text-[#1B3A7B]">{match.score}%</span>
                           </div>
                         </div>
                         <Badge className={statusColor(match.status)}>{statusLabel(match.status)}</Badge>
@@ -607,7 +607,7 @@ export default function DashboardPage() {
                     <Zap className="mx-auto mb-4 text-gray-300" size={48} />
                     <p>{lang === 'tr' ? 'Henüz eşleşme yok' : 'No matches yet'}</p>
                     <Link href="/matching">
-                      <Button className="mt-4 bg-emerald-600 hover:bg-emerald-700">
+                      <Button className="mt-4 bg-[#1B3A7B] hover:bg-[#122858]">
                         {lang === 'tr' ? 'Eşleşmelere Git' : 'View Matching'}
                       </Button>
                     </Link>
@@ -623,8 +623,8 @@ export default function DashboardPage() {
                   {events.map((reg) => (
                     <Card key={reg.id}>
                       <CardContent className="p-4 flex items-center gap-4">
-                        <div className="flex-shrink-0 w-14 h-14 rounded-lg bg-emerald-100 flex flex-col items-center justify-center">
-                          <Calendar className="text-emerald-600" size={20} />
+                        <div className="flex-shrink-0 w-14 h-14 rounded-lg bg-blue-100 flex flex-col items-center justify-center">
+                          <Calendar className="text-[#1B3A7B]" size={20} />
                         </div>
                         <div className="flex-1">
                           <h4 className="font-medium">{lang === 'tr' ? reg.events?.title_tr : reg.events?.title_en}</h4>
@@ -643,7 +643,7 @@ export default function DashboardPage() {
                     <Calendar className="mx-auto mb-4 text-gray-300" size={48} />
                     <p>{lang === 'tr' ? 'Henüz etkinlik kaydınız yok' : 'No event registrations yet'}</p>
                     <Link href="/events">
-                      <Button className="mt-4 bg-emerald-600 hover:bg-emerald-700">
+                      <Button className="mt-4 bg-[#1B3A7B] hover:bg-[#122858]">
                         {lang === 'tr' ? 'Etkinliklere Git' : 'Browse Events'}
                       </Button>
                     </Link>

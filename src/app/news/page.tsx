@@ -32,7 +32,7 @@ export default function NewsPage() {
 
   return (
     <main className="w-full">
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-emerald-50 to-teal-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl sm:text-4xl font-bold mb-2">Latest News</h1>
           <p className="text-gray-600">Stay updated with ecosystem developments</p>
@@ -50,13 +50,13 @@ export default function NewsPage() {
                   {featured.image_url ? (
                     <img src={featured.image_url} alt={featured.title_en} className="h-64 md:h-96 object-cover" />
                   ) : (
-                    <div className="h-64 md:h-96 bg-gradient-to-br from-emerald-500 to-teal-500" />
+                    <div className="h-64 md:h-96 bg-gradient-to-br from-[#2A4FA0] to-blue-500" />
                   )}
 
                   {/* Content */}
                   <div className="p-8 flex flex-col justify-between">
                     <div>
-                      <Badge className="mb-4 bg-emerald-100 text-emerald-700 border-0">
+                      <Badge className="mb-4 bg-blue-100 text-[#1B3A7B] border-0">
                         {featured.category}
                       </Badge>
                       <h2 className="text-2xl sm:text-3xl font-bold mb-4">{lang === 'tr' ? featured.title_tr : featured.title_en}</h2>
@@ -66,7 +66,7 @@ export default function NewsPage() {
                       <p className="text-sm text-gray-600">{new Date(featured.published_at).toLocaleDateString()}</p>
                       <Link
                         href={`/news/${featured.slug}`}
-                        className="text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-2"
+                        className="text-[#1B3A7B] hover:text-[#1B3A7B] font-semibold flex items-center gap-2"
                       >
                         Read More <ArrowRight size={18} />
                       </Link>
@@ -94,12 +94,12 @@ export default function NewsPage() {
                   {article.image_url ? (
                     <img src={article.image_url} alt={article.title_en} className="h-40 object-cover" />
                   ) : (
-                    <div className="h-40 bg-gradient-to-br from-emerald-500 to-teal-500" />
+                    <div className="h-40 bg-gradient-to-br from-[#2A4FA0] to-blue-500" />
                   )}
 
                   {/* Content */}
                   <div className="p-6">
-                    <Badge className="mb-3 bg-emerald-100 text-emerald-700 border-0 text-xs">
+                    <Badge className="mb-3 bg-blue-100 text-[#1B3A7B] border-0 text-xs">
                       {article.category}
                     </Badge>
                     <h3 className="font-bold text-lg mb-2 line-clamp-2">{lang === 'tr' ? article.title_tr : article.title_en}</h3>
@@ -108,7 +108,7 @@ export default function NewsPage() {
                       <p className="text-xs text-gray-600">{new Date(article.published_at).toLocaleDateString()}</p>
                       <Link
                         href={`/news/${article.slug}`}
-                        className="text-emerald-600 hover:text-emerald-700 text-sm font-semibold"
+                        className="text-[#1B3A7B] hover:text-[#1B3A7B] text-sm font-semibold"
                       >
                         →
                       </Link>

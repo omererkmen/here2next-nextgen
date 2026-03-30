@@ -73,7 +73,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-            <div className="w-10 h-10 bg-emerald-700 rounded flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-10 h-10 bg-[#1B3A7B] rounded flex items-center justify-center text-white font-bold text-sm">
               H2N
             </div>
             <div className="hidden sm:flex items-center gap-2">
@@ -93,7 +93,7 @@ export default function Navbar() {
                 className={cn(
                   "px-3 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-1.5",
                   isActive(href)
-                    ? "bg-emerald-50 text-emerald-800"
+                    ? "bg-blue-50 text-[#1B3A7B]"
                     : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
                 )}
               >
@@ -138,7 +138,7 @@ export default function Navbar() {
                             <Users className="w-4 h-4" />
                             {lang === 'tr' ? 'Kullanıcılar' : 'Users'}
                           </Link>
-                          <Link href="/admin/startups" className="flex items-center gap-2 px-4 py-2 text-sm text-emerald-700 hover:bg-emerald-50" onClick={() => setAdminMenuOpen(false)}>
+                          <Link href="/admin/startups" className="flex items-center gap-2 px-4 py-2 text-sm text-[#1B3A7B] hover:bg-emerald-50" onClick={() => setAdminMenuOpen(false)}>
                             <Rocket className="w-4 h-4" />
                             {lang === 'tr' ? 'Startup\'lar' : 'Startups'}
                           </Link>
@@ -183,7 +183,7 @@ export default function Navbar() {
                   </Link>
                   <Link href="/profile">
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-md hover:bg-slate-100 transition-colors cursor-pointer">
-                      <User className="w-4 h-4 text-emerald-700" />
+                      <User className="w-4 h-4 text-[#1B3A7B]" />
                       <span className="text-sm font-medium text-slate-700 max-w-[150px] truncate">{userName}</span>
                     </div>
                   </Link>
@@ -201,7 +201,7 @@ export default function Navbar() {
                     </Button>
                   </Link>
                   <Link href="/register">
-                    <Button size="sm" className="bg-emerald-700 hover:bg-emerald-800 gap-2">
+                    <Button size="sm" className="bg-[#1B3A7B] hover:bg-[#122858] gap-2">
                       <UserPlus className="w-4 h-4" />
                       {t("nav.signup")}
                     </Button>
@@ -236,7 +236,7 @@ export default function Navbar() {
                   className={cn(
                     "block px-3 py-2 rounded-md text-base font-medium transition-colors flex items-center gap-2",
                     isActive(href)
-                      ? "bg-emerald-50 text-emerald-800"
+                      ? "bg-blue-50 text-[#1B3A7B]"
                       : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
                   )}
                 >
@@ -261,7 +261,7 @@ export default function Navbar() {
                           </Button>
                         </Link>
                         <Link href="/admin/startups" onClick={() => setMobileOpen(false)}>
-                          <Button variant="ghost" size="sm" className="w-full gap-2 justify-start text-emerald-600">
+                          <Button variant="ghost" size="sm" className="w-full gap-2 justify-start text-[#F5A623]">
                             <Rocket className="w-4 h-4" /> {lang === 'tr' ? 'Startup\'lar' : 'Startups'}
                           </Button>
                         </Link>
@@ -292,7 +292,7 @@ export default function Navbar() {
                     </Link>
                     <Link href="/profile" onClick={() => setMobileOpen(false)}>
                       <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-md hover:bg-slate-100 transition-colors">
-                        <User className="w-4 h-4 text-emerald-700" />
+                        <User className="w-4 h-4 text-[#1B3A7B]" />
                         <span className="text-sm font-medium text-slate-700">{userName}</span>
                       </div>
                     </Link>
@@ -310,7 +310,7 @@ export default function Navbar() {
                       </Button>
                     </Link>
                     <Link href="/register" onClick={() => setMobileOpen(false)}>
-                      <Button size="sm" className="w-full bg-emerald-700 hover:bg-emerald-800 gap-2 justify-start">
+                      <Button size="sm" className="w-full bg-[#1B3A7B] hover:bg-[#122858] gap-2 justify-start">
                         <UserPlus className="w-4 h-4" />
                         {t("nav.signup")}
                       </Button>

@@ -14,7 +14,7 @@ export default function Footer() {
           {/* About Column */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 bg-emerald-700 rounded flex items-center justify-center text-white font-bold text-xs">
+              <div className="w-8 h-8 bg-[#122858] rounded flex items-center justify-center text-white font-bold text-xs">
                 H2N
               </div>
               <span className="font-bold text-white">Here2Next</span>
@@ -29,22 +29,22 @@ export default function Footer() {
             <h3 className="font-semibold text-white mb-4">{t("footer.links")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/startups" className="hover:text-emerald-400 transition-colors">
+                <Link href="/startups" className="hover:text-[#2A4FA0] transition-colors">
                   {t("nav.startups")}
                 </Link>
               </li>
               <li>
-                <Link href="/corporates" className="hover:text-emerald-400 transition-colors">
+                <Link href="/corporates" className="hover:text-[#2A4FA0] transition-colors">
                   {t("nav.corporates")}
                 </Link>
               </li>
               <li>
-                <Link href="/events" className="hover:text-emerald-400 transition-colors">
+                <Link href="/events" className="hover:text-[#2A4FA0] transition-colors">
                   {t("nav.events")}
                 </Link>
               </li>
               <li>
-                <Link href="/news" className="hover:text-emerald-400 transition-colors">
+                <Link href="/news" className="hover:text-[#2A4FA0] transition-colors">
                   {t("nav.news")}
                 </Link>
               </li>
@@ -56,12 +56,12 @@ export default function Footer() {
             <h3 className="font-semibold text-white mb-4">{t("footer.contact")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="mailto:info@here2next.com" className="hover:text-emerald-400 transition-colors">
+                <a href="mailto:info@here2next.com" className="hover:text-[#2A4FA0] transition-colors">
                   info@here2next.com
                 </a>
               </li>
               <li>
-                <a href="tel:+90212XXXXXXX" className="hover:text-emerald-400 transition-colors">
+                <a href="tel:+90212XXXXXXX" className="hover:text-[#2A4FA0] transition-colors">
                   +90 (212) XXX-XXXX
                 </a>
               </li>

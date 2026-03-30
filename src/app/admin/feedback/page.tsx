@@ -134,7 +134,7 @@ export default function AdminFeedbackPage() {
   return (
     <main className="w-full">
       {/* Header */}
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-emerald-50 to-teal-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <Link href="/admin" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4">
             <ArrowLeft size={18} /> {lang === 'tr' ? 'Admin Panel' : 'Admin Panel'}
@@ -276,14 +276,14 @@ export default function AdminFeedbackPage() {
                             {lang === 'tr' ? 'Admin Notu:' : 'Admin Notes:'}
                           </label>
                           <textarea
-                            className="w-full min-h-[60px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            className="w-full min-h-[60px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2A4FA0]"
                             placeholder={lang === 'tr' ? 'Yanıt veya not ekleyin...' : 'Add a response or note...'}
                             value={adminNotes[fb.id] || ''}
                             onChange={(e) => setAdminNotes(prev => ({ ...prev, [fb.id]: e.target.value }))}
                           />
                           <Button
                             size="sm"
-                            className="mt-2 bg-emerald-600 hover:bg-emerald-700 gap-1"
+                            className="mt-2 bg-[#1B3A7B] hover:bg-[#122858] gap-1"
                             onClick={() => handleSaveNotes(fb.id)}
                             disabled={savingId === fb.id}
                           >

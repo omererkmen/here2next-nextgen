@@ -179,7 +179,7 @@ export default function FeedbackPage() {
   return (
     <main className="w-full">
       {/* Header */}
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-emerald-50 to-teal-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-8">
           <button onClick={() => router.back()} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4">
             <ArrowLeft size={18} /> {lang === 'tr' ? 'Geri' : 'Back'}
@@ -200,7 +200,7 @@ export default function FeedbackPage() {
           {submitted ? (
             <Card>
               <CardContent className="p-8 text-center">
-                <CheckCircle className="mx-auto mb-4 text-emerald-500" size={48} />
+                <CheckCircle className="mx-auto mb-4 text-blue-500" size={48} />
                 <h2 className="text-xl font-bold mb-2">
                   {lang === 'tr' ? 'Teşekkürler!' : 'Thank you!'}
                 </h2>
@@ -263,7 +263,7 @@ export default function FeedbackPage() {
                     {lang === 'tr' ? 'Açıklama' : 'Description'} <span className="text-red-500">*</span>
                   </label>
                   <textarea
-                    className={`w-full min-h-[120px] rounded-md border ${errors.description ? 'border-red-500' : 'border-gray-300'} bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500`}
+                    className={`w-full min-h-[120px] rounded-md border ${errors.description ? 'border-red-500' : 'border-gray-300'} bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2A4FA0] focus:border-[#2A4FA0]`}
                     placeholder={
                       type === 'bug' ? (lang === 'tr' ? 'Ne olması gerekiyordu? Ne oldu? Adımları yazın...' : 'What was expected? What happened? Steps to reproduce...')
                       : type === 'feature' ? (lang === 'tr' ? 'Bu özellik ne işe yarar? Neden gerekli?' : 'What would this feature do? Why is it needed?')
@@ -314,7 +314,7 @@ export default function FeedbackPage() {
 
                 {/* Submit */}
                 <Button
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 h-12 text-base"
+                  className="w-full bg-[#1B3A7B] hover:bg-[#122858] h-12 text-base"
                   onClick={handleSubmit}
                   disabled={submitting}
                 >
@@ -332,11 +332,11 @@ export default function FeedbackPage() {
           {isAdmin && allFeedback.length > 0 && (
             <div className="mt-10">
               <div className="flex items-center gap-2 mb-4">
-                <Shield size={20} className="text-emerald-700" />
+                <Shield size={20} className="text-[#1B3A7B]" />
                 <h2 className="text-xl font-bold">
                   {lang === 'tr' ? 'Tüm Geri Bildirimler (Admin)' : 'All Feedback (Admin)'}
                 </h2>
-                <Badge className="bg-emerald-100 text-emerald-800 border-0">{allFeedback.length}</Badge>
+                <Badge className="bg-blue-100 text-[#122858] border-0">{allFeedback.length}</Badge>
               </div>
 
               {(['bug', 'feature', 'comment'] as const).map((category) => {
@@ -440,8 +440,8 @@ export default function FeedbackPage() {
                             </div>
                             <p className="text-sm text-gray-600 line-clamp-2">{fb.description}</p>
                             {fb.admin_notes && (
-                              <div className="mt-2 p-2 bg-emerald-50 rounded text-sm">
-                                <span className="font-medium text-emerald-700">
+                              <div className="mt-2 p-2 bg-blue-50 rounded text-sm">
+                                <span className="font-medium text-[#1B3A7B]">
                                   {lang === 'tr' ? 'Admin yanıtı: ' : 'Admin response: '}
                                 </span>
                                 {fb.admin_notes}

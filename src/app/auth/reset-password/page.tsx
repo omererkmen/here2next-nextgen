@@ -62,14 +62,14 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50 py-8 px-4">
+    <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4">
       <div className="w-full max-w-md">
         <Card>
           <CardContent className="p-8">
             {success ? (
               <div className="text-center">
-                <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
-                  <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+                <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                  <CheckCircle2 className="w-8 h-8 text-[#1B3A7B]" />
                 </div>
                 <h1 className="text-2xl font-bold mb-2 text-gray-900">
                   {t('auth.reset.successTitle')}
@@ -81,8 +81,8 @@ export default function ResetPasswordPage() {
             ) : (
               <>
                 <div className="text-center mb-8">
-                  <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
-                    <Lock className="w-8 h-8 text-emerald-600" />
+                  <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                    <Lock className="w-8 h-8 text-[#1B3A7B]" />
                   </div>
                   <h1 className="text-2xl font-bold mb-2 text-gray-900">
                     {t('auth.reset.title')}
@@ -128,7 +128,7 @@ export default function ResetPasswordPage() {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700"
+                    className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
                   >
                     {loading ? t('auth.reset.loading') : t('auth.reset.submit')}
                   </Button>

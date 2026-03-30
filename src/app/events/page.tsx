@@ -52,11 +52,11 @@ export default function EventsPage() {
           <div className="flex flex-col md:flex-row gap-0 md:gap-6 p-6">
             {/* Date Block */}
             <div className="flex-shrink-0 md:w-24 text-center">
-              <div className="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-lg p-4">
+              <div className="bg-gradient-to-br from-blue-100 to-teal-100 rounded-lg p-4">
                 <p className="text-sm text-gray-600">
                   {dateObj.toLocaleDateString('en-US', { month: 'short' })}
                 </p>
-                <p className="text-2xl font-bold text-emerald-700">
+                <p className="text-2xl font-bold text-[#1B3A7B]">
                   {dateObj.getDate()}
                 </p>
                 <p className="text-xs text-gray-600">
@@ -93,7 +93,7 @@ export default function EventsPage() {
             {/* CTA */}
             <div className="flex-shrink-0 flex items-center">
               <Link href={`/events/${event.id}`}>
-                <Button className="bg-emerald-600 hover:bg-emerald-700 w-full md:w-auto">
+                <Button className="bg-[#1B3A7B] hover:bg-[#122858] w-full md:w-auto">
                   {dateObj >= new Date() ? (lang === 'tr' ? 'Kayıt Ol' : 'Register') : (lang === 'tr' ? 'Detaylar' : 'View Details')}
                 </Button>
               </Link>
@@ -108,7 +108,7 @@ export default function EventsPage() {
 
   return (
     <main className="w-full">
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-emerald-50 to-teal-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl sm:text-4xl font-bold mb-2">Events & Conferences</h1>
           <p className="text-gray-600">Connect with the startup and corporate community</p>

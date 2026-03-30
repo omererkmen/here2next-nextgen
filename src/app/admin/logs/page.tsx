@@ -17,7 +17,7 @@ const ACTION_CONFIG: Record<string, { label: { tr: string; en: string }; icon: a
   page_view: { label: { tr: 'Sayfa Görüntüleme', en: 'Page View' }, icon: Eye, color: 'text-cyan-700', bg: 'bg-cyan-100' },
   profile_update: { label: { tr: 'Profil Güncelleme', en: 'Profile Update' }, icon: User, color: 'text-purple-700', bg: 'bg-purple-100' },
   password_reset_request: { label: { tr: 'Şifre Sıfırlama', en: 'Password Reset' }, icon: AlertTriangle, color: 'text-amber-700', bg: 'bg-amber-100' },
-  match_request: { label: { tr: 'Eşleşme Talebi', en: 'Match Request' }, icon: Zap, color: 'text-emerald-700', bg: 'bg-emerald-100' },
+  match_request: { label: { tr: 'Eşleşme Talebi', en: 'Match Request' }, icon: Zap, color: 'text-[#1B3A7B]', bg: 'bg-blue-100' },
   wishlist_apply: { label: { tr: 'İhtiyaç Başvurusu', en: 'Wishlist Apply' }, icon: FileText, color: 'text-indigo-700', bg: 'bg-indigo-100' },
   event_register: { label: { tr: 'Etkinlik Kaydı', en: 'Event Register' }, icon: Calendar, color: 'text-teal-700', bg: 'bg-teal-100' },
   role_change: { label: { tr: 'Rol Değişikliği', en: 'Role Change' }, icon: User, color: 'text-orange-700', bg: 'bg-orange-100' },

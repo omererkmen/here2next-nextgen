@@ -52,7 +52,7 @@ export default function NewsDetailPage() {
         {article.image_url ? (
           <img src={article.image_url} alt={title} className="w-full h-64 md:h-96 object-cover" />
         ) : (
-          <div className="w-full h-64 md:h-96 bg-gradient-to-br from-emerald-500 to-teal-500" />
+          <div className="w-full h-64 md:h-96 bg-gradient-to-br from-[#2A4FA0] to-indigo-500" />
         )}
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-0 flex items-end">
@@ -78,7 +78,7 @@ export default function NewsDetailPage() {
       <section className="py-8 sm:py-12">
         <div className="max-w-[900px] mx-auto px-4 sm:px-6">
           {summary && (
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed border-l-4 border-emerald-500 pl-4">
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed border-l-4 border-[#1B3A7B] pl-4">
               {summary}
             </p>
           )}

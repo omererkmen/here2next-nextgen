@@ -55,7 +55,7 @@ export default function CorporatesPage() {
 
   return (
     <main className="w-full">
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-emerald-50 to-teal-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl sm:text-4xl font-bold mb-2">
             {lang === 'tr' ? 'Kurum Rehberi' : 'Corporate Directory'}
@@ -103,7 +103,7 @@ export default function CorporatesPage() {
                         <MapPin size={14} /> {corp.location}
                       </div>
                       <p>{lang === 'tr' ? `${corp.memberSince}'dan beri üye` : `Member since ${corp.memberSince}`}</p>
-                      <p className="font-semibold text-emerald-600">
+                      <p className="font-semibold text-[#1B3A7B]">
                         {lang === 'tr' ? `${corp.wishlistCount} açık ihtiyaç` : `${corp.wishlistCount} open needs`}
                       </p>
                     </div>

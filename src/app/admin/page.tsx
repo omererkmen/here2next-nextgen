@@ -63,7 +63,7 @@ export default function AdminPage() {
   }, []);
 
   const statCards = [
-    { label: lang === 'tr' ? 'Startup' : 'Startups', value: stats.startups, icon: Rocket, color: 'text-emerald-600', bg: 'bg-emerald-100' },
+    { label: lang === 'tr' ? 'Startup' : 'Startups', value: stats.startups, icon: Rocket, color: 'text-[#1B3A7B]', bg: 'bg-blue-100' },
     { label: lang === 'tr' ? 'Kurum' : 'Corporates', value: stats.corporates, icon: Building2, color: 'text-blue-600', bg: 'bg-blue-100' },
     { label: lang === 'tr' ? 'Eşleşme' : 'Matches', value: stats.matches, icon: Zap, color: 'text-purple-600', bg: 'bg-purple-100' },
     { label: lang === 'tr' ? 'Başvuru' : 'Applications', value: stats.applications, icon: ListChecks, color: 'text-amber-600', bg: 'bg-amber-100' },
@@ -75,7 +75,7 @@ export default function AdminPage() {
 
   return (
     <main className="w-full">
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-emerald-50 to-teal-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl sm:text-4xl font-bold mb-2">
             {lang === 'tr' ? 'Yönetim Paneli' : 'Admin Dashboard'}
@@ -115,14 +115,14 @@ export default function AdminPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-bold text-lg">{lang === 'tr' ? 'Son Eklenen Startup\'lar' : 'Recent Startups'}</h3>
-                  <Link href="/startups" className="text-sm text-emerald-600 hover:text-emerald-700">
+                  <Link href="/startups" className="text-sm text-[#1B3A7B] hover:text-[#1B3A7B]">
                     {lang === 'tr' ? 'Tümü' : 'View All'}
                   </Link>
                 </div>
                 <div className="divide-y">
                   {recentStartups.map((s) => (
                     <Link key={s.id} href={`/startups/${s.slug}`} className="flex items-center gap-3 py-3 hover:bg-gray-50 -mx-2 px-2 rounded">
-                      <Rocket size={16} className="text-emerald-500" />
+                      <Rocket size={16} className="text-blue-500" />
                       <div className="flex-1">
                         <p className="font-medium text-sm">{s.name}</p>
                         <p className="text-xs text-gray-600">{s.sector}</p>
@@ -141,7 +141,7 @@ export default function AdminPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-bold text-lg">{lang === 'tr' ? 'Son Başvurular' : 'Recent Applications'}</h3>
-                  <Link href="/wishlist" className="text-sm text-emerald-600 hover:text-emerald-700">
+                  <Link href="/wishlist" className="text-sm text-[#1B3A7B] hover:text-[#1B3A7B]">
                     {lang === 'tr' ? 'Tümü' : 'View All'}
                   </Link>
                 </div>
@@ -183,8 +183,8 @@ export default function AdminPage() {
               </Button>
             </Link>
             <Link href="/admin/startups">
-              <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2 border-emerald-200 hover:bg-emerald-50">
-                <Rocket size={24} className="text-emerald-600" />
+              <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2 border-blue-200 hover:bg-blue-50">
+                <Rocket size={24} className="text-[#1B3A7B]" />
                 <span>{lang === 'tr' ? 'Startup\'ları Yönet' : 'Manage Startups'}</span>
               </Button>
             </Link>

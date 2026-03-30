@@ -107,7 +107,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50">
+      <main className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="text-gray-500">{lang === 'tr' ? 'Yükleniyor...' : 'Loading...'}</div>
       </main>
     );
@@ -121,7 +121,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <main className="w-full min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 py-12 px-4">
+    <main className="w-full min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4">
       <div className="max-w-lg mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
           {t('profile.title')}
@@ -131,7 +131,7 @@ export default function ProfilePage() {
           <CardContent className="p-6 space-y-5">
             {/* Success Message */}
             {success && (
-              <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded text-sm">
+              <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 text-[#1B3A7B] px-4 py-3 rounded text-sm">
                 <CheckCircle2 className="w-4 h-4 shrink-0" />
                 {success}
               </div>
@@ -205,7 +205,7 @@ export default function ProfilePage() {
               <Button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 gap-2"
+                className="w-full bg-[#1B3A7B] hover:bg-[#122858] gap-2"
               >
                 <Save className="w-4 h-4" />
                 {saving ? t('profile.saving') : t('profile.save')}
