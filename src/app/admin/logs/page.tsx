@@ -20,6 +20,7 @@ const ACTION_CONFIG: Record<string, { label: { tr: string; en: string }; icon: a
   match_request: { label: { tr: 'Eşleşme Talebi', en: 'Match Request' }, icon: Zap, color: 'text-emerald-700', bg: 'bg-emerald-100' },
   wishlist_apply: { label: { tr: 'İhtiyaç Başvurusu', en: 'Wishlist Apply' }, icon: FileText, color: 'text-indigo-700', bg: 'bg-indigo-100' },
   event_register: { label: { tr: 'Etkinlik Kaydı', en: 'Event Register' }, icon: Calendar, color: 'text-teal-700', bg: 'bg-teal-100' },
+  role_change: { label: { tr: 'Rol Değişikliği', en: 'Role Change' }, icon: User, color: 'text-orange-700', bg: 'bg-orange-100' },
   error: { label: { tr: 'Hata', en: 'Error' }, icon: AlertTriangle, color: 'text-red-700', bg: 'bg-red-100' },
 };
 

@@ -11,6 +11,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
 import { sectors, stages, fundingStatuses } from '@/lib/constants';
+import { useRouter } from 'next/navigation';
 
 interface Startup {
   id: string;
@@ -32,15 +33,27 @@ interface Startup {
 
 export default function AdminStartupsPage() {
   const { lang } = useLang();
+  const router = useRouter();
   const [startups, setStartups] = useState<Startup[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [search, setSearch] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<Startup>>({});
   const [saving, setSaving] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>('all');
 
-  useEffect(() => { fetchStartups(); }, []);
+  useEffect(() => { checkAdminAndFetch(); }, []);
+
+  async function checkAdminAndFetch() {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { router.push('/login'); return; }
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (!profile || profile.role !== 'admin') { router.push('/dashboard'); return; }
+    setIsAdmin(true);
+    fetchStartups();
+  }
 
   async function fetchStartups() {
     const supabase = createClient();
@@ -105,7 +118,7 @@ export default function AdminStartupsPage() {
     return matchSearch && matchStatus;
   });
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
+  if (loading || !isAdmin) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   return (
     <main className="w-full">

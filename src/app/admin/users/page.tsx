@@ -10,6 +10,8 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
+import { logActivity } from '@/lib/activityLog';
+import { useRouter } from 'next/navigation';
 
 interface UserProfile {
   id: string;
@@ -23,8 +25,10 @@ const roles = ['startup', 'corporate', 'investor', 'admin'];
 
 export default function AdminUsersPage() {
   const { lang } = useLang();
+  const router = useRouter();
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [search, setSearch] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<UserProfile>>({});
@@ -32,8 +36,18 @@ export default function AdminUsersPage() {
   const [filterRole, setFilterRole] = useState<string>('all');
 
   useEffect(() => {
-    fetchUsers();
+    checkAdminAndFetch();
   }, []);
+
+  async function checkAdminAndFetch() {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { router.push('/login'); return; }
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (!profile || profile.role !== 'admin') { router.push('/dashboard'); return; }
+    setIsAdmin(true);
+    fetchUsers();
+  }
 
   async function fetchUsers() {
     const supabase = createClient();
@@ -58,6 +72,7 @@ export default function AdminUsersPage() {
   async function saveEdit(id: string) {
     setSaving(true);
     const supabase = createClient();
+    const originalUser = users.find(u => u.id === id);
     const { error } = await supabase
       .from('profiles')
       .update({
@@ -69,6 +84,24 @@ export default function AdminUsersPage() {
     if (error) {
       alert('Hata: ' + error.message);
     } else {
+      // Log role change
+      if (originalUser && editData.role && originalUser.role !== editData.role) {
+        await logActivity('role_change', {
+          target_user: originalUser.email,
+          target_name: originalUser.full_name,
+          old_role: originalUser.role,
+          new_role: editData.role,
+        });
+      }
+      // Log name change
+      if (originalUser && editData.full_name && originalUser.full_name !== editData.full_name) {
+        await logActivity('profile_update', {
+          target_user: originalUser.email,
+          field: 'full_name',
+          old_value: originalUser.full_name,
+          new_value: editData.full_name,
+        });
+      }
       setUsers(prev => prev.map(u => u.id === id ? { ...u, ...editData } : u));
       setEditingId(null);
       setEditData({});
@@ -111,7 +144,7 @@ export default function AdminUsersPage() {
     return matchSearch && matchRole;
   });
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
+  if (loading || !isAdmin) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   return (
     <main className="w-full">
