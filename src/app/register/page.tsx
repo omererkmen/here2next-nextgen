@@ -166,7 +166,7 @@ export default function RegisterPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
+                className="w-full bg-[#183690] hover:bg-[#102668]"
               >
                 {loading ? t('auth.register.loading') : t('auth.register.submit')}
               </Button>
@@ -175,7 +175,7 @@ export default function RegisterPage() {
             <div className="mt-6 pt-6 border-t text-center">
               <p className="text-sm text-gray-600">
                 {t('auth.register.hasAccount')}{' '}
-                <Link href="/login" className="text-[#1B3A7B] hover:text-[#122858] font-semibold">
+                <Link href="/login" className="text-[#183690] hover:text-[#102668] font-semibold">
                   {t('auth.login.title')}
                 </Link>
               </p>

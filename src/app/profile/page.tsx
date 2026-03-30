@@ -131,7 +131,7 @@ export default function ProfilePage() {
           <CardContent className="p-6 space-y-5">
             {/* Success Message */}
             {success && (
-              <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 text-[#1B3A7B] px-4 py-3 rounded text-sm">
+              <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 text-[#183690] px-4 py-3 rounded text-sm">
                 <CheckCircle2 className="w-4 h-4 shrink-0" />
                 {success}
               </div>
@@ -205,7 +205,7 @@ export default function ProfilePage() {
               <Button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full bg-[#1B3A7B] hover:bg-[#122858] gap-2"
+                className="w-full bg-[#183690] hover:bg-[#102668] gap-2"
               >
                 <Save className="w-4 h-4" />
                 {saving ? t('profile.saving') : t('profile.save')}

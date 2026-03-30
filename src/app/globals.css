@@ -35,31 +35,31 @@
   --card-foreground: #0f172a;
   --popover: #ffffff;
   --popover-foreground: #0f172a;
-  --primary: #1B3A7B;
+  --primary: #183690;
   --primary-foreground: #ffffff;
   --secondary: #f0f4fa;
   --secondary-foreground: #0f172a;
   --muted: #f0f4fa;
   --muted-foreground: #475569;
-  --accent: #F5A623;
+  --accent: #edac46;
   --accent-foreground: #0f172a;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --border: #e2e8f0;
   --input: #e2e8f0;
-  --ring: #1B3A7B;
+  --ring: #183690;
   --radius: 0.5rem;
 
   /* Here2Next Brand Colors */
-  --h2n-navy: #1B3A7B;
-  --h2n-navy-light: #2A4FA0;
-  --h2n-navy-dark: #122858;
-  --h2n-gold: #F5A623;
+  --h2n-navy: #183690;
+  --h2n-navy-light: #2A5CB8;
+  --h2n-navy-dark: #102668;
+  --h2n-gold: #edac46;
   --h2n-gold-light: #FFBE4F;
   --h2n-gold-dark: #D48E15;
-  --h2n-cyan: #3CC8D0;
-  --h2n-green: #7BC67E;
-  --h2n-pink: #D94B8A;
+  --h2n-cyan: #5093b6;
+  --h2n-green: #8cb45b;
+  --h2n-pink: #c848aa;
 }
 
 body {

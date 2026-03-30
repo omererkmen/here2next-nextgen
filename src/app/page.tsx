@@ -48,7 +48,7 @@ export default function HomePage() {
   return (
     <main className="w-full">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-[#0E1F45] via-[#1B3A7B] to-[#0E1F45] text-white py-20 sm:py-32">
+      <section className="bg-gradient-to-b from-[#0C1D4A] via-[#183690] to-[#0C1D4A] text-white py-20 sm:py-32">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
             {t('hero.title')}
@@ -58,10 +58,10 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/register?role=startup">
-              <Button size="lg" className="bg-[#F5A623] hover:bg-[#D48E15] text-white w-full">{t('hero.cta.startup')}</Button>
+              <Button size="lg" className="bg-[#edac46] hover:bg-[#D48E15] text-white w-full">{t('hero.cta.startup')}</Button>
             </Link>
             <Link href="/register?role=corporate">
-              <Button size="lg" className="bg-[#1B3A7B] hover:bg-[#122858] w-full">{t('hero.cta.corporate')}</Button>
+              <Button size="lg" className="bg-[#183690] hover:bg-[#102668] w-full">{t('hero.cta.corporate')}</Button>
             </Link>
             <Link href="/startups">
               <Button size="lg" className="bg-transparent border border-white text-white hover:bg-white/10 w-full">{t('hero.cta.explore')}</Button>
@@ -75,19 +75,19 @@ export default function HomePage() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl sm:text-4xl font-bold text-[#1B3A7B]">240+</div>
+              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">240+</div>
               <p className="text-gray-700 mt-2">{t('stats.startups')}</p>
             </div>
             <div>
-              <div className="text-3xl sm:text-4xl font-bold text-[#1B3A7B]">50+</div>
+              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">50+</div>
               <p className="text-gray-700 mt-2">{t('stats.corporates')}</p>
             </div>
             <div>
-              <div className="text-3xl sm:text-4xl font-bold text-[#1B3A7B]">180+</div>
+              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">180+</div>
               <p className="text-gray-700 mt-2">{t('stats.matches')}</p>
             </div>
             <div>
-              <div className="text-3xl sm:text-4xl font-bold text-[#1B3A7B]">45+</div>
+              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">45+</div>
               <p className="text-gray-700 mt-2">{t('stats.events')}</p>
             </div>
           </div>
@@ -101,28 +101,28 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="text-[#1B3A7B]" size={32} />
+                <Users className="text-[#183690]" size={32} />
               </div>
               <h3 className="font-semibold text-lg mb-2">{t('how.step1.title')}</h3>
               <p className="text-gray-700">{t('how.step1.desc')}</p>
             </div>
             <div className="text-center">
               <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Target className="text-[#1B3A7B]" size={32} />
+                <Target className="text-[#183690]" size={32} />
               </div>
               <h3 className="font-semibold text-lg mb-2">{t('how.step2.title')}</h3>
               <p className="text-gray-700">{t('how.step2.desc')}</p>
             </div>
             <div className="text-center">
               <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Zap className="text-[#1B3A7B]" size={32} />
+                <Zap className="text-[#183690]" size={32} />
               </div>
               <h3 className="font-semibold text-lg mb-2">{t('how.step3.title')}</h3>
               <p className="text-gray-700">{t('how.step3.desc')}</p>
             </div>
             <div className="text-center">
               <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Briefcase className="text-[#1B3A7B]" size={32} />
+                <Briefcase className="text-[#183690]" size={32} />
               </div>
               <h3 className="font-semibold text-lg mb-2">{t('how.step4.title')}</h3>
               <p className="text-gray-700">{t('how.step4.desc')}</p>
@@ -136,7 +136,7 @@ export default function HomePage() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold">{t('section.featuredStartups')}</h2>
-            <Link href="/startups" className="text-[#1B3A7B] hover:text-[#122858] font-semibold flex items-center gap-2">
+            <Link href="/startups" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
               {t('section.viewAll')} <ArrowRight size={20} />
             </Link>
           </div>
@@ -151,7 +151,7 @@ export default function HomePage() {
                   <Badge variant="secondary" className="mb-3">{startup.sector}</Badge>
                   <p className="text-sm text-gray-700 line-clamp-2 mb-4">{lang === 'tr' ? startup.description_tr : startup.description_en}</p>
                   <div className="pt-4 border-t">
-                    <Link href={`/startups/${startup.id}`} className="text-[#1B3A7B] hover:text-[#122858] text-sm font-semibold">
+                    <Link href={`/startups/${startup.id}`} className="text-[#183690] hover:text-[#102668] text-sm font-semibold">
                       {t('startups.viewProfile')} →
                     </Link>
                   </div>
@@ -167,7 +167,7 @@ export default function HomePage() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold">{t('section.corporateNeeds')}</h2>
-            <Link href="/wishlist" className="text-[#1B3A7B] hover:text-[#122858] font-semibold flex items-center gap-2">
+            <Link href="/wishlist" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
               {t('section.viewAll')} <ArrowRight size={20} />
             </Link>
           </div>
@@ -195,7 +195,7 @@ export default function HomePage() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold">{t('section.upcomingEvents')}</h2>
-            <Link href="/events" className="text-[#1B3A7B] hover:text-[#122858] font-semibold flex items-center gap-2">
+            <Link href="/events" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
               {t('section.viewAll')} <ArrowRight size={20} />
             </Link>
           </div>
@@ -203,7 +203,7 @@ export default function HomePage() {
             {events.map((event) => (
               <Card key={event.id} className="hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
-                  <p className="text-sm text-[#1B3A7B] font-semibold mb-2">{new Date(event.date).toLocaleDateString()}</p>
+                  <p className="text-sm text-[#183690] font-semibold mb-2">{new Date(event.date).toLocaleDateString()}</p>
                   <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? event.title_tr : event.title_en}</h3>
                   <p className="text-gray-700 text-sm mb-4">{event.location}</p>
                   <p className="text-sm text-gray-600">
@@ -221,7 +221,7 @@ export default function HomePage() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold">{t('section.latestNews')}</h2>
-            <Link href="/news" className="text-[#1B3A7B] hover:text-[#122858] font-semibold flex items-center gap-2">
+            <Link href="/news" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
               {t('section.viewAll')} <ArrowRight size={20} />
             </Link>
           </div>
@@ -255,13 +255,13 @@ export default function HomePage() {
       </section>
 
       {/* Manifesto CTA */}
-      <section className="bg-gradient-to-r from-[#5B2D8E] to-[#1B3A7B] text-white py-16 sm:py-20">
+      <section className="bg-gradient-to-r from-[#c848aa] to-[#183690] text-white py-16 sm:py-20">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6">{t('section.manifesto')}</h2>
           <p className="text-lg text-purple-100 mb-8 max-w-2xl mx-auto">
             {t('home.manifesto.desc')}
           </p>
-          <Button size="lg" className="bg-white text-[#5B2D8E] hover:bg-gray-100" onClick={() => setMissionOpen(true)}>
+          <Button size="lg" className="bg-white text-[#c848aa] hover:bg-gray-100" onClick={() => setMissionOpen(true)}>
             {t('home.manifesto.cta')}
           </Button>
         </div>
@@ -276,7 +276,7 @@ export default function HomePage() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="sticky top-0 bg-gradient-to-r from-[#5B2D8E] to-[#1B3A7B] text-white px-6 py-5 rounded-t-2xl flex items-center justify-between">
+            <div className="sticky top-0 bg-gradient-to-r from-[#c848aa] to-[#183690] text-white px-6 py-5 rounded-t-2xl flex items-center justify-between">
               <h2 className="text-2xl font-bold">{t('mission.title')}</h2>
               <button onClick={() => setMissionOpen(false)} className="p-1 hover:bg-white/20 rounded-full transition-colors">
                 <X size={24} />
@@ -292,21 +292,21 @@ export default function HomePage() {
               <div className="bg-purple-50 border border-purple-100 rounded-xl p-5">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center">
-                    <Target className="text-[#5B2D8E]" size={20} />
+                    <Target className="text-[#c848aa]" size={20} />
                   </div>
-                  <h3 className="text-lg font-bold text-[#5B2D8E]">{t('mission.vision.title')}</h3>
+                  <h3 className="text-lg font-bold text-[#c848aa]">{t('mission.vision.title')}</h3>
                 </div>
                 <p className="text-gray-700 leading-relaxed">{t('mission.vision.desc')}</p>
               </div>
 
               {/* Three Pillars */}
               <div>
-                <h3 className="text-lg font-bold text-[#5B2D8E] mb-4">{t('mission.values.title')}</h3>
+                <h3 className="text-lg font-bold text-[#c848aa] mb-4">{t('mission.values.title')}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {[
-                    { key: 'mission.value1', icon: <Heart className="text-[#C74B7A]" size={22} />, color: 'bg-pink-50 border-pink-100' },
-                    { key: 'mission.value2', icon: <MessageCircle className="text-[#1B3A7B]" size={22} />, color: 'bg-blue-50 border-blue-100' },
-                    { key: 'mission.value3', icon: <Users className="text-[#5B2D8E]" size={22} />, color: 'bg-purple-50 border-purple-100' },
+                    { key: 'mission.value1', icon: <Heart className="text-[#c848aa]" size={22} />, color: 'bg-pink-50 border-pink-100' },
+                    { key: 'mission.value2', icon: <MessageCircle className="text-[#183690]" size={22} />, color: 'bg-blue-50 border-blue-100' },
+                    { key: 'mission.value3', icon: <Users className="text-[#c848aa]" size={22} />, color: 'bg-purple-50 border-purple-100' },
                   ].map((v) => (
                     <div key={v.key} className={`flex flex-col items-center text-center gap-3 border rounded-xl p-4 ${v.color}`}>
                       <div className="w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center">{v.icon}</div>
@@ -318,13 +318,13 @@ export default function HomePage() {
 
               {/* Closing Statement */}
               <div className="text-center pt-2">
-                <p className="text-[#5B2D8E] font-semibold text-lg">{t('mission.value4')}</p>
+                <p className="text-[#c848aa] font-semibold text-lg">{t('mission.value4')}</p>
               </div>
             </div>
 
             {/* Footer */}
             <div className="px-6 py-4 border-t flex justify-end">
-              <Button className="bg-[#5B2D8E] hover:bg-[#4A2375]" onClick={() => setMissionOpen(false)}>
+              <Button className="bg-[#c848aa] hover:bg-[#a83890]" onClick={() => setMissionOpen(false)}>
                 {t('home.manifesto.close')}
               </Button>
             </div>

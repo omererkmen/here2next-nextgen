@@ -103,7 +103,7 @@ export default function CorporatesPage() {
                         <MapPin size={14} /> {corp.location}
                       </div>
                       <p>{lang === 'tr' ? `${corp.memberSince}'dan beri üye` : `Member since ${corp.memberSince}`}</p>
-                      <p className="font-semibold text-[#1B3A7B]">
+                      <p className="font-semibold text-[#183690]">
                         {lang === 'tr' ? `${corp.wishlistCount} açık ihtiyaç` : `${corp.wishlistCount} open needs`}
                       </p>
                     </div>

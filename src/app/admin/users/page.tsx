@@ -129,7 +129,7 @@ export default function AdminUsersPage() {
   const roleColor = (role: string) => {
     switch (role) {
       case 'admin': return 'bg-red-100 text-red-700 border-0';
-      case 'startup': return 'bg-blue-100 text-[#1B3A7B] border-0';
+      case 'startup': return 'bg-blue-100 text-[#183690] border-0';
       case 'corporate': return 'bg-blue-100 text-blue-700 border-0';
       case 'investor': return 'bg-purple-100 text-purple-700 border-0';
       default: return 'bg-gray-100 text-gray-700 border-0';
@@ -244,7 +244,7 @@ export default function AdminUsersPage() {
                         <td className="p-4 text-right">
                           {editingId === user.id ? (
                             <div className="flex items-center justify-end gap-1">
-                              <Button size="sm" onClick={() => saveEdit(user.id)} disabled={saving} className="bg-[#1B3A7B] hover:bg-[#122858] h-8 gap-1">
+                              <Button size="sm" onClick={() => saveEdit(user.id)} disabled={saving} className="bg-[#183690] hover:bg-[#102668] h-8 gap-1">
                                 <Save size={14} /> {lang === 'tr' ? 'Kaydet' : 'Save'}
                               </Button>
                               <Button size="sm" variant="outline" onClick={cancelEdit} className="h-8 gap-1">

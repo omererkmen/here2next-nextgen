@@ -85,7 +85,7 @@ export default function AdminApprovalsPage() {
           {totalPending === 0 ? (
             <Card>
               <CardContent className="p-12 text-center text-gray-500">
-                <CheckCircle className="mx-auto mb-4 text-[#2A4FA0]" size={48} />
+                <CheckCircle className="mx-auto mb-4 text-[#2A5CB8]" size={48} />
                 <p className="text-lg font-medium">
                   {lang === 'tr' ? 'Onay bekleyen kayıt yok' : 'No pending approvals'}
                 </p>
@@ -97,7 +97,7 @@ export default function AdminApprovalsPage() {
               {pendingStartups.length > 0 && (
                 <div>
                   <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
-                    <Rocket className="text-[#1B3A7B]" size={20} />
+                    <Rocket className="text-[#183690]" size={20} />
                     {lang === 'tr' ? 'Startup Başvuruları' : 'Startup Applications'}
                     <Badge variant="secondary">{pendingStartups.length}</Badge>
                   </h2>
@@ -131,7 +131,7 @@ export default function AdminApprovalsPage() {
                             <div className="flex gap-2 flex-shrink-0">
                               <Button
                                 size="sm"
-                                className="bg-[#1B3A7B] hover:bg-[#122858]"
+                                className="bg-[#183690] hover:bg-[#102668]"
                                 disabled={actionLoading === startup.id}
                                 onClick={() => handleAction('startups', startup.id, 'approved')}
                               >
@@ -194,7 +194,7 @@ export default function AdminApprovalsPage() {
                             <div className="flex gap-2 flex-shrink-0">
                               <Button
                                 size="sm"
-                                className="bg-[#1B3A7B] hover:bg-[#122858]"
+                                className="bg-[#183690] hover:bg-[#102668]"
                                 disabled={actionLoading === corp.id}
                                 onClick={() => handleAction('corporates', corp.id, 'approved')}
                               >

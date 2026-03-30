@@ -263,7 +263,7 @@ export default function FeedbackPage() {
                     {lang === 'tr' ? 'Açıklama' : 'Description'} <span className="text-red-500">*</span>
                   </label>
                   <textarea
-                    className={`w-full min-h-[120px] rounded-md border ${errors.description ? 'border-red-500' : 'border-gray-300'} bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2A4FA0] focus:border-[#2A4FA0]`}
+                    className={`w-full min-h-[120px] rounded-md border ${errors.description ? 'border-red-500' : 'border-gray-300'} bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2A5CB8] focus:border-[#2A5CB8]`}
                     placeholder={
                       type === 'bug' ? (lang === 'tr' ? 'Ne olması gerekiyordu? Ne oldu? Adımları yazın...' : 'What was expected? What happened? Steps to reproduce...')
                       : type === 'feature' ? (lang === 'tr' ? 'Bu özellik ne işe yarar? Neden gerekli?' : 'What would this feature do? Why is it needed?')
@@ -314,7 +314,7 @@ export default function FeedbackPage() {
 
                 {/* Submit */}
                 <Button
-                  className="w-full bg-[#1B3A7B] hover:bg-[#122858] h-12 text-base"
+                  className="w-full bg-[#183690] hover:bg-[#102668] h-12 text-base"
                   onClick={handleSubmit}
                   disabled={submitting}
                 >
@@ -332,11 +332,11 @@ export default function FeedbackPage() {
           {isAdmin && allFeedback.length > 0 && (
             <div className="mt-10">
               <div className="flex items-center gap-2 mb-4">
-                <Shield size={20} className="text-[#1B3A7B]" />
+                <Shield size={20} className="text-[#183690]" />
                 <h2 className="text-xl font-bold">
                   {lang === 'tr' ? 'Tüm Geri Bildirimler (Admin)' : 'All Feedback (Admin)'}
                 </h2>
-                <Badge className="bg-blue-100 text-[#122858] border-0">{allFeedback.length}</Badge>
+                <Badge className="bg-blue-100 text-[#102668] border-0">{allFeedback.length}</Badge>
               </div>
 
               {(['bug', 'feature', 'comment'] as const).map((category) => {
@@ -441,7 +441,7 @@ export default function FeedbackPage() {
                             <p className="text-sm text-gray-600 line-clamp-2">{fb.description}</p>
                             {fb.admin_notes && (
                               <div className="mt-2 p-2 bg-blue-50 rounded text-sm">
-                                <span className="font-medium text-[#1B3A7B]">
+                                <span className="font-medium text-[#183690]">
                                   {lang === 'tr' ? 'Admin yanıtı: ' : 'Admin response: '}
                                 </span>
                                 {fb.admin_notes}

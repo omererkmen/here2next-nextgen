@@ -276,14 +276,14 @@ export default function AdminFeedbackPage() {
                             {lang === 'tr' ? 'Admin Notu:' : 'Admin Notes:'}
                           </label>
                           <textarea
-                            className="w-full min-h-[60px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2A4FA0]"
+                            className="w-full min-h-[60px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2A5CB8]"
                             placeholder={lang === 'tr' ? 'Yanıt veya not ekleyin...' : 'Add a response or note...'}
                             value={adminNotes[fb.id] || ''}
                             onChange={(e) => setAdminNotes(prev => ({ ...prev, [fb.id]: e.target.value }))}
                           />
                           <Button
                             size="sm"
-                            className="mt-2 bg-[#1B3A7B] hover:bg-[#122858] gap-1"
+                            className="mt-2 bg-[#183690] hover:bg-[#102668] gap-1"
                             onClick={() => handleSaveNotes(fb.id)}
                             disabled={savingId === fb.id}
                           >

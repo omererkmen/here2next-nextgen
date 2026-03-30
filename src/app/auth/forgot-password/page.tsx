@@ -53,7 +53,7 @@ export default function ForgotPasswordPage() {
             {sent ? (
               <div className="text-center">
                 <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-                  <CheckCircle2 className="w-8 h-8 text-[#1B3A7B]" />
+                  <CheckCircle2 className="w-8 h-8 text-[#183690]" />
                 </div>
                 <h1 className="text-2xl font-bold mb-2 text-gray-900">
                   {t('auth.forgot.sentTitle')}
@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
                 <p className="text-gray-600 mb-2">
                   {t('auth.forgot.sentDescription')}
                 </p>
-                <p className="text-[#1B3A7B] font-semibold mb-6">{email}</p>
+                <p className="text-[#183690] font-semibold mb-6">{email}</p>
                 <p className="text-sm text-gray-500 mb-6">{t('auth.forgot.checkSpam')}</p>
                 <Link href="/login">
                   <Button variant="outline" className="w-full">
@@ -74,7 +74,7 @@ export default function ForgotPasswordPage() {
               <>
                 <div className="text-center mb-8">
                   <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-                    <Mail className="w-8 h-8 text-[#1B3A7B]" />
+                    <Mail className="w-8 h-8 text-[#183690]" />
                   </div>
                   <h1 className="text-2xl font-bold mb-2 text-gray-900">
                     {t('auth.forgot.title')}
@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
+                    className="w-full bg-[#183690] hover:bg-[#102668]"
                   >
                     {loading ? t('auth.forgot.loading') : t('auth.forgot.submit')}
                   </Button>
@@ -114,7 +114,7 @@ export default function ForgotPasswordPage() {
                 <div className="mt-6 pt-6 border-t text-center">
                   <Link
                     href="/login"
-                    className="text-sm text-[#1B3A7B] hover:text-[#1B3A7B] font-semibold inline-flex items-center gap-1"
+                    className="text-sm text-[#183690] hover:text-[#183690] font-semibold inline-flex items-center gap-1"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />
                     {t('auth.forgot.backToLogin')}

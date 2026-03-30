@@ -186,7 +186,7 @@ export default function StartupDetailPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <Card>
                   <CardContent className="p-4 text-center">
-                    <Calendar className="mx-auto mb-2 text-[#1B3A7B]" size={24} />
+                    <Calendar className="mx-auto mb-2 text-[#183690]" size={24} />
                     <p className="text-sm text-gray-600">{lang === 'tr' ? 'Kuruluş' : 'Founded'}</p>
                     <p className="text-xl font-bold">{startup.founded_year || '-'}</p>
                   </CardContent>
@@ -241,7 +241,7 @@ export default function StartupDetailPage() {
                             <p className="font-medium">{match.corporate_name}</p>
                             <div className="flex items-center gap-2 mt-1">
                               <Progress value={match.score} className="h-2 flex-1" />
-                              <span className="text-sm font-semibold text-[#1B3A7B]">{match.score}%</span>
+                              <span className="text-sm font-semibold text-[#183690]">{match.score}%</span>
                             </div>
                           </div>
                           <Badge className={
@@ -269,7 +269,7 @@ export default function StartupDetailPage() {
                       href={startup.website.startsWith('http') ? startup.website : `https://${startup.website}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-[#1B3A7B] hover:text-[#1B3A7B]"
+                      className="flex items-center gap-2 text-[#183690] hover:text-[#183690]"
                     >
                       <Globe size={16} /> {startup.website} <ExternalLink size={12} />
                     </a>
@@ -283,7 +283,7 @@ export default function StartupDetailPage() {
                     </Button>
                   ) : (
                     <Button
-                      className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
+                      className="w-full bg-[#183690] hover:bg-[#102668]"
                       onClick={handleRequestMatch}
                       disabled={matchLoading}
                     >
@@ -305,19 +305,19 @@ export default function StartupDetailPage() {
                   {msgOpen && (
                     <div className="space-y-3 pt-2 border-t">
                       <textarea
-                        className="w-full min-h-[80px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2A4FA0] focus:border-[#2A4FA0]"
+                        className="w-full min-h-[80px] rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2A5CB8] focus:border-[#2A5CB8]"
                         placeholder={lang === 'tr' ? 'Mesajınızı yazın...' : 'Write your message...'}
                         value={msgText}
                         onChange={(e) => setMsgText(e.target.value)}
                       />
                       {msgSent ? (
-                        <div className="flex items-center gap-2 text-[#1B3A7B] text-sm font-medium">
+                        <div className="flex items-center gap-2 text-[#183690] text-sm font-medium">
                           <CheckCircle size={16} />
                           {lang === 'tr' ? 'Mesaj gönderildi!' : 'Message sent!'}
                         </div>
                       ) : (
                         <Button
-                          className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
+                          className="w-full bg-[#183690] hover:bg-[#102668]"
                           onClick={handleSendMessage}
                           disabled={msgLoading || !msgText.trim()}
                         >

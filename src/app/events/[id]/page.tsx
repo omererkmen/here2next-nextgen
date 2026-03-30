@@ -104,7 +104,7 @@ export default function EventDetailPage() {
   const isFull = event.max_attendees && attendeeCount >= event.max_attendees;
 
   const typeColors: Record<string, string> = {
-    summit: 'bg-[#1B3A7B]-100 text-[#1B3A7B]-700',
+    summit: 'bg-[#183690]-100 text-[#183690]-700',
     workshop: 'bg-purple-100 text-purple-700',
     pitstop: 'bg-blue-100 text-blue-700',
     webinar: 'bg-cyan-100 text-cyan-700',
@@ -113,7 +113,7 @@ export default function EventDetailPage() {
   return (
     <main className="w-full">
       {/* Hero */}
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-[#1B3A7B]-50 to-teal-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-[#183690]-50 to-teal-50">
         <div className="max-w-[900px] mx-auto px-4 sm:px-6">
           <button onClick={() => router.back()} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6">
             <ArrowLeft size={18} /> {lang === 'tr' ? 'Geri' : 'Back'}
@@ -195,7 +195,7 @@ export default function EventDetailPage() {
                     <Button
                       onClick={handleRegister}
                       disabled={registering}
-                      className="w-full bg-[#1B3A7B]-600 hover:bg-[#1B3A7B]-700"
+                      className="w-full bg-[#183690]-600 hover:bg-[#183690]-700"
                     >
                       {registering
                         ? (lang === 'tr' ? 'Kaydediliyor...' : 'Registering...')

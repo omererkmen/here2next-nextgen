@@ -101,7 +101,7 @@ export default function LoginPage() {
               <div className="flex justify-end">
                 <Link
                   href="/auth/forgot-password"
-                  className="text-sm text-[#1B3A7B] hover:text-[#122858] font-medium"
+                  className="text-sm text-[#183690] hover:text-[#102668] font-medium"
                 >
                   {t('auth.login.forgotPassword')}
                 </Link>
@@ -110,7 +110,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
+                className="w-full bg-[#183690] hover:bg-[#102668]"
               >
                 {loading ? t('auth.login.loading') : t('auth.login.submit')}
               </Button>
@@ -119,7 +119,7 @@ export default function LoginPage() {
             <div className="mt-6 pt-6 border-t text-center">
               <p className="text-sm text-gray-600">
                 {t('auth.login.noAccount')}{' '}
-                <Link href="/register" className="text-[#1B3A7B] hover:text-[#122858] font-semibold">
+                <Link href="/register" className="text-[#183690] hover:text-[#102668] font-semibold">
                   {t('auth.register.title')}
                 </Link>
               </p>

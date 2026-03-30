@@ -183,7 +183,7 @@ export default function WishlistPage() {
             </p>
           </div>
           <Button
-            className="bg-[#1B3A7B] hover:bg-[#122858] gap-2"
+            className="bg-[#183690] hover:bg-[#102668] gap-2"
             onClick={() => setDialogOpen(true)}
           >
             <Plus size={18} /> {t('wishlist.addNew')}
@@ -244,15 +244,15 @@ export default function WishlistPage() {
                     </div>
 
                     <div className="flex flex-col items-end gap-3">
-                      <Badge className="bg-blue-100 text-[#1B3A7B] border-0">
+                      <Badge className="bg-blue-100 text-[#183690] border-0">
                         {lang === 'tr' ? (item.status === 'open' ? 'Açık' : item.status) : item.status}
                       </Badge>
                       {appliedItems.has(item.id) ? (
-                        <Button disabled className="bg-gray-100 text-[#1B3A7B] border border-blue-200 gap-2">
+                        <Button disabled className="bg-gray-100 text-[#183690] border border-blue-200 gap-2">
                           <CheckCircle size={16} /> {lang === 'tr' ? 'Başvuruldu' : 'Applied'}
                         </Button>
                       ) : (
-                        <Button className="bg-[#1B3A7B] hover:bg-[#122858] gap-2" onClick={() => openApplyDialog(item)}>
+                        <Button className="bg-[#183690] hover:bg-[#102668] gap-2" onClick={() => openApplyDialog(item)}>
                           <Send size={16} /> {t('wishlist.apply')}
                         </Button>
                       )}
@@ -353,7 +353,7 @@ export default function WishlistPage() {
               {t('common.cancel')}
             </Button>
             <Button
-              className="bg-[#1B3A7B] hover:bg-[#122858]"
+              className="bg-[#183690] hover:bg-[#102668]"
               onClick={handleSubmit}
               disabled={submitting || (!formData.title_tr && !formData.title_en)}
             >
@@ -403,7 +403,7 @@ export default function WishlistPage() {
               {t('common.cancel')}
             </Button>
             <Button
-              className="bg-[#1B3A7B] hover:bg-[#122858] gap-2"
+              className="bg-[#183690] hover:bg-[#102668] gap-2"
               onClick={handleApply}
               disabled={applySubmitting}
             >

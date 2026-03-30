@@ -63,7 +63,7 @@ export default function AdminPage() {
   }, []);
 
   const statCards = [
-    { label: lang === 'tr' ? 'Startup' : 'Startups', value: stats.startups, icon: Rocket, color: 'text-[#1B3A7B]', bg: 'bg-blue-100' },
+    { label: lang === 'tr' ? 'Startup' : 'Startups', value: stats.startups, icon: Rocket, color: 'text-[#183690]', bg: 'bg-blue-100' },
     { label: lang === 'tr' ? 'Kurum' : 'Corporates', value: stats.corporates, icon: Building2, color: 'text-blue-600', bg: 'bg-blue-100' },
     { label: lang === 'tr' ? 'Eşleşme' : 'Matches', value: stats.matches, icon: Zap, color: 'text-purple-600', bg: 'bg-purple-100' },
     { label: lang === 'tr' ? 'Başvuru' : 'Applications', value: stats.applications, icon: ListChecks, color: 'text-amber-600', bg: 'bg-amber-100' },
@@ -115,7 +115,7 @@ export default function AdminPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-bold text-lg">{lang === 'tr' ? 'Son Eklenen Startup\'lar' : 'Recent Startups'}</h3>
-                  <Link href="/startups" className="text-sm text-[#1B3A7B] hover:text-[#1B3A7B]">
+                  <Link href="/startups" className="text-sm text-[#183690] hover:text-[#183690]">
                     {lang === 'tr' ? 'Tümü' : 'View All'}
                   </Link>
                 </div>
@@ -141,7 +141,7 @@ export default function AdminPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-bold text-lg">{lang === 'tr' ? 'Son Başvurular' : 'Recent Applications'}</h3>
-                  <Link href="/wishlist" className="text-sm text-[#1B3A7B] hover:text-[#1B3A7B]">
+                  <Link href="/wishlist" className="text-sm text-[#183690] hover:text-[#183690]">
                     {lang === 'tr' ? 'Tümü' : 'View All'}
                   </Link>
                 </div>
@@ -184,7 +184,7 @@ export default function AdminPage() {
             </Link>
             <Link href="/admin/startups">
               <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center gap-2 border-blue-200 hover:bg-blue-50">
-                <Rocket size={24} className="text-[#1B3A7B]" />
+                <Rocket size={24} className="text-[#183690]" />
                 <span>{lang === 'tr' ? 'Startup\'ları Yönet' : 'Manage Startups'}</span>
               </Button>
             </Link>

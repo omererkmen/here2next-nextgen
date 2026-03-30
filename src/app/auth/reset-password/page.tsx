@@ -69,7 +69,7 @@ export default function ResetPasswordPage() {
             {success ? (
               <div className="text-center">
                 <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-                  <CheckCircle2 className="w-8 h-8 text-[#1B3A7B]" />
+                  <CheckCircle2 className="w-8 h-8 text-[#183690]" />
                 </div>
                 <h1 className="text-2xl font-bold mb-2 text-gray-900">
                   {t('auth.reset.successTitle')}
@@ -82,7 +82,7 @@ export default function ResetPasswordPage() {
               <>
                 <div className="text-center mb-8">
                   <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-                    <Lock className="w-8 h-8 text-[#1B3A7B]" />
+                    <Lock className="w-8 h-8 text-[#183690]" />
                   </div>
                   <h1 className="text-2xl font-bold mb-2 text-gray-900">
                     {t('auth.reset.title')}
@@ -128,7 +128,7 @@ export default function ResetPasswordPage() {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-[#1B3A7B] hover:bg-[#122858]"
+                    className="w-full bg-[#183690] hover:bg-[#102668]"
                   >
                     {loading ? t('auth.reset.loading') : t('auth.reset.submit')}
                   </Button>
