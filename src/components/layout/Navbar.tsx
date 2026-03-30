@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, Globe, Rocket, Building2, ListChecks, Calendar, Newspaper, Zap, LogIn, UserPlus, LogOut, User, LayoutDashboard, MessageSquareWarning } from "lucide-react";
+import { Menu, X, Globe, Rocket, Building2, ListChecks, Calendar, Newspaper, Zap, LogIn, UserPlus, LogOut, User, LayoutDashboard, MessageSquareWarning, ChevronDown, Users, ShieldCheck, Activity } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,14 +28,18 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [userName, setUserName] = useState('');
+  const [userRole, setUserRole] = useState('');
+  const [adminMenuOpen, setAdminMenuOpen] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
 
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
       setUser(user);
       if (user) {
         setUserName(user.user_metadata?.full_name || user.email || '');
+        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+        if (profile) setUserRole(profile.role);
       }
     });
 
@@ -115,12 +119,62 @@ export default function Navbar() {
             <div className="hidden sm:flex items-center gap-2">
               {user ? (
                 <>
-                  <Link href="/dashboard">
-                    <Button variant="ghost" size="sm" className="gap-2 text-slate-600">
-                      <LayoutDashboard className="w-4 h-4" />
-                      {lang === 'tr' ? 'Panel' : 'Dashboard'}
-                    </Button>
-                  </Link>
+                  {userRole === 'admin' ? (
+                    <div className="relative" onMouseEnter={() => setAdminMenuOpen(true)} onMouseLeave={() => setAdminMenuOpen(false)}>
+                      <Link href="/admin">
+                        <Button variant="ghost" size="sm" className="gap-1 text-slate-600">
+                          <LayoutDashboard className="w-4 h-4" />
+                          {lang === 'tr' ? 'Panel' : 'Dashboard'}
+                          <ChevronDown className="w-3 h-3" />
+                        </Button>
+                      </Link>
+                      {adminMenuOpen && (
+                        <div className="absolute top-full right-0 w-52 bg-white border border-slate-200 rounded-lg shadow-lg py-1 z-50">
+                          <Link href="/admin" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" onClick={() => setAdminMenuOpen(false)}>
+                            <LayoutDashboard className="w-4 h-4" />
+                            {lang === 'tr' ? 'Genel Bakış' : 'Overview'}
+                          </Link>
+                          <Link href="/admin/users" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" onClick={() => setAdminMenuOpen(false)}>
+                            <Users className="w-4 h-4" />
+                            {lang === 'tr' ? 'Kullanıcılar' : 'Users'}
+                          </Link>
+                          <Link href="/admin/startups" className="flex items-center gap-2 px-4 py-2 text-sm text-emerald-700 hover:bg-emerald-50" onClick={() => setAdminMenuOpen(false)}>
+                            <Rocket className="w-4 h-4" />
+                            {lang === 'tr' ? 'Startup\'lar' : 'Startups'}
+                          </Link>
+                          <Link href="/admin/corporates" className="flex items-center gap-2 px-4 py-2 text-sm text-blue-700 hover:bg-blue-50" onClick={() => setAdminMenuOpen(false)}>
+                            <Building2 className="w-4 h-4" />
+                            {lang === 'tr' ? 'Kurumlar' : 'Corporates'}
+                          </Link>
+                          <div className="border-t border-slate-100 my-1" />
+                          <Link href="/admin/approvals" className="flex items-center gap-2 px-4 py-2 text-sm text-amber-700 hover:bg-amber-50" onClick={() => setAdminMenuOpen(false)}>
+                            <ShieldCheck className="w-4 h-4" />
+                            {lang === 'tr' ? 'Onay Bekleyenler' : 'Approvals'}
+                          </Link>
+                          <Link href="/admin/logs" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" onClick={() => setAdminMenuOpen(false)}>
+                            <Activity className="w-4 h-4" />
+                            {lang === 'tr' ? 'Aktivite Logları' : 'Activity Logs'}
+                          </Link>
+                          <Link href="/admin/feedback" className="flex items-center gap-2 px-4 py-2 text-sm text-orange-700 hover:bg-orange-50" onClick={() => setAdminMenuOpen(false)}>
+                            <MessageSquareWarning className="w-4 h-4" />
+                            {lang === 'tr' ? 'Geri Bildirimler' : 'Feedback'}
+                          </Link>
+                          <div className="border-t border-slate-100 my-1" />
+                          <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-500 hover:bg-slate-50" onClick={() => setAdminMenuOpen(false)}>
+                            <User className="w-4 h-4" />
+                            {lang === 'tr' ? 'Kullanıcı Paneli' : 'User Dashboard'}
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link href="/dashboard">
+                      <Button variant="ghost" size="sm" className="gap-2 text-slate-600">
+                        <LayoutDashboard className="w-4 h-4" />
+                        {lang === 'tr' ? 'Panel' : 'Dashboard'}
+                      </Button>
+                    </Link>
+                  )}
                   <Link href="/feedback">
                     <Button variant="ghost" size="sm" className="gap-2 text-orange-600 hover:text-orange-700 hover:bg-orange-50">
                       <MessageSquareWarning className="w-4 h-4" />
@@ -193,12 +247,43 @@ export default function Navbar() {
               <div className="px-3 py-2 space-y-2">
                 {user ? (
                   <>
-                    <Link href="/dashboard" onClick={() => setMobileOpen(false)}>
-                      <Button variant="outline" size="sm" className="w-full gap-2 justify-start">
-                        <LayoutDashboard className="w-4 h-4" />
-                        {lang === 'tr' ? 'Panel' : 'Dashboard'}
-                      </Button>
-                    </Link>
+                    {userRole === 'admin' ? (
+                      <>
+                        <Link href="/admin" onClick={() => setMobileOpen(false)}>
+                          <Button variant="outline" size="sm" className="w-full gap-2 justify-start">
+                            <LayoutDashboard className="w-4 h-4" />
+                            {lang === 'tr' ? 'Admin Paneli' : 'Admin Panel'}
+                          </Button>
+                        </Link>
+                        <Link href="/admin/users" onClick={() => setMobileOpen(false)}>
+                          <Button variant="ghost" size="sm" className="w-full gap-2 justify-start text-slate-600">
+                            <Users className="w-4 h-4" /> {lang === 'tr' ? 'Kullanıcılar' : 'Users'}
+                          </Button>
+                        </Link>
+                        <Link href="/admin/startups" onClick={() => setMobileOpen(false)}>
+                          <Button variant="ghost" size="sm" className="w-full gap-2 justify-start text-emerald-600">
+                            <Rocket className="w-4 h-4" /> {lang === 'tr' ? 'Startup\'lar' : 'Startups'}
+                          </Button>
+                        </Link>
+                        <Link href="/admin/corporates" onClick={() => setMobileOpen(false)}>
+                          <Button variant="ghost" size="sm" className="w-full gap-2 justify-start text-blue-600">
+                            <Building2 className="w-4 h-4" /> {lang === 'tr' ? 'Kurumlar' : 'Corporates'}
+                          </Button>
+                        </Link>
+                        <Link href="/admin/approvals" onClick={() => setMobileOpen(false)}>
+                          <Button variant="ghost" size="sm" className="w-full gap-2 justify-start text-amber-600">
+                            <ShieldCheck className="w-4 h-4" /> {lang === 'tr' ? 'Onaylar' : 'Approvals'}
+                          </Button>
+                        </Link>
+                      </>
+                    ) : (
+                      <Link href="/dashboard" onClick={() => setMobileOpen(false)}>
+                        <Button variant="outline" size="sm" className="w-full gap-2 justify-start">
+                          <LayoutDashboard className="w-4 h-4" />
+                          {lang === 'tr' ? 'Panel' : 'Dashboard'}
+                        </Button>
+                      </Link>
+                    )}
                     <Link href="/feedback" onClick={() => setMobileOpen(false)}>
                       <Button variant="outline" size="sm" className="w-full gap-2 justify-start text-orange-600">
                         <MessageSquareWarning className="w-4 h-4" />
