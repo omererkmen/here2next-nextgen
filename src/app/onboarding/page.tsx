@@ -158,7 +158,7 @@ export default function OnboardingPage() {
         }
       }
 
-      await logActivity('signup', { onboarding_completed: true, role, company: name, sector, status: 'pending' });
+      await logActivity('profile_update', { action: 'onboarding_completed', role, company: name, sector, status: 'pending' });
       setSubmitted(true);
     } catch (err) {
       alert('Bir hata oluştu');
