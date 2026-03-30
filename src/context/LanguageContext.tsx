@@ -44,21 +44,21 @@ const translations: Record<string, { tr: string; en: string }> = {
   "section.viewAll": { tr: "Tümünü Gör", en: "View All" },
 
   // Home - Manifesto
-  "home.manifesto.desc": { tr: "İşbirliğinin gücüne inanıyoruz. Startup'lar inovasyonu, kurumlar ölçeği getirir. Birlikte dönüşüm yaratırlar.", en: "We believe in the power of collaboration. Startups bring innovation. Corporates bring scale. Together, they create transformation." },
-  "home.manifesto.cta": { tr: "Misyonumuzu Oku", en: "Read Our Mission" },
+  "home.manifesto.desc": { tr: "Kurumsal şirketlerin girişimlerle işbirliği yapmasının önemine dikkat çekmek ve girişim dostu uygulamaları yaygınlaştırmak için oluşturulan deklarasyondur.", en: "A declaration created to highlight the importance of corporate-startup collaboration and to promote startup-friendly practices." },
+  "home.manifesto.cta": { tr: "Manifestoyu Oku", en: "Read the Manifesto" },
   "home.manifesto.close": { tr: "Kapat", en: "Close" },
 
   // Mission Modal
-  "mission.title": { tr: "Misyonumuz", en: "Our Mission" },
-  "mission.p1": { tr: "Here2Next, Türkiye'nin inovasyon ekosistemini güçlendirmek için kurulmuş bir startup-kurum işbirliği platformudur. Amacımız, büyük kurumların kaynaklarını ve deneyimlerini, startup'ların çevikliği ve yaratıcılığı ile buluşturarak birlikte değer yaratmaktır.", en: "Here2Next is a startup-corporate collaboration platform established to strengthen Turkey's innovation ecosystem. Our goal is to create shared value by combining the resources and experience of large corporations with the agility and creativity of startups." },
-  "mission.p2": { tr: "Startup'ların büyümesini hızlandırmak, kurumların dijital dönüşümünü desteklemek ve Türkiye'yi küresel inovasyon sahnesinde daha güçlü bir konuma taşımak için çalışıyoruz.", en: "We work to accelerate startup growth, support corporate digital transformation, and position Turkey more strongly on the global innovation stage." },
-  "mission.vision.title": { tr: "Vizyonumuz", en: "Our Vision" },
-  "mission.vision.desc": { tr: "Türkiye'nin en kapsamlı startup-kurum eşleşme platformu olarak, her sektörde inovasyona dayalı işbirlikleri oluşturmak ve ekosistemi sürdürülebilir şekilde büyütmek.", en: "As Turkey's most comprehensive startup-corporate matching platform, to build innovation-driven collaborations across every sector and grow the ecosystem sustainably." },
-  "mission.values.title": { tr: "Değerlerimiz", en: "Our Values" },
-  "mission.value1": { tr: "Şeffaflık — Tüm süreçlerimizde açık ve güvenilir iletişim", en: "Transparency — Open and trustworthy communication in all processes" },
-  "mission.value2": { tr: "İşbirliği — Birlikte daha güçlü olduğumuza inanıyoruz", en: "Collaboration — We believe we are stronger together" },
-  "mission.value3": { tr: "İnovasyon — Yenilikçi çözümleri destekliyor ve teşvik ediyoruz", en: "Innovation — We support and encourage innovative solutions" },
-  "mission.value4": { tr: "Sürdürülebilirlik — Uzun vadeli, kalıcı değer yaratmayı hedefliyoruz", en: "Sustainability — We aim to create long-term, lasting value" },
+  "mission.title": { tr: "Here2Next Manifesto", en: "Here2Next Manifesto" },
+  "mission.p1": { tr: "Startup işbirliği süreçlerini geliştirmek isteyen kurumsal şirketlerin bir araya geldiği yeni nesil platformdur. Girişimlerle iş birliklerimizi karşılıklı somut değer yaratmak hedefiyle büyütmek ve sürdürmek istiyoruz.", en: "A new generation platform where corporates come together to improve their startup collaboration processes. We aim to grow and sustain our partnerships with startups with the goal of creating mutual concrete value." },
+  "mission.p2": { tr: "Girişimlerle çalışan veya çalışma potansiyeli olan kurumların iş yapış süreçlerini ve yöntemlerini girişimlerin ihtiyaçlarına yönelik olarak düzenlemesi için cesaretlendirici olmak hedefliyoruz.", en: "We aim to encourage corporates that work or have the potential to work with startups to adapt their business processes and methods to meet startup needs." },
+  "mission.vision.title": { tr: "Amaçlarımız", en: "Our Goals" },
+  "mission.vision.desc": { tr: "Kurum-girişim iş birliklerinin arttırılmasını ve yaygınlaştırılmasını sağlamak. Kurumların girişimlerle çalışabilme olgunluğunu ölçmesine yardımcı olmak. İç süreçlerin iyileştirilmesi konusunda yönlendirici olmak.", en: "To increase and promote corporate-startup collaborations. To help corporates measure their readiness to work with startups. To guide improvements in internal processes." },
+  "mission.values.title": { tr: "Üç Temel Sütun", en: "Three Pillars" },
+  "mission.value1": { tr: "Destek — Her seviyedeki girişimlerin gelişimi için ihtiyaçlarına uygun fırsatlar yaratmak: kuluçka, hızlandırma programları, mentorluk, finansal kaynaklara erişim, networking ve eğitim desteği", en: "Support — Creating opportunities for startups at every level: incubation, acceleration programs, mentorship, financial access, networking and training" },
+  "mission.value2": { tr: "İletişim — İş birliklerini şeffaf ve kolay hale getirmek. Girişimlerle eşit ve dengeli iletişim kurmak. Startuplar ile görüştükten sonra en hızlı sürede geri dönüş yapmak.", en: "Communication — Making collaborations transparent and easy. Building equal and balanced communication with startups. Providing fast feedback after meetings." },
+  "mission.value3": { tr: "Kültür — Girişimlerle çalışma konusunda şirket içinde farkındalık ve yaygınlaştırma çalışmaları yapmak, tüm çalışanlarımızı kapsayacak şekilde dönüşüm programları uygulamak.", en: "Culture — Raising awareness within companies about working with startups, implementing transformation programs that include all employees." },
+  "mission.value4": { tr: "Siz de var mısınız? www.here2next.org", en: "Are you in? www.here2next.org" },
 
   // How it works
   "how.step1.title": { tr: "Profil Oluştur", en: "Create Profile" },

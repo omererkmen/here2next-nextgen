@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Zap, Users, Target, Briefcase, TrendingUp, X, Eye, Lightbulb, Handshake, Sparkles, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Zap, Users, Target, Briefcase, TrendingUp, X, Eye, Lightbulb, Handshake, Sparkles, ShieldCheck, MessageCircle, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -255,13 +255,13 @@ export default function HomePage() {
       </section>
 
       {/* Manifesto CTA */}
-      <section className="bg-gradient-to-r from-[#122858] to-[#2A4FA0] text-white py-16 sm:py-20">
+      <section className="bg-gradient-to-r from-[#5B2D8E] to-[#1B3A7B] text-white py-16 sm:py-20">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6">{t('section.manifesto')}</h2>
-          <p className="text-lg text-blue-50 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-purple-100 mb-8 max-w-2xl mx-auto">
             {t('home.manifesto.desc')}
           </p>
-          <Button size="lg" className="bg-white text-[#1B3A7B] hover:bg-gray-100" onClick={() => setMissionOpen(true)}>
+          <Button size="lg" className="bg-white text-[#5B2D8E] hover:bg-gray-100" onClick={() => setMissionOpen(true)}>
             {t('home.manifesto.cta')}
           </Button>
         </div>
@@ -276,7 +276,7 @@ export default function HomePage() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="sticky top-0 bg-gradient-to-r from-[#122858] to-[#2A4FA0] text-white px-6 py-5 rounded-t-2xl flex items-center justify-between">
+            <div className="sticky top-0 bg-gradient-to-r from-[#5B2D8E] to-[#1B3A7B] text-white px-6 py-5 rounded-t-2xl flex items-center justify-between">
               <h2 className="text-2xl font-bold">{t('mission.title')}</h2>
               <button onClick={() => setMissionOpen(false)} className="p-1 hover:bg-white/20 rounded-full transition-colors">
                 <X size={24} />
@@ -288,39 +288,43 @@ export default function HomePage() {
               <p className="text-gray-700 leading-relaxed">{t('mission.p1')}</p>
               <p className="text-gray-700 leading-relaxed">{t('mission.p2')}</p>
 
-              {/* Vision */}
-              <div className="bg-blue-50 rounded-xl p-5">
+              {/* Goals */}
+              <div className="bg-purple-50 border border-purple-100 rounded-xl p-5">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center">
-                    <Eye className="text-[#1B3A7B]" size={20} />
+                  <div className="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center">
+                    <Target className="text-[#5B2D8E]" size={20} />
                   </div>
-                  <h3 className="text-lg font-bold text-[#122858]">{t('mission.vision.title')}</h3>
+                  <h3 className="text-lg font-bold text-[#5B2D8E]">{t('mission.vision.title')}</h3>
                 </div>
                 <p className="text-gray-700 leading-relaxed">{t('mission.vision.desc')}</p>
               </div>
 
-              {/* Values */}
+              {/* Three Pillars */}
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-4">{t('mission.values.title')}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <h3 className="text-lg font-bold text-[#5B2D8E] mb-4">{t('mission.values.title')}</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {[
-                    { key: 'mission.value1', icon: <ShieldCheck className="text-[#1B3A7B]" size={20} /> },
-                    { key: 'mission.value2', icon: <Handshake className="text-[#1B3A7B]" size={20} /> },
-                    { key: 'mission.value3', icon: <Lightbulb className="text-[#1B3A7B]" size={20} /> },
-                    { key: 'mission.value4', icon: <Sparkles className="text-[#1B3A7B]" size={20} /> },
+                    { key: 'mission.value1', icon: <Heart className="text-[#C74B7A]" size={22} />, color: 'bg-pink-50 border-pink-100' },
+                    { key: 'mission.value2', icon: <MessageCircle className="text-[#1B3A7B]" size={22} />, color: 'bg-blue-50 border-blue-100' },
+                    { key: 'mission.value3', icon: <Users className="text-[#5B2D8E]" size={22} />, color: 'bg-purple-50 border-purple-100' },
                   ].map((v) => (
-                    <div key={v.key} className="flex items-start gap-3 bg-gray-50 rounded-lg p-3">
-                      <div className="mt-0.5">{v.icon}</div>
-                      <p className="text-sm text-gray-700">{t(v.key)}</p>
+                    <div key={v.key} className={`flex flex-col items-center text-center gap-3 border rounded-xl p-4 ${v.color}`}>
+                      <div className="w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center">{v.icon}</div>
+                      <p className="text-sm text-gray-700 leading-relaxed">{t(v.key)}</p>
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* Closing Statement */}
+              <div className="text-center pt-2">
+                <p className="text-[#5B2D8E] font-semibold text-lg">{t('mission.value4')}</p>
               </div>
             </div>
 
             {/* Footer */}
             <div className="px-6 py-4 border-t flex justify-end">
-              <Button className="bg-[#1B3A7B] hover:bg-[#122858]" onClick={() => setMissionOpen(false)}>
+              <Button className="bg-[#5B2D8E] hover:bg-[#4A2375]" onClick={() => setMissionOpen(false)}>
                 {t('home.manifesto.close')}
               </Button>
             </div>
