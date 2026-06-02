@@ -143,13 +143,19 @@ export default function EventLandingPage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
-            {['Carbon Smart', 'Clerion', 'Voltla', 'Skymod'].map((name) => (
-              <div key={name} className="bg-white border-2 border-gray-100 rounded-2xl p-6 text-center hover:border-[#edac46] hover:shadow-lg transition-all">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#183690]/10 to-[#edac46]/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+            {[
+              { name: 'Carbon Smart', url: 'https://www.carbonsmart.io/en' },
+              { name: 'Clerion', url: 'https://clerion.io' },
+              { name: 'Voltla', url: 'https://voltla.com.tr' },
+              { name: 'Skymod', url: 'https://skymod.tech' },
+            ].map((s) => (
+              <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="bg-white border-2 border-gray-100 rounded-2xl p-6 text-center hover:border-[#edac46] hover:shadow-lg transition-all group">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#183690]/10 to-[#edac46]/10 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:from-[#183690]/20 group-hover:to-[#edac46]/20 transition-colors">
                   <Rocket className="text-[#183690]" size={24} />
                 </div>
-                <p className="font-bold text-gray-900 text-sm">{name}</p>
-              </div>
+                <p className="font-bold text-gray-900 text-sm">{s.name}</p>
+                <ExternalLink size={12} className="mx-auto mt-2 text-gray-400 group-hover:text-[#edac46] transition-colors" />
+              </a>
             ))}
           </div>
         </div>
