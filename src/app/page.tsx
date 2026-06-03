@@ -1,8 +1,10 @@
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, Clock, MapPin, ExternalLink, Coffee, Mic, Users, Lightbulb, ArrowRight, Rocket } from 'lucide-react';
+import { Calendar, Clock, MapPin, ExternalLink, Coffee, Users, Lightbulb, ArrowRight, Rocket, Camera, Upload, X, ImageIcon } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 const schedule = [
   { time: '12:30 - 13:30', title: 'Öğle Yemeği & Karşılama', icon: Coffee, color: 'bg-amber-100 text-amber-700' },
@@ -14,6 +16,59 @@ const schedule = [
 ];
 
 export default function EventLandingPage() {
+  const [photos, setPhotos] = useState<string[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [lightbox, setLightbox] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    fetchPhotos();
+    checkAdmin();
+  }, []);
+
+  const fetchPhotos = async () => {
+    const supabase = createClient();
+    const { data } = await supabase.storage.from('event-photos').list('', {
+      sortBy: { column: 'created_at', order: 'desc' },
+    });
+    if (data) {
+      const urls = data
+        .filter(f => f.name !== '.emptyFolderPlaceholder')
+        .map(f => supabase.storage.from('event-photos').getPublicUrl(f.name).data.publicUrl);
+      setPhotos(urls);
+    }
+  };
+
+  const checkAdmin = async () => {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+      setIsAdmin(profile?.role === 'admin');
+    }
+  };
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    const supabase = createClient();
+
+    for (const file of Array.from(files)) {
+      const ext = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      await supabase.storage.from('event-photos').upload(fileName, file, {
+        cacheControl: '3600',
+        upsert: false,
+      });
+    }
+
+    await fetchPhotos();
+    setUploading(false);
+    if (fileRef.current) fileRef.current.value = '';
+  };
+
   return (
     <main className="min-h-screen bg-white">
       {/* Top bar */}
@@ -32,7 +87,6 @@ export default function EventLandingPage() {
 
       {/* Hero */}
       <section className="pt-28 pb-16 sm:pt-36 sm:pb-24 bg-gradient-to-br from-[#183690] via-[#1a3d99] to-[#102668] text-white relative overflow-hidden">
-        {/* Decorative elements */}
         <div className="absolute top-20 right-0 w-96 h-96 rounded-full bg-[#edac46]/10 blur-3xl" />
         <div className="absolute bottom-0 left-10 w-64 h-64 rounded-full bg-[#5093b6]/10 blur-2xl" />
 
@@ -49,7 +103,7 @@ export default function EventLandingPage() {
             </h1>
 
             <p className="text-lg sm:text-xl text-blue-100 mb-8 leading-relaxed max-w-2xl">
-              Kurumlar ve startuplar arasındaki iş birliği süreçlerini hızlı ve verimli hale getirmek üzere kurulan here2next, son dönemin en trend konularından biri olan <strong className="text-white">"Global Açık İnovasyon ve Yapay Zeka"</strong> üzerine konuşacağız.
+              Kurumlar ve startuplar arasındaki iş birliği süreçlerini hızlı ve verimli hale getirmek üzere kurulan here2next, son dönemin en trend konularından biri olan <strong className="text-white">&quot;Global Açık İnovasyon ve Yapay Zeka&quot;</strong> üzerine konuşacağız.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-8">
@@ -63,7 +117,6 @@ export default function EventLandingPage() {
               </div>
             </div>
 
-            {/* Powered by */}
             <div className="flex items-center gap-3 pt-4 border-t border-white/10">
               <span className="text-xs text-blue-200 uppercase tracking-wider">powered by</span>
               <span className="text-lg font-bold text-[#edac46]">Akbank LAB</span>
@@ -71,6 +124,67 @@ export default function EventLandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Live Photo Gallery */}
+      <section className="py-16 bg-gray-50" id="gallery">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                <h2 className="text-3xl font-extrabold text-gray-900">Canlı Galeri</h2>
+              </div>
+              <p className="text-gray-500 mt-1">Etkinlikten kareler</p>
+            </div>
+
+            {isAdmin && (
+              <label className="inline-flex items-center gap-2 bg-[#edac46] text-white px-5 py-2.5 rounded-xl font-semibold cursor-pointer hover:bg-[#d49a3a] transition-colors">
+                <Camera size={18} />
+                {uploading ? 'Yükleniyor...' : 'Fotoğraf Ekle'}
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={handleUpload}
+                  disabled={uploading}
+                />
+              </label>
+            )}
+          </div>
+
+          {photos.length === 0 ? (
+            <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-gray-200">
+              <ImageIcon className="mx-auto mb-4 text-gray-300" size={48} />
+              <p className="text-gray-400 text-lg">Henüz fotoğraf eklenmedi</p>
+              <p className="text-gray-300 text-sm mt-1">Etkinlik başladığında fotoğraflar burada görünecek</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {photos.map((url, i) => (
+                <button
+                  key={i}
+                  onClick={() => setLightbox(url)}
+                  className="aspect-square rounded-xl overflow-hidden bg-gray-200 hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#edac46] focus:ring-offset-2"
+                >
+                  <img src={url} alt={`Etkinlik fotoğrafı ${i + 1}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4" onClick={() => setLightbox(null)}>
+          <button className="absolute top-6 right-6 text-white/70 hover:text-white" onClick={() => setLightbox(null)}>
+            <X size={32} />
+          </button>
+          <img src={lightbox} alt="Fotoğraf" className="max-w-full max-h-[90vh] rounded-lg object-contain" onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
 
       {/* Schedule */}
       <section className="py-16 sm:py-20">
@@ -83,7 +197,6 @@ export default function EventLandingPage() {
           <div className="max-w-2xl mx-auto">
             {schedule.map((item, i) => (
               <div key={i} className="flex gap-4 sm:gap-6 mb-1">
-                {/* Timeline */}
                 <div className="flex flex-col items-center">
                   <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center flex-shrink-0`}>
                     <item.icon size={18} />
@@ -92,8 +205,6 @@ export default function EventLandingPage() {
                     <div className="w-0.5 bg-gray-200 flex-1 my-1" />
                   )}
                 </div>
-
-                {/* Content */}
                 <div className="pb-8 flex-1">
                   <p className="text-xs font-mono text-gray-400 mb-1">{item.time}</p>
                   <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
@@ -166,7 +277,7 @@ export default function EventLandingPage() {
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">Aramızda olmak ister misiniz?</h2>
           <p className="text-lg text-white/80 mb-8 max-w-xl mx-auto">
-            Program ilginizi çektiyse bize DM'den yazın, konuşalım.
+            Program ilginizi çektiyse bize DM&apos;den yazın, konuşalım.
           </p>
           <a
             href="https://www.linkedin.com/company/here2next/"
@@ -174,7 +285,7 @@ export default function EventLandingPage() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-white text-[#183690] px-6 py-3 rounded-xl font-bold text-lg hover:bg-gray-100 transition-colors"
           >
-            LinkedIn'den Ulaşın
+            LinkedIn&apos;den Ulaşın
             <ExternalLink size={18} />
           </a>
         </div>
