@@ -2,11 +2,16 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useLang } from "@/context/LanguageContext";
 
 export default function Footer() {
   const { t } = useLang();
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // Hide platform footer on standalone landing pages (they have their own footer)
+  if (pathname === '/' || pathname === '/event') return null;
 
   return (
     <footer className="bg-slate-900 text-slate-300 py-12">

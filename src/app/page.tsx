@@ -1,344 +1,226 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Zap, Users, Target, Briefcase, TrendingUp, X, Eye, Lightbulb, Handshake, Sparkles, ShieldCheck, MessageCircle, Heart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import AvatarPlaceholder from '@/components/shared/AvatarPlaceholder';
-import { useLang } from '@/context/LanguageContext';
-import { createClient } from '@/lib/supabase/client';
+import { ArrowRight, Sparkles, HeartHandshake, MessageSquare, Users, TrendingUp, AlertTriangle, ExternalLink } from 'lucide-react';
 
-export default function HomePage() {
-  const { t, lang } = useLang();
-  const [startups, setStartups] = useState<any[]>([]);
-  const [wishlist, setWishlist] = useState<any[]>([]);
-  const [events, setEvents] = useState<any[]>([]);
-  const [news, setNews] = useState<any[]>([]);
-  const [corporates, setCorporates] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [missionOpen, setMissionOpen] = useState(false);
+const euStats = [
+  { num: '%80', label: 'Kurum, açık inovasyonu önemli ya da kritik görüyor (2023\'te %67)' },
+  { num: '%72', label: '5.000+ çalışanlı kurum, girişimlerle yapay zeka projesinde çalıştı' },
+  { num: '%70', label: 'Yapay zeka iş birliği yapan kurum, girişimleri AI stratejisi için "hayati" görüyor' },
+];
 
-  useEffect(() => {
-    async function fetchAllData() {
-      const supabase = createClient();
-      const today = new Date().toISOString().split('T')[0];
+const trStats = [
+  { num: '622M$', label: '2025 toplam girişim yatırımı — mega tur olmadan korunan hacim' },
+  { num: '92', label: 'Türkiye\'de aktif kurumsal girişim sermayesi (CVC) şirketi sayısı' },
+  { num: 'AI', label: '2025\'te hem yatırım tutarı hem işlem sayısında öne çıkan alan' },
+];
 
-      const [startupsRes, wishlistRes, eventsRes, newsRes, corporatesRes] = await Promise.all([
-        supabase.from('startups').select('*').eq('featured', true).limit(4),
-        supabase.from('wishlist_with_counts').select('*').eq('status', 'open').limit(3),
-        supabase.from('events_with_counts').select('*').gte('date', today).order('date').limit(3),
-        supabase.from('news_articles').select('*').order('published_at', { ascending: false }).limit(3),
-        supabase.from('corporates').select('*').eq('is_founder', true),
-      ]);
+const pillars = [
+  {
+    tag: 'Destek',
+    icon: HeartHandshake,
+    color: 'text-[#5093b6]',
+    bar: 'border-[#5093b6]',
+    badge: 'bg-[#5093b6]',
+    title: 'Sermayeden erişime',
+    body: 'Yapay zeka, ürün geliştirmenin maliyetini düşürüyor; daha çok erken aşama girişim, daha hızlı ortaya çıkıyor. Darboğaz artık "yapabilirler mi" değil, "kurum onu eskimeden entegre edebilir mi" sorusu. Kuluçka ve hızlandırmanın değeri; veriye, dağıtım kanalına, hesaplama gücüne ve regüle ortamlara erişim sağlamaya kayıyor.',
+  },
+  {
+    tag: 'İletişim',
+    icon: MessageSquare,
+    color: 'text-[#8cb45b]',
+    bar: 'border-[#8cb45b]',
+    badge: 'bg-[#8cb45b]',
+    title: 'Hız artık nezaket değil, fark yaratan unsur',
+    body: 'Yapay zekanın temposu yavaş kurumsal yanıt sürelerini ölümcül kılıyor — satın alma sürecinde altı ay bekleyen bir girişim çoktan pivot etmiş ya da kapanmış olabilir. "En hızlı sürede geri dönüş" sözümüz artık bir kibarlık değil, gerçek bir rekabet avantajı. Bu çağda olgunluk demek, karar hızı demek.',
+  },
+  {
+    tag: 'Kültür',
+    icon: Users,
+    color: 'text-[#c848aa]',
+    bar: 'border-[#c848aa]',
+    badge: 'bg-[#c848aa]',
+    title: 'Dönüşüm seçenek değil, zorunluluk',
+    body: 'En büyük değişim burada. Yapay zeka her fonksiyonda dönüşüm programlarını zorunlu kılıyor — ki bu, Here2Next\'in zaten savunduğu iç hazırlık çalışmasının ta kendisi. Manifestodaki "olgunluğu ölçme" fikri bu ana mükemmel oturuyor: kurumlar girişimlerle çalışabilme kaslarını ölçüp güçlendirmeden, yapay zeka fırsatını yakalayamaz.',
+  },
+];
 
-      setStartups(startupsRes.data ?? []);
-      setWishlist(wishlistRes.data ?? []);
-      setEvents(eventsRes.data ?? []);
-      setNews(newsRes.data ?? []);
-      setCorporates(corporatesRes.data ?? []);
-      setLoading(false);
-    }
-    fetchAllData();
-  }, []);
-
-  if (loading) return <div className="flex items-center justify-center min-h-screen"><div className="text-slate-600">Loading...</div></div>;
-
+export default function AiEraPage() {
   return (
-    <main className="w-full">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-b from-[#0C1D4A] via-[#183690] to-[#0C1D4A] text-white py-20 sm:py-32">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-            {t('hero.title')}
-          </h1>
-          <p className="text-lg sm:text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-            {t('hero.subtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/register?role=startup">
-              <Button size="lg" className="bg-[#edac46] hover:bg-[#D48E15] text-white w-full">{t('hero.cta.startup')}</Button>
-            </Link>
-            <Link href="/register?role=corporate">
-              <Button size="lg" className="bg-[#183690] hover:bg-[#102668] w-full">{t('hero.cta.corporate')}</Button>
-            </Link>
-            <Link href="/startups">
-              <Button size="lg" className="bg-transparent border border-white text-white hover:bg-white/10 w-full">{t('hero.cta.explore')}</Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Bar */}
-      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 py-12">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">240+</div>
-              <p className="text-gray-700 mt-2">{t('stats.startups')}</p>
-            </div>
-            <div>
-              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">50+</div>
-              <p className="text-gray-700 mt-2">{t('stats.corporates')}</p>
-            </div>
-            <div>
-              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">180+</div>
-              <p className="text-gray-700 mt-2">{t('stats.matches')}</p>
-            </div>
-            <div>
-              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">45+</div>
-              <p className="text-gray-700 mt-2">{t('stats.events')}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16">{t('section.howItWorks')}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="text-[#183690]" size={32} />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{t('how.step1.title')}</h3>
-              <p className="text-gray-700">{t('how.step1.desc')}</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Target className="text-[#183690]" size={32} />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{t('how.step2.title')}</h3>
-              <p className="text-gray-700">{t('how.step2.desc')}</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Zap className="text-[#183690]" size={32} />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{t('how.step3.title')}</h3>
-              <p className="text-gray-700">{t('how.step3.desc')}</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Briefcase className="text-[#183690]" size={32} />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{t('how.step4.title')}</h3>
-              <p className="text-gray-700">{t('how.step4.desc')}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Startups */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold">{t('section.featuredStartups')}</h2>
-            <Link href="/startups" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
-              {t('section.viewAll')} <ArrowRight size={20} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {startups.map((startup) => (
-              <Card key={startup.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <AvatarPlaceholder name={startup.name} size="lg" />
-                  </div>
-                  <h3 className="font-bold text-lg mb-2">{startup.name}</h3>
-                  <Badge variant="secondary" className="mb-3">{startup.sector}</Badge>
-                  <p className="text-sm text-gray-700 line-clamp-2 mb-4">{lang === 'tr' ? startup.description_tr : startup.description_en}</p>
-                  <div className="pt-4 border-t">
-                    <Link href={`/startups/${startup.id}`} className="text-[#183690] hover:text-[#102668] text-sm font-semibold">
-                      {t('startups.viewProfile')} →
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Corporate Needs */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold">{t('section.corporateNeeds')}</h2>
-            <Link href="/wishlist" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
-              {t('section.viewAll')} <ArrowRight size={20} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {wishlist.map((item) => (
-              <Card key={item.id}>
-                <CardContent className="p-6">
-                  <p className="text-sm text-gray-600 mb-2">{item.corporate_name}</p>
-                  <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? item.title_tr : item.title_en}</h3>
-                  <p className="text-gray-700 text-sm mb-4">{lang === 'tr' ? item.description_tr : item.description_en}</p>
-                  <div className="flex gap-2 flex-wrap">
-                    {(item.tags ?? []).map((tag: string) => (
-                      <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Upcoming Events */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold">{t('section.upcomingEvents')}</h2>
-            <Link href="/events" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
-              {t('section.viewAll')} <ArrowRight size={20} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {events.map((event) => (
-              <Card key={event.id} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <p className="text-sm text-[#183690] font-semibold mb-2">{new Date(event.date).toLocaleDateString()}</p>
-                  <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? event.title_tr : event.title_en}</h3>
-                  <p className="text-gray-700 text-sm mb-4">{event.location}</p>
-                  <p className="text-sm text-gray-600">
-                    {event.attendee_count} {lang === 'tr' ? 'katılımcı' : 'attendees'}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Latest News */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold">{t('section.latestNews')}</h2>
-            <Link href="/news" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
-              {t('section.viewAll')} <ArrowRight size={20} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {news.map((article) => (
-              <Card key={article.id}>
-                <CardContent className="p-6">
-                  <Badge variant="secondary" className="mb-3 text-xs">{article.category}</Badge>
-                  <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? article.title_tr : article.title_en}</h3>
-                  <p className="text-gray-700 text-sm">{new Date(article.published_at).toLocaleDateString()}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Founding Members */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">{t('section.members')}</h2>
-          <div className="flex flex-wrap justify-center gap-8 items-center">
-            {corporates.map((corp) => (
-              <div key={corp.id} className="flex flex-col items-center">
-                <AvatarPlaceholder name={corp.name} size="lg" />
-                <p className="text-sm font-semibold mt-3 text-center">{corp.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Manifesto CTA */}
-      <section className="bg-gradient-to-r from-[#c848aa] to-[#183690] text-white py-16 sm:py-20">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">{t('section.manifesto')}</h2>
-          <p className="text-lg text-purple-100 mb-8 max-w-2xl mx-auto">
-            {t('home.manifesto.desc')}
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" className="bg-white text-[#c848aa] hover:bg-gray-100" onClick={() => setMissionOpen(true)}>
-              {t('home.manifesto.cta')}
-            </Button>
-            <Link href="/ai-cagi">
-              <Button size="lg" variant="outline" className="border-white text-white bg-transparent hover:bg-white/10">
-                <Sparkles size={18} className="mr-2" />
-                {t('home.manifesto.aiEra')}
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Mission Modal */}
-      {missionOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setMissionOpen(false)}>
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-          <div
-            className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
+    <main className="min-h-screen bg-white">
+      {/* Top bar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <Image src="/logo.png" alt="Here2Next" width={130} height={40} className="h-8 w-auto" />
+          <Link
+            href="/home"
+            className="inline-flex items-center gap-2 bg-[#183690] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#102668] transition-colors"
           >
-            {/* Header */}
-            <div className="sticky top-0 bg-gradient-to-r from-[#c848aa] to-[#183690] text-white px-6 py-5 rounded-t-2xl flex items-center justify-between">
-              <h2 className="text-2xl font-bold">{t('mission.title')}</h2>
-              <button onClick={() => setMissionOpen(false)} className="p-1 hover:bg-white/20 rounded-full transition-colors">
-                <X size={24} />
-              </button>
+            Platforma Git
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="pt-28 pb-16 sm:pt-36 sm:pb-24 bg-gradient-to-br from-[#0C1D4A] via-[#183690] to-[#2A5CB8] text-white relative overflow-hidden">
+        <div className="absolute top-20 right-0 w-96 h-96 rounded-full bg-[#edac46]/10 blur-3xl" />
+        <div className="absolute bottom-0 left-10 w-64 h-64 rounded-full bg-[#c848aa]/10 blur-2xl" />
+
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm mb-6">
+              <Sparkles size={14} className="text-[#edac46]" />
+              <span>Manifesto Eki · 2026</span>
             </div>
 
-            {/* Content */}
-            <div className="px-6 py-6 space-y-6">
-              <p className="text-gray-700 leading-relaxed">{t('mission.p1')}</p>
-              <p className="text-gray-700 leading-relaxed">{t('mission.p2')}</p>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight mb-4">
+              Yapay Zeka Çağında
+              <span className="text-[#edac46]"> Here2Next</span>
+            </h1>
 
-              {/* Goals */}
-              <div className="bg-purple-50 border border-purple-100 rounded-xl p-5">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center">
-                    <Target className="text-[#c848aa]" size={20} />
-                  </div>
-                  <h3 className="text-lg font-bold text-[#c848aa]">{t('mission.vision.title')}</h3>
-                </div>
-                <p className="text-gray-700 leading-relaxed">{t('mission.vision.desc')}</p>
-              </div>
-
-              {/* Three Pillars */}
-              <div>
-                <h3 className="text-lg font-bold text-[#c848aa] mb-4">{t('mission.values.title')}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {[
-                    { key: 'mission.value1', icon: <Heart className="text-[#c848aa]" size={22} />, color: 'bg-pink-50 border-pink-100' },
-                    { key: 'mission.value2', icon: <MessageCircle className="text-[#183690]" size={22} />, color: 'bg-blue-50 border-blue-100' },
-                    { key: 'mission.value3', icon: <Users className="text-[#c848aa]" size={22} />, color: 'bg-purple-50 border-purple-100' },
-                  ].map((v) => (
-                    <div key={v.key} className={`flex flex-col items-center text-center gap-3 border rounded-xl p-4 ${v.color}`}>
-                      <div className="w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center">{v.icon}</div>
-                      <p className="text-sm text-gray-700 leading-relaxed">{t(v.key)}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Closing Statement */}
-              <div className="text-center pt-2">
-                <p className="text-[#c848aa] font-semibold text-lg">{t('mission.value4')}</p>
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="px-6 py-4 border-t flex justify-end">
-              <Button className="bg-[#c848aa] hover:bg-[#a83890]" onClick={() => setMissionOpen(false)}>
-                {t('home.manifesto.close')}
-              </Button>
-            </div>
+            <p className="text-lg sm:text-xl text-blue-100 mb-8 leading-relaxed max-w-2xl">
+              Kurum–girişim iş birliği artık bir olgunluk tercihi değil, rekabetin kendisi. Yapay zeka, manifestomuzun her sözünü daha acil hale getiriyor.
+            </p>
           </div>
         </div>
-      )}
+      </section>
+
+      {/* Lead */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-xl text-gray-800 leading-relaxed">
+            Here2Next&apos;in temel önermesi — <strong className="text-[#183690]">kurumların girişimlerle gerçekten çalışabilmek için iç süreçlerini yeniden düzenlemesi gerektiği</strong> — eskiden &quot;iyi olur&quot; denilen bir olgunluk argümanıydı. Yapay zeka bunu bir hayatta kalma argümanına dönüştürdü.
+          </p>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="pb-8">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Europe */}
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#183690]" />
+            <h2 className="text-sm font-bold uppercase tracking-widest text-[#183690]">Avrupa&apos;da Tablo</h2>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-4 mb-3">
+            {euStats.map((s) => (
+              <div key={s.num} className="bg-[#183690] rounded-2xl p-5 text-center">
+                <p className="text-3xl font-extrabold text-[#edac46] leading-none">{s.num}</p>
+                <p className="text-xs text-blue-100 font-light mt-2 leading-snug">{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-gray-500 mb-12">
+            Kaynak:{' '}
+            <a href="https://content.soprasteria.com/openinnovationreport2025/" target="_blank" rel="noopener noreferrer" className="text-[#183690] underline">
+              Sopra Steria — Open Innovation Report 2025
+            </a>{' '}
+            (INSEAD ile, 12 Avrupa ülkesi; Türkiye örneklemde değil).
+          </p>
+
+          {/* Turkey */}
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#c848aa]" />
+            <h2 className="text-sm font-bold uppercase tracking-widest text-[#c848aa]">Türkiye&apos;de Tablo (2025)</h2>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-4 mb-3">
+            {trStats.map((s) => (
+              <div key={s.num} className="bg-[#c848aa] rounded-2xl p-5 text-center">
+                <p className="text-3xl font-extrabold text-white leading-none">{s.num}</p>
+                <p className="text-xs text-pink-50 font-light mt-2 leading-snug">{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-gray-500 mb-10">
+            Kaynak:{' '}
+            <a href="https://media.startupcentrum.com/tr/turkiye-startup-ekosistemi-2025te-yeniden-dengeleniyor-622-milyon-dolarlik-yatirim-daha-secici-sermaye/" target="_blank" rel="noopener noreferrer" className="text-[#183690] underline">
+              StartupCentrum 2025
+            </a>{' '}
+            (toplam yatırım) ·{' '}
+            <a href="https://fintechistanbul.org/2025/07/08/2025-yilinin-ilk-yarisinda-turkiye-startup-ekosisteminden-one-cikan-gelismeler/" target="_blank" rel="noopener noreferrer" className="text-[#183690] underline">
+              Startups.watch / FinTech İstanbul
+            </a>{' '}
+            (CVC sayısı, 2025 ilk yarı).
+          </p>
+
+          <div className="flex gap-3 items-start bg-gray-50 border border-gray-100 rounded-xl p-5">
+            <TrendingUp size={20} className="text-[#183690] flex-shrink-0 mt-0.5" />
+            <p className="text-gray-600 leading-relaxed">
+              İvme her iki tarafta da aynı yöne işaret ediyor: teknoloji artık en büyük engel değil — kurumsal hazırlık ve karar hızı en büyük engel. Tam da Here2Next&apos;in başından beri savunduğu alan.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Pillars */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-sm font-semibold text-[#edac46] uppercase tracking-wider mb-2 text-center">Üç Sütun, Yapay Zeka Merceğinden</p>
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-10 text-center">Manifesto, AI çağında yeniden okunuyor</h2>
+
+          <div className="space-y-6">
+            {pillars.map((p) => (
+              <div key={p.tag} className={`bg-white rounded-2xl p-7 border border-gray-100 border-l-[6px] ${p.bar} shadow-sm`}>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className={`inline-flex items-center gap-1.5 text-xs font-bold tracking-wider uppercase text-white px-3 py-1 rounded-full ${p.badge}`}>
+                    <p.icon size={13} />
+                    {p.tag}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-[#183690] mb-2">{p.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{p.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tension */}
+      <section className="py-16">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-[#fff7e6] border border-[#f0dba6] rounded-2xl p-7">
+            <div className="flex items-center gap-2 mb-3">
+              <AlertTriangle size={20} className="text-[#D48E15]" />
+              <h3 className="text-xl font-bold text-[#D48E15]">Dürüst bir gerilim</h3>
+            </div>
+            <p className="text-gray-700 leading-relaxed">
+              Yapay zeka, kurumların eskiden girişimlerden aldığı şeyi içeride üretmesini de kolaylaştırıyor ve küçük oyuncuların doğrudan rekabet etmesini sağlıyor. Bu yüzden Here2Next&apos;in vurgusu <strong>&quot;neden inşa etmek yerine iş birliği&quot;</strong> sorusuna yaslanmalı: hız, odak, regülasyon avantajı ve hızla değişen teknolojide batık maliyetten kaçınmak. İş birliğini varsayılan kabul etmek yerine, neden daha akıllı bir seçim olduğunu göstermeliyiz.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 bg-gradient-to-r from-[#183690] to-[#2A5CB8] text-white">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">Siz de var mısınız?</h2>
+          <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
+            Yapay zeka çağında kurum–girişim iş birliğini somut değere dönüştürmek için Here2Next ile yürüyün.
+          </p>
+          <Link
+            href="/home"
+            className="inline-flex items-center gap-2 bg-[#edac46] text-[#102668] px-6 py-3 rounded-xl font-bold text-lg hover:bg-[#D48E15] transition-colors"
+          >
+            Platforma Git
+            <ArrowRight size={18} />
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 bg-gray-900 text-gray-400 text-center text-sm">
+        <div className="max-w-[1200px] mx-auto px-4">
+          <Image src="/logo.png" alt="Here2Next" width={100} height={31} className="h-6 w-auto mx-auto mb-3 brightness-0 invert" />
+          <p className="mb-2">
+            <a href="https://www.here2next.org" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 hover:text-[#edac46] transition-colors">
+              www.here2next.org <ExternalLink size={12} />
+            </a>
+          </p>
+          <p>© 2026 Here2Next. Tüm hakları saklıdır.</p>
+        </div>
+      </footer>
     </main>
   );
 }

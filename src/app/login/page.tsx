@@ -46,7 +46,7 @@ export default function LoginPage() {
       }
 
       await logActivity('login_success', {}, email);
-      router.push('/');
+      router.push('/home');
       router.refresh();
     } catch (err) {
       setError('Bir hata oluştu. Lütfen tekrar deneyin.');

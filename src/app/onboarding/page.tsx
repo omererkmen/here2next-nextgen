@@ -193,7 +193,7 @@ export default function OnboardingPage() {
                 ? 'Profiliniz inceleme için gönderildi. Admin onayından sonra platformda yayınlanacaktır.'
                 : 'Your profile has been submitted for review. It will be published on the platform after admin approval.'}
             </p>
-            <Button className="bg-[#183690] hover:bg-[#102668]" onClick={() => router.push('/')}>
+            <Button className="bg-[#183690] hover:bg-[#102668]" onClick={() => router.push('/home')}>
               {lang === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
             </Button>
           </CardContent>
