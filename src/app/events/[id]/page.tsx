@@ -60,17 +60,12 @@ export default function EventDetailPage() {
       }
 
       // Fetch photos for this event
+      // Build Together event ID - photos are in root level
+      const buildTogetherEventId = '50f73337-a016-4190-9a0a-6072930aefcb';
       const eventSlug = eventData.slug || (id as string);
-      const { data: photoData } = await supabase.storage.from('event-photos').list(eventSlug, {
-        sortBy: { column: 'created_at', order: 'desc' },
-      });
-      if (photoData && photoData.length > 0) {
-        const urls = photoData
-          .filter(f => f.name !== '.emptyFolderPlaceholder')
-          .map(f => supabase.storage.from('event-photos').getPublicUrl(`${eventSlug}/${f.name}`).data.publicUrl);
-        setPhotos(urls);
-      } else {
-        // Also check root level (photos from landing page)
+
+      if (id === buildTogetherEventId) {
+        // Build Together photos are in root level (uploaded from landing page)
         const { data: rootPhotos } = await supabase.storage.from('event-photos').list('', {
           sortBy: { column: 'created_at', order: 'desc' },
         });
@@ -78,6 +73,17 @@ export default function EventDetailPage() {
           const urls = rootPhotos
             .filter(f => f.name !== '.emptyFolderPlaceholder' && !f.name.startsWith('.'))
             .map(f => supabase.storage.from('event-photos').getPublicUrl(f.name).data.publicUrl);
+          setPhotos(urls);
+        }
+      } else {
+        // Other events: photos in event-specific folder
+        const { data: photoData } = await supabase.storage.from('event-photos').list(eventSlug, {
+          sortBy: { column: 'created_at', order: 'desc' },
+        });
+        if (photoData && photoData.length > 0) {
+          const urls = photoData
+            .filter(f => f.name !== '.emptyFolderPlaceholder')
+            .map(f => supabase.storage.from('event-photos').getPublicUrl(`${eventSlug}/${f.name}`).data.publicUrl);
           setPhotos(urls);
         }
       }
