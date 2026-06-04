@@ -46,6 +46,7 @@ const translations: Record<string, { tr: string; en: string }> = {
   // Home - Manifesto
   "home.manifesto.desc": { tr: "Kurumsal şirketlerin girişimlerle işbirliği yapmasının önemine dikkat çekmek ve girişim dostu uygulamaları yaygınlaştırmak için oluşturulan deklarasyondur.", en: "A declaration created to highlight the importance of corporate-startup collaboration and to promote startup-friendly practices." },
   "home.manifesto.cta": { tr: "Manifestoyu Oku", en: "Read the Manifesto" },
+  "home.manifesto.aiEra": { tr: "Yapay Zeka Çağında", en: "In the AI Era" },
   "home.manifesto.close": { tr: "Kapat", en: "Close" },
 
   // Mission Modal

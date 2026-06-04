@@ -261,9 +261,17 @@ export default function HomePage() {
           <p className="text-lg text-purple-100 mb-8 max-w-2xl mx-auto">
             {t('home.manifesto.desc')}
           </p>
-          <Button size="lg" className="bg-white text-[#c848aa] hover:bg-gray-100" onClick={() => setMissionOpen(true)}>
-            {t('home.manifesto.cta')}
-          </Button>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Button size="lg" className="bg-white text-[#c848aa] hover:bg-gray-100" onClick={() => setMissionOpen(true)}>
+              {t('home.manifesto.cta')}
+            </Button>
+            <Link href="/ai-cagi">
+              <Button size="lg" variant="outline" className="border-white text-white bg-transparent hover:bg-white/10">
+                <Sparkles size={18} className="mr-2" />
+                {t('home.manifesto.aiEra')}
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
