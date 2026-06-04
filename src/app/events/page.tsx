@@ -94,7 +94,7 @@ export default function EventsPage() {
             <div className="flex-shrink-0 flex items-center">
               <Link href={`/events/${event.id}`}>
                 <Button className="bg-[#183690] hover:bg-[#102668] w-full md:w-auto">
-                  {dateObj >= new Date() ? (lang === 'tr' ? 'Kayıt Ol' : 'Register') : (lang === 'tr' ? 'Detaylar' : 'View Details')}
+                  {dateObj >= new Date() ? (lang === 'tr' ? 'Kayıt Ol' : 'Register') : (lang === 'tr' ? 'Galeri & Detaylar' : 'Gallery & Details')}
                 </Button>
               </Link>
             </div>

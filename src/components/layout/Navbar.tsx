@@ -13,7 +13,7 @@ import { createClient } from "@/lib/supabase/client";
 import Image from "next/image";
 
 const navItems = [
-  { href: "/home", key: "nav.home", icon: null },
+  { href: "/", key: "nav.home", icon: null },
   { href: "/startups", key: "nav.startups", icon: Rocket },
   { href: "/corporates", key: "nav.corporates", icon: Building2 },
   { href: "/wishlist", key: "nav.wishlist", icon: ListChecks },

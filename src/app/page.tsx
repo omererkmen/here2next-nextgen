@@ -1,303 +1,336 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Calendar, Clock, MapPin, ExternalLink, Coffee, Users, Lightbulb, ArrowRight, Rocket, Camera, Upload, X, ImageIcon } from 'lucide-react';
+import { ArrowRight, Zap, Users, Target, Briefcase, TrendingUp, X, Eye, Lightbulb, Handshake, Sparkles, ShieldCheck, MessageCircle, Heart } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import AvatarPlaceholder from '@/components/shared/AvatarPlaceholder';
+import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
 
-const schedule = [
-  { time: '12:30 - 13:30', title: 'Öğle Yemeği & Karşılama', icon: Coffee, color: 'bg-amber-100 text-amber-700' },
-  { time: '13:30 - 13:45', title: 'Hoş geldiniz! | here2next Ekibi', icon: Users, color: 'bg-blue-100 text-[#183690]' },
-  { time: '13:45 - 14:10', title: 'Global Açık İnovasyon & Yapay Zeka', speaker: 'Emrecan Kerçek, Plug and Play', icon: Lightbulb, color: 'bg-purple-100 text-purple-700' },
-  { time: '14:10 - 14:25', title: 'Kahve Molası', icon: Coffee, color: 'bg-amber-100 text-amber-700' },
-  { time: '14:25 - 15:30', title: 'Startup Pitch', icon: Rocket, color: 'bg-green-100 text-green-700', startups: ['Carbon Smart', 'Clerion', 'Voltla', 'Skymod'] },
-  { time: '15:30 - 16:00', title: 'Networking & Kapanış', icon: Users, color: 'bg-[#edac46]/20 text-[#edac46]' },
-];
-
-export default function EventLandingPage() {
-  const [photos, setPhotos] = useState<string[]>([]);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [lightbox, setLightbox] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+export default function HomePage() {
+  const { t, lang } = useLang();
+  const [startups, setStartups] = useState<any[]>([]);
+  const [wishlist, setWishlist] = useState<any[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
+  const [news, setNews] = useState<any[]>([]);
+  const [corporates, setCorporates] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [missionOpen, setMissionOpen] = useState(false);
 
   useEffect(() => {
-    fetchPhotos();
-    checkAdmin();
+    async function fetchAllData() {
+      const supabase = createClient();
+      const today = new Date().toISOString().split('T')[0];
+
+      const [startupsRes, wishlistRes, eventsRes, newsRes, corporatesRes] = await Promise.all([
+        supabase.from('startups').select('*').eq('featured', true).limit(4),
+        supabase.from('wishlist_with_counts').select('*').eq('status', 'open').limit(3),
+        supabase.from('events_with_counts').select('*').gte('date', today).order('date').limit(3),
+        supabase.from('news_articles').select('*').order('published_at', { ascending: false }).limit(3),
+        supabase.from('corporates').select('*').eq('is_founder', true),
+      ]);
+
+      setStartups(startupsRes.data ?? []);
+      setWishlist(wishlistRes.data ?? []);
+      setEvents(eventsRes.data ?? []);
+      setNews(newsRes.data ?? []);
+      setCorporates(corporatesRes.data ?? []);
+      setLoading(false);
+    }
+    fetchAllData();
   }, []);
 
-  const fetchPhotos = async () => {
-    const supabase = createClient();
-    const { data } = await supabase.storage.from('event-photos').list('', {
-      sortBy: { column: 'created_at', order: 'desc' },
-    });
-    if (data) {
-      const urls = data
-        .filter(f => f.name !== '.emptyFolderPlaceholder')
-        .map(f => supabase.storage.from('event-photos').getPublicUrl(f.name).data.publicUrl);
-      setPhotos(urls);
-    }
-  };
-
-  const checkAdmin = async () => {
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-      setIsAdmin(profile?.role === 'admin');
-    }
-  };
-
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
-    setUploading(true);
-    const supabase = createClient();
-
-    for (const file of Array.from(files)) {
-      const ext = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-      await supabase.storage.from('event-photos').upload(fileName, file, {
-        cacheControl: '3600',
-        upsert: false,
-      });
-    }
-
-    await fetchPhotos();
-    setUploading(false);
-    if (fileRef.current) fileRef.current.value = '';
-  };
+  if (loading) return <div className="flex items-center justify-center min-h-screen"><div className="text-slate-600">Loading...</div></div>;
 
   return (
-    <main className="min-h-screen bg-white">
-      {/* Top bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Image src="/logo.png" alt="Here2Next" width={130} height={40} className="h-8 w-auto" />
-          <Link
-            href="/home"
-            className="inline-flex items-center gap-2 bg-[#183690] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#102668] transition-colors"
-          >
-            Platforma Git
-            <ArrowRight size={16} />
-          </Link>
-        </div>
-      </nav>
-
-      {/* Hero */}
-      <section className="pt-28 pb-16 sm:pt-36 sm:pb-24 bg-gradient-to-br from-[#183690] via-[#1a3d99] to-[#102668] text-white relative overflow-hidden">
-        <div className="absolute top-20 right-0 w-96 h-96 rounded-full bg-[#edac46]/10 blur-3xl" />
-        <div className="absolute bottom-0 left-10 w-64 h-64 rounded-full bg-[#5093b6]/10 blur-2xl" />
-
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm mb-6">
-              <Calendar size={14} />
-              <span>3 Haziran 2026, Çarşamba</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight mb-4">
-              Build
-              <span className="text-[#edac46]"> Together</span>
-            </h1>
-
-            <p className="text-lg sm:text-xl text-blue-100 mb-8 leading-relaxed max-w-2xl">
-              Kurumlar ve startuplar arasındaki iş birliği süreçlerini hızlı ve verimli hale getirmek üzere kurulan here2next, son dönemin en trend konularından biri olan <strong className="text-white">&quot;Global Açık İnovasyon ve Yapay Zeka&quot;</strong> üzerine konuşacağız.
-            </p>
-
-            <div className="flex flex-wrap gap-4 mb-8">
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2.5">
-                <Clock size={16} className="text-[#edac46]" />
-                <span className="text-sm font-medium">12:30 - 16:00</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2.5">
-                <MapPin size={16} className="text-[#edac46]" />
-                <span className="text-sm font-medium">Akbank LAB</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 pt-4 border-t border-white/10">
-              <span className="text-xs text-blue-200 uppercase tracking-wider">powered by</span>
-              <span className="text-lg font-bold text-[#edac46]">Akbank LAB</span>
-            </div>
+    <main className="w-full">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-b from-[#0C1D4A] via-[#183690] to-[#0C1D4A] text-white py-20 sm:py-32">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            {t('hero.title')}
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+            {t('hero.subtitle')}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/register?role=startup">
+              <Button size="lg" className="bg-[#edac46] hover:bg-[#D48E15] text-white w-full">{t('hero.cta.startup')}</Button>
+            </Link>
+            <Link href="/register?role=corporate">
+              <Button size="lg" className="bg-[#183690] hover:bg-[#102668] w-full">{t('hero.cta.corporate')}</Button>
+            </Link>
+            <Link href="/startups">
+              <Button size="lg" className="bg-transparent border border-white text-white hover:bg-white/10 w-full">{t('hero.cta.explore')}</Button>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Live Photo Gallery */}
-      <section className="py-16 bg-gray-50" id="gallery">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
+      {/* Stats Bar */}
+      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 py-12">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="flex items-center gap-3">
-                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-                <h2 className="text-3xl font-extrabold text-gray-900">Canlı Galeri</h2>
-              </div>
-              <p className="text-gray-500 mt-1">Etkinlikten kareler</p>
+              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">240+</div>
+              <p className="text-gray-700 mt-2">{t('stats.startups')}</p>
             </div>
-
-            {isAdmin && (
-              <label className="inline-flex items-center gap-2 bg-[#edac46] text-white px-5 py-2.5 rounded-xl font-semibold cursor-pointer hover:bg-[#d49a3a] transition-colors">
-                <Camera size={18} />
-                {uploading ? 'Yükleniyor...' : 'Fotoğraf Ekle'}
-                <input
-                  ref={fileRef}
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  className="hidden"
-                  onChange={handleUpload}
-                  disabled={uploading}
-                />
-              </label>
-            )}
+            <div>
+              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">50+</div>
+              <p className="text-gray-700 mt-2">{t('stats.corporates')}</p>
+            </div>
+            <div>
+              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">180+</div>
+              <p className="text-gray-700 mt-2">{t('stats.matches')}</p>
+            </div>
+            <div>
+              <div className="text-3xl sm:text-4xl font-bold text-[#183690]">45+</div>
+              <p className="text-gray-700 mt-2">{t('stats.events')}</p>
+            </div>
           </div>
-
-          {photos.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-gray-200">
-              <ImageIcon className="mx-auto mb-4 text-gray-300" size={48} />
-              <p className="text-gray-400 text-lg">Henüz fotoğraf eklenmedi</p>
-              <p className="text-gray-300 text-sm mt-1">Etkinlik başladığında fotoğraflar burada görünecek</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-              {photos.map((url, i) => (
-                <button
-                  key={i}
-                  onClick={() => setLightbox(url)}
-                  className="aspect-square rounded-xl overflow-hidden bg-gray-200 hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#edac46] focus:ring-offset-2"
-                >
-                  <img src={url} alt={`Etkinlik fotoğrafı ${i + 1}`} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       </section>
 
-      {/* Lightbox */}
-      {lightbox && (
-        <div className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4" onClick={() => setLightbox(null)}>
-          <button className="absolute top-6 right-6 text-white/70 hover:text-white" onClick={() => setLightbox(null)}>
-            <X size={32} />
-          </button>
-          <img src={lightbox} alt="Fotoğraf" className="max-w-full max-h-[90vh] rounded-lg object-contain" onClick={(e) => e.stopPropagation()} />
+      {/* How It Works */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16">{t('section.howItWorks')}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="text-[#183690]" size={32} />
+              </div>
+              <h3 className="font-semibold text-lg mb-2">{t('how.step1.title')}</h3>
+              <p className="text-gray-700">{t('how.step1.desc')}</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Target className="text-[#183690]" size={32} />
+              </div>
+              <h3 className="font-semibold text-lg mb-2">{t('how.step2.title')}</h3>
+              <p className="text-gray-700">{t('how.step2.desc')}</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="text-[#183690]" size={32} />
+              </div>
+              <h3 className="font-semibold text-lg mb-2">{t('how.step3.title')}</h3>
+              <p className="text-gray-700">{t('how.step3.desc')}</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Briefcase className="text-[#183690]" size={32} />
+              </div>
+              <h3 className="font-semibold text-lg mb-2">{t('how.step4.title')}</h3>
+              <p className="text-gray-700">{t('how.step4.desc')}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Startups */}
+      <section className="py-16 sm:py-20 bg-gray-50">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold">{t('section.featuredStartups')}</h2>
+            <Link href="/startups" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
+              {t('section.viewAll')} <ArrowRight size={20} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {startups.map((startup) => (
+              <Card key={startup.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <AvatarPlaceholder name={startup.name} size="lg" />
+                  </div>
+                  <h3 className="font-bold text-lg mb-2">{startup.name}</h3>
+                  <Badge variant="secondary" className="mb-3">{startup.sector}</Badge>
+                  <p className="text-sm text-gray-700 line-clamp-2 mb-4">{lang === 'tr' ? startup.description_tr : startup.description_en}</p>
+                  <div className="pt-4 border-t">
+                    <Link href={`/startups/${startup.id}`} className="text-[#183690] hover:text-[#102668] text-sm font-semibold">
+                      {t('startups.viewProfile')} →
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Corporate Needs */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold">{t('section.corporateNeeds')}</h2>
+            <Link href="/wishlist" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
+              {t('section.viewAll')} <ArrowRight size={20} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {wishlist.map((item) => (
+              <Card key={item.id}>
+                <CardContent className="p-6">
+                  <p className="text-sm text-gray-600 mb-2">{item.corporate_name}</p>
+                  <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? item.title_tr : item.title_en}</h3>
+                  <p className="text-gray-700 text-sm mb-4">{lang === 'tr' ? item.description_tr : item.description_en}</p>
+                  <div className="flex gap-2 flex-wrap">
+                    {(item.tags ?? []).map((tag: string) => (
+                      <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Upcoming Events */}
+      <section className="py-16 sm:py-20 bg-gray-50">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold">{t('section.upcomingEvents')}</h2>
+            <Link href="/events" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
+              {t('section.viewAll')} <ArrowRight size={20} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {events.map((event) => (
+              <Card key={event.id} className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <p className="text-sm text-[#183690] font-semibold mb-2">{new Date(event.date).toLocaleDateString()}</p>
+                  <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? event.title_tr : event.title_en}</h3>
+                  <p className="text-gray-700 text-sm mb-4">{event.location}</p>
+                  <p className="text-sm text-gray-600">
+                    {event.attendee_count} {lang === 'tr' ? 'katılımcı' : 'attendees'}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Latest News */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold">{t('section.latestNews')}</h2>
+            <Link href="/news" className="text-[#183690] hover:text-[#102668] font-semibold flex items-center gap-2">
+              {t('section.viewAll')} <ArrowRight size={20} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {news.map((article) => (
+              <Card key={article.id}>
+                <CardContent className="p-6">
+                  <Badge variant="secondary" className="mb-3 text-xs">{article.category}</Badge>
+                  <h3 className="font-bold text-lg mb-2">{lang === 'tr' ? article.title_tr : article.title_en}</h3>
+                  <p className="text-gray-700 text-sm">{new Date(article.published_at).toLocaleDateString()}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Founding Members */}
+      <section className="py-16 sm:py-20 bg-gray-50">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">{t('section.members')}</h2>
+          <div className="flex flex-wrap justify-center gap-8 items-center">
+            {corporates.map((corp) => (
+              <div key={corp.id} className="flex flex-col items-center">
+                <AvatarPlaceholder name={corp.name} size="lg" />
+                <p className="text-sm font-semibold mt-3 text-center">{corp.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Manifesto CTA */}
+      <section className="bg-gradient-to-r from-[#c848aa] to-[#183690] text-white py-16 sm:py-20">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6">{t('section.manifesto')}</h2>
+          <p className="text-lg text-purple-100 mb-8 max-w-2xl mx-auto">
+            {t('home.manifesto.desc')}
+          </p>
+          <Button size="lg" className="bg-white text-[#c848aa] hover:bg-gray-100" onClick={() => setMissionOpen(true)}>
+            {t('home.manifesto.cta')}
+          </Button>
+        </div>
+      </section>
+
+      {/* Mission Modal */}
+      {missionOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setMissionOpen(false)}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div
+            className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="sticky top-0 bg-gradient-to-r from-[#c848aa] to-[#183690] text-white px-6 py-5 rounded-t-2xl flex items-center justify-between">
+              <h2 className="text-2xl font-bold">{t('mission.title')}</h2>
+              <button onClick={() => setMissionOpen(false)} className="p-1 hover:bg-white/20 rounded-full transition-colors">
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="px-6 py-6 space-y-6">
+              <p className="text-gray-700 leading-relaxed">{t('mission.p1')}</p>
+              <p className="text-gray-700 leading-relaxed">{t('mission.p2')}</p>
+
+              {/* Goals */}
+              <div className="bg-purple-50 border border-purple-100 rounded-xl p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="bg-purple-100 w-10 h-10 rounded-full flex items-center justify-center">
+                    <Target className="text-[#c848aa]" size={20} />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#c848aa]">{t('mission.vision.title')}</h3>
+                </div>
+                <p className="text-gray-700 leading-relaxed">{t('mission.vision.desc')}</p>
+              </div>
+
+              {/* Three Pillars */}
+              <div>
+                <h3 className="text-lg font-bold text-[#c848aa] mb-4">{t('mission.values.title')}</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {[
+                    { key: 'mission.value1', icon: <Heart className="text-[#c848aa]" size={22} />, color: 'bg-pink-50 border-pink-100' },
+                    { key: 'mission.value2', icon: <MessageCircle className="text-[#183690]" size={22} />, color: 'bg-blue-50 border-blue-100' },
+                    { key: 'mission.value3', icon: <Users className="text-[#c848aa]" size={22} />, color: 'bg-purple-50 border-purple-100' },
+                  ].map((v) => (
+                    <div key={v.key} className={`flex flex-col items-center text-center gap-3 border rounded-xl p-4 ${v.color}`}>
+                      <div className="w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center">{v.icon}</div>
+                      <p className="text-sm text-gray-700 leading-relaxed">{t(v.key)}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Closing Statement */}
+              <div className="text-center pt-2">
+                <p className="text-[#c848aa] font-semibold text-lg">{t('mission.value4')}</p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t flex justify-end">
+              <Button className="bg-[#c848aa] hover:bg-[#a83890]" onClick={() => setMissionOpen(false)}>
+                {t('home.manifesto.close')}
+              </Button>
+            </div>
+          </div>
         </div>
       )}
-
-      {/* Schedule */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">Program</h2>
-            <p className="text-gray-500">3 Haziran 2026 | Akbank LAB</p>
-          </div>
-
-          <div className="max-w-2xl mx-auto">
-            {schedule.map((item, i) => (
-              <div key={i} className="flex gap-4 sm:gap-6 mb-1">
-                <div className="flex flex-col items-center">
-                  <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center flex-shrink-0`}>
-                    <item.icon size={18} />
-                  </div>
-                  {i < schedule.length - 1 && (
-                    <div className="w-0.5 bg-gray-200 flex-1 my-1" />
-                  )}
-                </div>
-                <div className="pb-8 flex-1">
-                  <p className="text-xs font-mono text-gray-400 mb-1">{item.time}</p>
-                  <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
-                  {item.speaker && (
-                    <p className="text-sm text-[#183690] font-medium mt-1">{item.speaker}</p>
-                  )}
-                  {item.startups && (
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {item.startups.map((s) => (
-                        <span key={s} className="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1.5 rounded-lg border border-gray-200">
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Keynote Speaker */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mx-auto text-center">
-            <p className="text-sm font-semibold text-[#edac46] uppercase tracking-wider mb-3">Keynote Speaker</p>
-            <h2 className="text-3xl font-extrabold text-gray-900 mb-2">Emrecan Kerçek</h2>
-            <p className="text-lg text-[#183690] font-medium mb-6">Plug and Play</p>
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-              <Lightbulb className="mx-auto mb-4 text-[#edac46]" size={32} />
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Global Açık İnovasyon & Yapay Zeka</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Dünya genelinde açık inovasyon ekosisteminin son trendleri ve yapay zekanın kurumsal-girişim iş birliklerindeki dönüştürücü rolü üzerine bir konuşma.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Pitching Startups */}
-      <section className="py-16">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-extrabold text-gray-900 mb-3">Startup Pitch</h2>
-            <p className="text-gray-500">Bu etkinlikte sunum yapacak girişimler</p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
-            {[
-              { name: 'Carbon Smart', url: 'https://www.carbonsmart.io/en' },
-              { name: 'Clerion', url: 'https://clerion.io' },
-              { name: 'Voltla', url: 'https://voltla.com.tr' },
-              { name: 'Skymod', url: 'https://skymod.tech' },
-            ].map((s) => (
-              <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="bg-white border-2 border-gray-100 rounded-2xl p-6 text-center hover:border-[#edac46] hover:shadow-lg transition-all group">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#183690]/10 to-[#edac46]/10 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:from-[#183690]/20 group-hover:to-[#edac46]/20 transition-colors">
-                  <Rocket className="text-[#183690]" size={24} />
-                </div>
-                <p className="font-bold text-gray-900 text-sm">{s.name}</p>
-                <ExternalLink size={12} className="mx-auto mt-2 text-gray-400 group-hover:text-[#edac46] transition-colors" />
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 bg-gradient-to-r from-[#edac46] to-[#f0b94f] text-white">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">Aramızda olmak ister misiniz?</h2>
-          <p className="text-lg text-white/80 mb-8 max-w-xl mx-auto">
-            Program ilginizi çektiyse bize DM&apos;den yazın, konuşalım.
-          </p>
-          <a
-            href="https://www.linkedin.com/company/here2next/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-white text-[#183690] px-6 py-3 rounded-xl font-bold text-lg hover:bg-gray-100 transition-colors"
-          >
-            LinkedIn&apos;den Ulaşın
-            <ExternalLink size={18} />
-          </a>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-8 bg-gray-900 text-gray-400 text-center text-sm">
-        <div className="max-w-[1200px] mx-auto px-4">
-          <Image src="/logo.png" alt="Here2Next" width={100} height={31} className="h-6 w-auto mx-auto mb-3 brightness-0 invert" />
-          <p>© 2026 Here2Next. Tüm hakları saklıdır.</p>
-        </div>
-      </footer>
     </main>
   );
 }
