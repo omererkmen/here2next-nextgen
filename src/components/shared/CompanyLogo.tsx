@@ -13,6 +13,11 @@ interface CompanyLogoProps {
   className?: string;
 }
 
+// White/light logos need a dark brand-colored tile to stay visible
+const DARK_BG: { match: RegExp; color: string }[] = [
+  { match: /anadolu-efes/i, color: "#012169" },
+];
+
 const sizeClasses: Record<Size, string> = {
   sm: "h-8 min-w-8 max-w-20 p-1",
   md: "h-12 min-w-12 max-w-32 p-1.5",
@@ -32,13 +37,17 @@ export default function CompanyLogo({
     return <AvatarPlaceholder name={name} size={size} className={className} />;
   }
 
+  const darkBg = DARK_BG.find((d) => d.match.test(logoUrl))?.color;
+
   return (
     <div
       className={cn(
-        "rounded bg-white border border-gray-200 flex items-center justify-center overflow-hidden",
+        "rounded flex items-center justify-center overflow-hidden",
+        darkBg ? "border-transparent" : "bg-white border border-gray-200",
         sizeClasses[size],
         className
       )}
+      style={darkBg ? { backgroundColor: darkBg } : undefined}
       title={name}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}

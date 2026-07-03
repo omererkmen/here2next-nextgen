@@ -5,7 +5,6 @@
 -- CORPORATES (Founding members)
 -- ============================================
 INSERT INTO corporates (id, name, slug, sector, description_tr, description_en, location, website, is_founder, member_since) VALUES
-  ('10000000-0000-0000-0000-000000000c01', 'Anadolu Efes', 'anadolu-efes', 'İçecek', 'Türkiye''nin önde gelen içecek şirketi.', 'Turkey''s leading beverage company.', 'İstanbul', 'https://anadoluefes.com', true, 2025),
   ('10000000-0000-0000-0000-000000000c02', 'Arçelik', 'arcelik', 'Beyaz Eşya', 'Global beyaz eşya ve elektronik üreticisi.', 'Global home appliance and electronics manufacturer.', 'İstanbul', 'https://arcelik.com.tr', true, 2025),
   ('10000000-0000-0000-0000-000000000c03', 'Enerjisa Enerji', 'enerjisa', 'Enerji', 'Türkiye''nin en büyük enerji dağıtım şirketi.', 'Turkey''s largest energy distribution company.', 'İstanbul', 'https://enerjisa.com.tr', true, 2025),
   ('10000000-0000-0000-0000-000000000c04', 'Ford Otosan', 'ford-otosan', 'Otomotiv', 'Ford Motor Company ve Koç Holding ortaklığı.', 'Joint venture of Ford Motor Company and Koç Holding.', 'Kocaeli', 'https://fordotosan.com.tr', true, 2025),
@@ -17,6 +16,7 @@ INSERT INTO corporates (id, name, slug, sector, description_tr, description_en, 
   ('10000000-0000-0000-0000-000000000c10', 'YNK (Yeni Nesil Kafası)', 'ynk', 'İnovasyon', 'Startup ekosistemi ve girişimcilik kültürünü destekleyen kurucu üye platform.', 'Founding member platform supporting the startup ecosystem and entrepreneurship culture.', 'İstanbul', 'https://yeninesilikafasi.com', true, 2025);
 
 INSERT INTO corporates (id, name, slug, logo_url, sector, description_tr, description_en, location, website, is_founder, member_since) VALUES
+  ('10000000-0000-0000-0000-000000000c01', 'Anadolu Efes', 'anadolu-efes', '/logos/anadolu-efes.png', 'İçecek', 'Anadolu Efes Bira ve Malt Sanayi A.Ş. — Türkiye''nin önde gelen içecek şirketi.', 'Anadolu Efes Bira ve Malt Sanayi A.Ş. — Turkey''s leading beverage company.', 'Fatih Sultan Mehmet Mah. Balkan Cad. Buyaka E Blok No: 58/24 34771 Ümraniye/İstanbul', 'https://www.anadoluefes.com.tr', true, 2025),
   ('10000000-0000-0000-0000-000000000c11', 'Doğuş Otomotiv', 'dogus-otomotiv', '/logos/dogus-otomotiv.svg', 'Otomotiv', 'Doğuş Otomotiv Servis ve Ticaret A.Ş. — Volkswagen Grubu markalarının Türkiye distribütörü, Doğuş Grubu''nun otomotiv şirketi.', 'Doğuş Otomotiv Servis ve Ticaret A.Ş. — Turkish distributor of Volkswagen Group brands, the automotive company of Doğuş Group.', 'Şekerpınar Mah. Anadolu Cad. No:22 ve 45, 41420 Çayırova/Kocaeli', 'https://www.dogusotomotiv.com.tr', false, 2025);
 
 -- ============================================
