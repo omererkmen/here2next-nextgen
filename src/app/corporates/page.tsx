@@ -38,7 +38,7 @@ export default function CorporatesPage() {
       const merged = (corpsData ?? []).map((corp: any) => ({
         ...corp,
         wishlistCount: wishlistCounts[corp.id] || 0,
-        memberSince: new Date(corp.member_since).getFullYear(),
+        memberSince: corp.member_since,
       }));
 
       setCorporates(merged);
