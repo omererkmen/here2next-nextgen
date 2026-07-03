@@ -16,6 +16,9 @@ INSERT INTO corporates (id, name, slug, sector, description_tr, description_en, 
   ('10000000-0000-0000-0000-000000000c09', 'Koç Holding', 'koc-holding', 'Holding', 'Türkiye''nin en büyük sanayi ve hizmet grubu.', 'Turkey''s largest industrial and service conglomerate.', 'İstanbul', 'https://koc.com.tr', false, 2023),
   ('10000000-0000-0000-0000-000000000c10', 'YNK (Yeni Nesil Kafası)', 'ynk', 'İnovasyon', 'Startup ekosistemi ve girişimcilik kültürünü destekleyen kurucu üye platform.', 'Founding member platform supporting the startup ecosystem and entrepreneurship culture.', 'İstanbul', 'https://yeninesilikafasi.com', true, 2022);
 
+INSERT INTO corporates (id, name, slug, logo_url, sector, description_tr, description_en, location, website, is_founder, member_since) VALUES
+  ('10000000-0000-0000-0000-000000000c11', 'Doğuş Otomotiv', 'dogus-otomotiv', '/logos/dogus-otomotiv.svg', 'Otomotiv', 'Doğuş Otomotiv Servis ve Ticaret A.Ş. — Volkswagen Grubu markalarının Türkiye distribütörü, Doğuş Grubu''nun otomotiv şirketi.', 'Doğuş Otomotiv Servis ve Ticaret A.Ş. — Turkish distributor of Volkswagen Group brands, the automotive company of Doğuş Group.', 'Şekerpınar Mah. Anadolu Cad. No:22 ve 45, 41420 Çayırova/Kocaeli', 'https://www.dogusotomotiv.com.tr', false, 2026);
+
 -- ============================================
 -- STARTUPS
 -- ============================================

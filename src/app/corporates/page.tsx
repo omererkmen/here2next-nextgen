@@ -6,7 +6,7 @@ import { Search, MapPin, Award } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import AvatarPlaceholder from '@/components/shared/AvatarPlaceholder';
+import CompanyLogo from '@/components/shared/CompanyLogo';
 import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
 
@@ -86,7 +86,7 @@ export default function CorporatesPage() {
                 <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-4">
-                      <AvatarPlaceholder name={corp.name} size="lg" />
+                      <CompanyLogo name={corp.name} logoUrl={corp.logo_url} size="lg" />
                       {corp.is_founder && (
                         <Award className="text-amber-500" size={20} />
                       )}
