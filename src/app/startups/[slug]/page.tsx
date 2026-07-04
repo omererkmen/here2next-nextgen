@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import AvatarPlaceholder from '@/components/shared/AvatarPlaceholder';
+import CompanyLogo from '@/components/shared/CompanyLogo';
 import { stageLabels } from '@/lib/constants';
 import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
@@ -153,7 +154,7 @@ export default function StartupDetailPage() {
             <ArrowLeft size={18} /> {lang === 'tr' ? 'Geri' : 'Back'}
           </button>
           <div className="flex flex-col md:flex-row items-start gap-6">
-            <AvatarPlaceholder name={startup.name} size="xl" />
+            <CompanyLogo name={startup.name} logoUrl={startup.logo_url} size="xl" />
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-3xl sm:text-4xl font-bold">{startup.name}</h1>

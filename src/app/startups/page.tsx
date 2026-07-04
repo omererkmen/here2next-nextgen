@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import AvatarPlaceholder from '@/components/shared/AvatarPlaceholder';
+import CompanyLogo from '@/components/shared/CompanyLogo';
 import { sectors, stageLabels } from '@/lib/constants';
 import { useLang } from '@/context/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
@@ -104,7 +104,7 @@ export default function StartupsPage() {
                 <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                   <CardContent className="p-6">
                     <div className="mb-4">
-                      <AvatarPlaceholder name={startup.name} size="lg" />
+                      <CompanyLogo name={startup.name} logoUrl={startup.logo_url} size="lg" />
                     </div>
                     <h3 className="font-bold text-lg mb-2">{startup.name}</h3>
                     <Badge variant="secondary" className="mb-3">
