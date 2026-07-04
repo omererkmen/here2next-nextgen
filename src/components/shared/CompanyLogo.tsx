@@ -16,6 +16,7 @@ interface CompanyLogoProps {
 // White/light logos need a dark brand-colored tile to stay visible
 const DARK_BG: { match: RegExp; color: string }[] = [
   { match: /anadolu-efes/i, color: "#012169" },
+  { match: /isbank/i, color: "#00205B" },
 ];
 
 const sizeClasses: Record<Size, string> = {
