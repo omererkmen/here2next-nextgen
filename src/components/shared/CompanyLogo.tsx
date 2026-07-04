@@ -25,6 +25,7 @@ const DARK_BG: { match: RegExp; color: string }[] = [
   { match: /numanufacturing/i, color: "#8B1050" },
   { match: /complylab/i, color: "#1C1633" },
   { match: /farmhood/i, color: "#1B4332" },
+  { match: /wastelog/i, color: "#14532D" },
 ];
 
 const sizeClasses: Record<Size, string> = {
