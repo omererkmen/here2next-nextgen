@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, Globe, Rocket, Building2, ListChecks, Calendar, Newspaper, Zap, LogIn, UserPlus, LogOut, User, LayoutDashboard, MessageSquareWarning, ChevronDown, Users, ShieldCheck, Activity, Handshake } from "lucide-react";
+import { Menu, X, Globe, Rocket, Building2, ListChecks, Calendar, Newspaper, Zap, LogIn, UserPlus, LogOut, User, LayoutDashboard, MessageSquareWarning, ChevronDown, Users, ShieldCheck, Activity } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +17,6 @@ const navItems = [
   { href: "/startups", key: "nav.startups", icon: Rocket },
   { href: "/corporates", key: "nav.corporates", icon: Building2 },
   { href: "/wishlist", key: "nav.wishlist", icon: ListChecks },
-  { href: "/cvc-circle", key: "nav.cvc", icon: Handshake },
   { href: "/matching", key: "nav.matching", icon: Zap },
   { href: "/events", key: "nav.events", icon: Calendar },
   { href: "/news", key: "nav.news", icon: Newspaper },
@@ -273,6 +272,16 @@ export default function Navbar() {
                         <Link href="/admin/approvals" onClick={() => setMobileOpen(false)}>
                           <Button variant="ghost" size="sm" className="w-full gap-2 justify-start text-amber-600">
                             <ShieldCheck className="w-4 h-4" /> {lang === 'tr' ? 'Onaylar' : 'Approvals'}
+                          </Button>
+                        </Link>
+                        <Link href="/admin/logs" onClick={() => setMobileOpen(false)}>
+                          <Button variant="ghost" size="sm" className="w-full gap-2 justify-start text-slate-600">
+                            <Activity className="w-4 h-4" /> {lang === 'tr' ? 'Aktivite Logları' : 'Activity Logs'}
+                          </Button>
+                        </Link>
+                        <Link href="/admin/feedback" onClick={() => setMobileOpen(false)}>
+                          <Button variant="ghost" size="sm" className="w-full gap-2 justify-start text-orange-600">
+                            <MessageSquareWarning className="w-4 h-4" /> {lang === 'tr' ? 'Geri Bildirimler' : 'Feedback'}
                           </Button>
                         </Link>
                       </>
