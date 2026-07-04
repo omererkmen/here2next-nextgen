@@ -41,6 +41,9 @@ export default function StartupsPage() {
     return matchesSearch && matchesSector && matchesStage;
   });
 
+  const activeStartups = filtered.filter((s) => s.is_active !== false);
+  const inactiveStartups = filtered.filter((s) => s.is_active === false);
+
   if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><div className="text-slate-600">Loading...</div></div>;
 
   return (
@@ -99,7 +102,7 @@ export default function StartupsPage() {
 
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filtered.map((startup) => (
+            {activeStartups.map((startup) => (
               <Link key={startup.id} href={`/startups/${startup.slug}`}>
                 <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                   <CardContent className="p-6">
@@ -133,6 +136,43 @@ export default function StartupsPage() {
               </Link>
             ))}
           </div>
+
+          {/* Devam etmeyen startuplar */}
+          {inactiveStartups.length > 0 && (
+            <div className="mt-12">
+              <h2 className="text-xl font-bold text-gray-500 mb-2">
+                {lang === 'tr' ? 'Devam Etmeyen Startuplar' : 'Inactive Startups'}
+              </h2>
+              <p className="text-sm text-gray-500 mb-6">
+                {lang === 'tr'
+                  ? 'Web sitelerine ulaşılamayan veya faaliyetine devam etmeyen girişimler.'
+                  : 'Startups whose websites are unreachable or that are no longer active.'}
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {inactiveStartups.map((startup) => (
+                  <Link key={startup.id} href={`/startups/${startup.slug}`}>
+                    <Card className="h-full opacity-60 grayscale hover:opacity-80 transition-opacity cursor-pointer">
+                      <CardContent className="p-6">
+                        <div className="mb-4">
+                          <CompanyLogo name={startup.name} logoUrl={startup.logo_url} size="lg" />
+                        </div>
+                        <h3 className="font-bold text-lg mb-2">{startup.name}</h3>
+                        <Badge variant="secondary" className="mb-3">
+                          {startup.sector}
+                        </Badge>
+                        <p className="text-sm text-gray-600 line-clamp-2 mb-4">
+                          {lang === 'tr' ? startup.description_tr : startup.description_en}
+                        </p>
+                        <p className="text-xs font-medium text-amber-700">
+                          {lang === 'tr' ? 'Ulaşılamıyor' : 'Unreachable'}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </main>
