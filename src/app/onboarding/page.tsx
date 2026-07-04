@@ -232,15 +232,7 @@ export default function OnboardingPage() {
           ))}
         </div>
 
-        {/* Skip button */}
-        <div className="text-center mb-8">
-          <button
-            onClick={() => router.push('/dashboard')}
-            className="text-sm text-gray-500 hover:text-[#183690] underline underline-offset-2 transition-colors"
-          >
-            {lang === 'tr' ? 'Daha sonra tamamla, atla →' : 'Complete later, skip →'}
-          </button>
-        </div>
+        <div className="mb-8" />
 
         <Card>
           <CardContent className="p-8">
