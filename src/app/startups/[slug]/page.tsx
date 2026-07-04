@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, MapPin, Users, DollarSign, Calendar, Globe, Zap, ExternalLink, Send, Handshake, CheckCircle, Loader2 } from 'lucide-react';
+import { ArrowLeft, MapPin, DollarSign, Calendar, Globe, Zap, ExternalLink, Send, Handshake, CheckCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -184,19 +184,12 @@ export default function StartupDetailPage() {
             {/* Left: Main Info */}
             <div className="lg:col-span-2 space-y-6">
               {/* Quick Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <Card>
                   <CardContent className="p-4 text-center">
                     <Calendar className="mx-auto mb-2 text-[#183690]" size={24} />
                     <p className="text-sm text-gray-600">{lang === 'tr' ? 'Kuruluş' : 'Founded'}</p>
                     <p className="text-xl font-bold">{startup.founded_year || '-'}</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 text-center">
-                    <Users className="mx-auto mb-2 text-blue-600" size={24} />
-                    <p className="text-sm text-gray-600">{lang === 'tr' ? 'Ekip' : 'Team'}</p>
-                    <p className="text-xl font-bold">{startup.team_size || '-'}</p>
                   </CardContent>
                 </Card>
                 <Card>

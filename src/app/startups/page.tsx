@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, MapPin, Users } from 'lucide-react';
+import { Search, MapPin } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -126,9 +126,6 @@ export default function StartupsPage() {
                     <div className="pt-4 border-t space-y-2 text-sm text-gray-600">
                       <div className="flex items-center gap-2">
                         <MapPin size={14} /> {startup.location}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Users size={14} /> {startup.team_size} {lang === 'tr' ? 'kişi' : 'team'}
                       </div>
                     </div>
                   </CardContent>
