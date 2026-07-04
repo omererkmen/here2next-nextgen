@@ -18,6 +18,7 @@ const DARK_BG: { match: RegExp; color: string }[] = [
   { match: /anadolu-efes/i, color: "#012169" },
   { match: /isbank/i, color: "#00205B" },
   { match: /skymod/i, color: "#0B0B1E" },
+  { match: /clerion/i, color: "#101828" },
 ];
 
 const sizeClasses: Record<Size, string> = {
