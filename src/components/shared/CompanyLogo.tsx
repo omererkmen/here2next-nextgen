@@ -20,6 +20,7 @@ const DARK_BG: { match: RegExp; color: string }[] = [
   { match: /skymod/i, color: "#0B0B1E" },
   { match: /clerion/i, color: "#101828" },
   { match: /pivony/i, color: "#1E1B4B" },
+  { match: /\/bren\./i, color: "#0D2233" },
 ];
 
 const sizeClasses: Record<Size, string> = {
