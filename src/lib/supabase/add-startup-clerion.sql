@@ -9,6 +9,7 @@ INSERT INTO startups (name, slug, logo_url, sector, stage, description_tr, descr
    NULL, 'Levent, Atom Sok. King Plaza, 34394 İstanbul', 'https://clerion.io', ARRAY['cloud', 'DevOps', 'AWS', 'AI'], true)
 ON CONFLICT (slug) DO UPDATE SET
   logo_url = EXCLUDED.logo_url,
+  sector = EXCLUDED.sector,
   description_tr = EXCLUDED.description_tr,
   description_en = EXCLUDED.description_en,
   location = EXCLUDED.location,
