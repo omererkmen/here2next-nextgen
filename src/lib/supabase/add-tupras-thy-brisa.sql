@@ -18,7 +18,7 @@ UPDATE corporates SET
 WHERE slug = 'thy';
 
 UPDATE corporates SET
-  logo_url = '/logos/brisa.png',
+  logo_url = '/logos/brisa.svg',
   sector = 'Lastik',
   description_tr = 'Brisa Bridgestone Sabancı Lastik San. ve Tic. A.Ş. — Türkiye lastik sektörünün lideri, Sabancı Holding ve Bridgestone ortaklığı.',
   description_en = 'Brisa Bridgestone Sabancı Lastik San. ve Tic. A.Ş. — Leader of the Turkish tire industry, joint venture of Sabancı Holding and Bridgestone.',
