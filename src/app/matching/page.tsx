@@ -79,11 +79,11 @@ export default function MatchingPage() {
     setConnectingId(match.id);
     const supabase = createClient();
 
-    const { error } = await supabase.from('match_requests').insert({
+    const { data: inserted, error } = await supabase.from('match_requests').insert({
       startup_id: match.startup_id,
       corporate_id: match.corporate_id,
       message: lang === 'tr' ? 'Eşleşme üzerinden bağlantı talebi' : 'Connection request via matching',
-    });
+    }).select('id').single();
 
     if (error) {
       if (error.code === '23505') {
@@ -93,6 +93,15 @@ export default function MatchingPage() {
       }
     } else {
       setRequestedMatches(prev => new Set([...prev, key]));
+      // Gönderen startup ise kuruma, kurum ise startup'a validasyon bildirimi gönder
+      if (inserted?.id) {
+        const notify = userStartup ? 'corporate' : 'startup';
+        fetch('/api/notify-match', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ requestId: inserted.id, notify, event: 'created' }),
+        }).catch(() => {});
+      }
     }
     setConnectingId(null);
   };

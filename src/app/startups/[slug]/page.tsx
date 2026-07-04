@@ -90,11 +90,11 @@ export default function StartupDetailPage() {
 
     setMatchLoading(true);
     const supabase = createClient();
-    const { error } = await supabase.from('match_requests').insert({
+    const { data: inserted, error } = await supabase.from('match_requests').insert({
       startup_id: startup.id,
       corporate_id: userCorporate.id,
       message: lang === 'tr' ? 'Eşleşme talebi gönderildi.' : 'Match request sent.',
-    });
+    }).select('id').single();
 
     if (error) {
       if (error.code === '23505') {
@@ -104,6 +104,14 @@ export default function StartupDetailPage() {
       }
     } else {
       setMatchRequested(true);
+      // Karşı tarafa (startup) validasyon bildirimi gönder
+      if (inserted?.id) {
+        fetch('/api/notify-match', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ requestId: inserted.id, notify: 'startup', event: 'created' }),
+        }).catch(() => {});
+      }
     }
     setMatchLoading(false);
   };

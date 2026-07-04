@@ -162,6 +162,12 @@ export default function DashboardPage() {
       alert(lang === 'tr' ? 'İşlem başarısız: ' + error.message : 'Action failed: ' + error.message);
     } else {
       setMatchRequests(prev => prev.map(r => r.id === requestId ? { ...r, status: action } : r));
+      // Talep sahibi startup'a sonucu bildir
+      fetch('/api/notify-match', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestId, notify: 'startup', event: action }),
+      }).catch(() => {});
     }
     setUpdatingRequest(null);
   };
