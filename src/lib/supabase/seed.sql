@@ -33,13 +33,7 @@ INSERT INTO startups (id, name, slug, sector, stage, description_tr, description
 -- ============================================
 -- WISHLIST ITEMS
 -- ============================================
-INSERT INTO wishlist_items (corporate_id, title_tr, title_en, description_tr, description_en, sector, tags, deadline, status) VALUES
-  ('10000000-0000-0000-0000-000000000c05', 'Mağaza İçi Müşteri Analitiği', 'In-Store Customer Analytics', 'Mağaza içi müşteri hareketlerini analiz eden, ısı haritası ve davranış analizi sunan bir çözüm arıyoruz.', 'Looking for a solution that analyzes in-store customer movements, providing heat maps and behavior analysis.', 'Perakende Tech', ARRAY['AI', 'computer vision', 'analitik'], '2026-05-15', 'open'),
-  ('10000000-0000-0000-0000-000000000c03', 'Akıllı Şebeke Yönetimi', 'Smart Grid Management', 'Dağıtım şebekesinde kestirimci bakım ve arıza tespiti için AI çözümü.', 'AI solution for predictive maintenance and fault detection in the distribution network.', 'EnerjiTech', ARRAY['IoT', 'AI', 'enerji'], '2026-06-01', 'open'),
-  ('10000000-0000-0000-0000-000000000c07', 'Yolcu Deneyimi Kişiselleştirme', 'Passenger Experience Personalization', 'Yolcu deneyimini uçuş öncesi, sırası ve sonrasında kişiselleştiren platform.', 'Platform that personalizes passenger experience before, during, and after flights.', 'Seyahat Tech', ARRAY['AI', 'UX', 'kişiselleştirme'], '2026-04-30', 'open'),
-  ('10000000-0000-0000-0000-000000000c08', 'KOBİ Kredi Skorlama', 'SMB Credit Scoring', 'Alternatif veri kaynaklarıyla KOBİ''ler için kredi skorlama modeli.', 'Credit scoring model for SMBs using alternative data sources.', 'FinTech', ARRAY['AI', 'fintech', 'veri'], '2026-05-30', 'open'),
-  ('10000000-0000-0000-0000-000000000c04', 'Fabrika Dijital İkiz', 'Factory Digital Twin', 'Üretim hattında dijital ikiz teknolojisi ile simülasyon ve optimizasyon.', 'Simulation and optimization with digital twin technology in the production line.', 'Endüstri 4.0', ARRAY['dijital ikiz', 'IoT', 'otomasyon'], '2026-07-01', 'open'),
-  ('10000000-0000-0000-0000-000000000c02', 'Sürdürülebilir Ambalaj Çözümü', 'Sustainable Packaging Solution', 'Ürün ambalajlarında plastik kullanımını azaltan yenilikçi malzeme çözümleri.', 'Innovative material solutions to reduce plastic use in product packaging.', 'GreenTech', ARRAY['sürdürülebilirlik', 'malzeme', 'inovasyon'], '2026-06-15', 'open');
+-- Demo ihtiyaç listesi kaldırıldı; kurumlar ihtiyaçlarını platform üzerinden elle girer.
 
 -- ============================================
 -- EVENTS
